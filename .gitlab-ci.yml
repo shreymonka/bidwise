@@ -1,0 +1,21 @@
+stages:
+  - build
+  - test
+  - deploy
+
+test_backend:
+  stage: test
+  image: mvn:latest
+  before_script:
+    - cd Auction_backend/
+  script:
+    - mvn test
+
+
+build_backend:
+  stage: build
+  image: mvn:latest
+  before_script:
+    - cd Auction_backend/
+  script:
+    - mvn clean install
