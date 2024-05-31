@@ -10,6 +10,8 @@ test_backend:
     - cd Auction_backend/
   script:
     - mvn test
+  tags:
+    - dalfcs_gitlab_docker_ci
 
 
 build_backend:
@@ -19,3 +21,5 @@ build_backend:
     - cd Auction_backend/
   script:
     - mvn clean install
+  tags:
+    - dalfcs_gitlab_docker_ci
