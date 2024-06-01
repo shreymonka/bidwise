@@ -3,13 +3,20 @@ stages:
   - test
   - deploy
 
+variables:
+  DOCKER_USERNAME: ""
+  DOCKER_PASSWORD:  ""
+
 test_backend:
   stage: test
   image: maven:3.9.7-sapmachine-17
   before_script:
     - cd Auction_backend/
   script:
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - mvn test
+  after_script:
+    - docker logout
   tags:
     - ugrad
 
@@ -20,6 +27,9 @@ build_backend:
   before_script:
     - cd Auction_backend/
   script:
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - mvn clean install
+  after_script:
+    - docker logout
   tags:
     - ugrad
