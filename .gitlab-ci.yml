@@ -13,7 +13,6 @@ test_backend:
   before_script:
     - cd Auction_backend/
   script:
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - mvn test
   after_script:
     - docker logout
@@ -27,8 +26,7 @@ build_backend:
   before_script:
     - cd Auction_backend/
   script:
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - mvn clean install
+    - mvn clean install -DskipTests
   after_script:
     - docker logout
   tags:
