@@ -5,7 +5,7 @@ stages:
 
 test_backend:
   stage: test
-  image: mvn:latest
+  #image: mvn:latest
   before_script:
     - cd Auction_backend/
   script:
@@ -16,7 +16,7 @@ test_backend:
 
 build_backend:
   stage: build
-  image: mvn:latest
+  #image: mvn:latest
   before_script:
     - cd Auction_backend/
   script:
