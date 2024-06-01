@@ -18,7 +18,7 @@ test_backend:
   after_script:
     - docker logout
   tags:
-    - ugrad
+    - dalfcs_gitlab_docker_ci
 
 
 build_backend:
@@ -32,4 +32,4 @@ build_backend:
   after_script:
     - docker logout
   tags:
-    - ugrad
+    - dalfcs_gitlab_docker_ci
