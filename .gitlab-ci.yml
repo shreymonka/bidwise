@@ -11,7 +11,7 @@ test_backend:
   script:
     - mvn test
   tags:
-    - dalfcs_docker_kvm
+    - ugrad
 
 
 build_backend:
@@ -22,4 +22,4 @@ build_backend:
   script:
     - mvn clean install
   tags:
-    - dalfcs_docker_kvm
+    - ugrad
