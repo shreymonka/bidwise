@@ -18,7 +18,7 @@ build_frontend:
     - npm install -g @angular/cli
     - ng build
   tags:
-    - dalfcs_gitlab_docker_ci
+    - auctionrunner
     
 build_backend:
   stage: build
@@ -28,7 +28,7 @@ build_backend:
   script:
     - mvn clean install -DskipTests
   tags:
-    - dalfcs_gitlab_docker_ci
+    - auctionrunner
 
 test_backend:
   stage: test
@@ -39,7 +39,7 @@ test_backend:
     - echo "Running Tests"
     # - mvn test
   tags:
-    - dalfcs_gitlab_docker_ci
+    - auctionrunner
 
 publish_frontend:
   stage: publish
@@ -64,4 +64,4 @@ publish_frontend:
     - echo "Docker Image pushed successfully"
     - docker logout
   tags:
-    - dalfcs_gitlab_docker_ci
+    - auctionrunner
