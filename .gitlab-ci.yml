@@ -50,13 +50,11 @@ publish_frontend:
     - cd Auction_frontend/
   script:
     - echo "Logging Docker"
-    - echo $DOCKER_USERNAME
-    - echo $DOCKER_PASSWORD
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - echo "Building the Docker image"
-    - docker build -t bidwise/auctionfrontend .
+    - docker build -t docker.io/bidwise/auctionfrontend .
     - echo "Successfully build the docker image"
-    - docker push bidwise/auctionfrontend
+    - docker push docker.io/bidwise/auctionfrontend
   after_script:
     - echo "Docker Image pushed successfully"
     - docker logout
