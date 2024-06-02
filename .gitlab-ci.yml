@@ -43,6 +43,9 @@ test_backend:
 
 publish_frontend:
   stage: publish
+  image: docker:latest
+  services:
+    - docker:dind
   before_script:
     - cd Auction_frontend/
   script:
