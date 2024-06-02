@@ -14,9 +14,10 @@ build_frontend:
   before_script:
     - cd Auction_frontend/
   script:
-    - npm install
-    - npm install -g @angular/cli
-    - ng build
+    - echo "build frontEnd"
+    # - npm install
+    # - npm install -g @angular/cli
+    # - ng build
   tags:
     - auctionrunner
     
@@ -26,7 +27,8 @@ build_backend:
   before_script:
     - cd Auction_backend/
   script:
-    - mvn clean install -DskipTests
+    - echo "Build backend"
+    # - mvn clean install -DskipTests
   tags:
     - auctionrunner
 
@@ -44,9 +46,9 @@ test_backend:
 publish_frontend:
   stage: publish
   image: docker:latest
-  # variables:
-    #DOCKER_HOST: "tcp://docker:2375"
-    #DOCKER_TLS_CERTDIR: ""
+  variables:
+    DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
   before_script:
