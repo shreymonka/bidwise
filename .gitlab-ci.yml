@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - publish
   - deploy
 
 variables:
@@ -37,5 +38,22 @@ test_backend:
   script:
     - echo "Running Tests"
     # - mvn test
+  tags:
+    - dalfcs_gitlab_docker_ci
+
+publish_frontend:
+  stage: publish
+  before_script:
+    - cd Auction_frontend/
+  script:
+    - echo "Logging Docker"
+    - docker login -p $DOCKER_USERNAME -u $DOCKER_PASSWORD
+    - echo "Building the Docker image"
+    - docker build -t bidwise/auctionfrontend .
+    - echo "Successfully build the docker image"
+    - docker push bidwise/auctionfrontend
+  after_script:
+    - echo "Docker Image pushed successfully"
+    - docker logout
   tags:
     - dalfcs_gitlab_docker_ci
