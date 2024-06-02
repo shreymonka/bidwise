@@ -14,6 +14,7 @@ build_frontend:
   before_script:
     - cd Auction_frontend/
   script:
+    - echo $DOCKER_HOST
     - npm install
     - npm install -g @angular/cli
     - ng build
@@ -49,6 +50,8 @@ publish_frontend:
   before_script:
     - cd Auction_frontend/
   script:
+    - echo $DOCKER_HOST
+    - unset DOCKER_HOST
     - echo "Logging Docker"
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - echo "Building the Docker image"
