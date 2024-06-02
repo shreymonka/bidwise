@@ -14,7 +14,7 @@ build_frontend:
     - cd Auction_frontend/
   script:
     - npm install
-    - npm install -D typescript @angular/cli @angular/compiler
+    - npm install -g @angular/cli
     - ng build
   tags:
     - dalfcs_gitlab_docker_ci
