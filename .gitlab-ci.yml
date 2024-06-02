@@ -7,6 +7,27 @@ variables:
   DOCKER_USERNAME: ""
   DOCKER_PASSWORD:  ""
 
+build_frontend:
+  stage: build
+  image: node:latest
+  before_script:
+    - cd Auction_frontend/
+  script:
+    - npm install -g @angular/cli
+    - ng build
+  tags:
+    - dalfcs_gitlab_docker_ci
+    
+build_backend:
+  stage: build
+  image: maven:3.9.7-sapmachine-17
+  before_script:
+    - cd Auction_backend/
+  script:
+    - mvn clean install -DskipTests
+  tags:
+    - dalfcs_gitlab_docker_ci
+
 test_backend:
   stage: test
   image: maven:3.9.7-sapmachine-17
@@ -15,16 +36,5 @@ test_backend:
   script:
     - echo "Running Tests"
     # - mvn test
-  tags:
-    - dalfcs_gitlab_docker_ci
-
-
-build_backend:
-  stage: build
-  image: maven:3.9.7-sapmachine-17
-  before_script:
-    - cd Auction_backend/
-  script:
-    - mvn clean install -DskipTests
   tags:
     - dalfcs_gitlab_docker_ci
