@@ -1,8 +1,8 @@
 stages:
-  #- build
-  #- test
+  - build
+  - test
   - publish
-  #- deploy
+  - deploy
 
 variables:
   DOCKER_USERNAME: ""
