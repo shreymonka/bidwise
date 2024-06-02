@@ -46,6 +46,7 @@ publish_frontend:
   image: docker:latest
   variables:
     DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
   before_script:
