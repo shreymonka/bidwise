@@ -1,8 +1,8 @@
 stages:
-  - build
-  - test
+  #- build
+  #- test
   - publish
-  - deploy
+  #- deploy
 
 variables:
   DOCKER_USERNAME: ""
@@ -14,7 +14,6 @@ build_frontend:
   before_script:
     - cd Auction_frontend/
   script:
-    - echo $DOCKER_HOST
     - npm install
     - npm install -g @angular/cli
     - ng build
@@ -45,13 +44,14 @@ test_backend:
 publish_frontend:
   stage: publish
   image: docker:latest
+  variables:
+    DOCKER_HOST: "tcp://docker:2375"
   services:
     - docker:dind
   before_script:
     - cd Auction_frontend/
   script:
     - echo $DOCKER_HOST
-    - unset DOCKER_HOST
     - echo "Logging Docker"
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - echo "Building the Docker image"
