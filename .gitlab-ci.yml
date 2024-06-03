@@ -65,5 +65,6 @@ publish_frontend:
   after_script:
     - echo "Docker Image pushed successfully"
     - docker logout
+  when: manual
   tags:
     - auctionrunner
