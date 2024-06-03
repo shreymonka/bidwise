@@ -39,7 +39,7 @@ test_backend:
     - cd Auction_backend/
   script:
     - echo "Running Tests"
-    # - mvn test
+    - mvn test
   tags:
     - auctionrunner
 
