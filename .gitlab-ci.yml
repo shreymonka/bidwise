@@ -83,4 +83,4 @@ deploy_build:
   script:  
     - ssh $SSH_USER@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
   tags:
-    - auctionrunner
+    - dalfcs_docker_kvm
