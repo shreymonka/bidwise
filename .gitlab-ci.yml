@@ -4,10 +4,6 @@ stages:
   - publish
   - deploy
 
-# variables:
-#   DOCKER_USERNAME: ""
-#   DOCKER_PASSWORD:  ""
-
 build_frontend:
   stage: build
   image: node:latest
@@ -15,9 +11,9 @@ build_frontend:
     - cd Auction_frontend/
   script:
     - echo "build frontEnd"
-    # - npm install
-    # - npm install -g @angular/cli
-    # - ng build
+    - npm install
+    - npm install -g @angular/cli
+    - ng build
   tags:
     - dalfcs_docker_kvm
     
@@ -28,7 +24,7 @@ build_backend:
     - cd Auction_backend/
   script:
     - echo "Build backend"
-    # - mvn clean install -DskipTests
+    - mvn clean install -DskipTests
   tags:
     - dalfcs_docker_kvm
 
@@ -39,7 +35,7 @@ test_backend:
     - cd Auction_backend/
   script:
     - echo "Running Tests"
-    # - mvn test
+    - mvn test
   tags:
     - dalfcs_docker_kvm
 
