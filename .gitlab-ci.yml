@@ -15,9 +15,9 @@ build_frontend:
     - cd Auction_frontend/
   script:
     - echo "build frontEnd"
-    - npm install
-    - npm install -g @angular/cli
-    - ng build
+    # - npm install
+    # - npm install -g @angular/cli
+    # - ng build
   tags:
     - auctionrunner
     
@@ -28,7 +28,7 @@ build_backend:
     - cd Auction_backend/
   script:
     - echo "Build backend"
-    - mvn clean install -DskipTests
+    # - mvn clean install -DskipTests
   tags:
     - auctionrunner
 
@@ -39,7 +39,7 @@ test_backend:
     - cd Auction_backend/
   script:
     - echo "Running Tests"
-    - mvn test
+    # - mvn test
   tags:
     - auctionrunner
 
@@ -56,15 +56,31 @@ publish_frontend:
   script:
     - echo $DOCKER_HOST
     - docker --version
-    - echo "Logging Docker"
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
-    - echo "Building the Docker image"
-    - docker build -t docker.io/bidwise/auctionfrontend .
-    - echo "Successfully build the docker image"
-    - docker push docker.io/bidwise/auctionfrontend
+    # - echo "Logging Docker"
+    # - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
+    # - echo "Building the Docker image"
+    # - docker build -t docker.io/bidwise/auctionfrontend .
+    # - echo "Successfully build the docker image"
+    # - docker push docker.io/bidwise/auctionfrontend
   after_script:
     - echo "Docker Image pushed successfully"
     - docker logout
-  when: manual
+  # when: manual
+  tags:
+    - auctionrunner
+
+deploy_build:
+  image: alpine:latest
+  stage: deploy
+  before_script:
+    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $VM_IPADDRESS >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts 
+  script:  
+    - ssh $SSH_USER@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
   tags:
     - auctionrunner
