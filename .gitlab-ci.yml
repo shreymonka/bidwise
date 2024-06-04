@@ -19,7 +19,7 @@ build_frontend:
     # - npm install -g @angular/cli
     # - ng build
   tags:
-    - dalfcs_docker_kvm
+    - dalfcs_docker_autoscale
     
 build_backend:
   stage: build
@@ -30,7 +30,7 @@ build_backend:
     - echo "Build backend"
     # - mvn clean install -DskipTests
   tags:
-    - dalfcs_docker_kvm
+    - dalfcs_docker_autoscale
 
 test_backend:
   stage: test
@@ -41,7 +41,7 @@ test_backend:
     - echo "Running Tests"
     # - mvn test
   tags:
-    - dalfcs_docker_kvm
+    - dalfcs_docker_autoscale
 
 publish_frontend:
   stage: publish
@@ -67,7 +67,7 @@ publish_frontend:
     - docker logout
   # when: manual
   tags:
-    - dalfcs_docker_kvm
+    - dalfcs_docker_autoscale
 
 deploy_build:
   image: alpine:latest
@@ -84,4 +84,4 @@ deploy_build:
     - ssh $SSH_USER@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
     - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p4200:4200 bidwise/auctionfrontend"
   tags:
-    - dalfcs_docker_kvm
+    - dalfcs_docker_autoscale
