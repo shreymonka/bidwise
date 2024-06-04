@@ -25,6 +25,9 @@ build_backend:
   script:
     - echo "Build backend"
     - mvn clean install -DskipTests
+  artifacts:
+    paths:
+      - Auction_backend/target/auction-0.0.1-SNAPSHOT.jar
   tags:
     - dalfcs_docker_kvm
 
@@ -36,6 +39,31 @@ test_backend:
   script:
     - echo "Running Tests"
     - mvn test
+  tags:
+    - dalfcs_docker_kvm
+
+publish_backend:
+  stage: publish
+  image: docker:latest
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - docker:dind
+  before_script:
+    - cd Auction_backend/
+  script:
+    - echo $DOCKER_HOST
+    - docker --version
+    - echo "Logging Docker"
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
+    - echo "Building the Docker image for the Backend"
+    - docker build -t docker.io/bidwise/auctionbackend .
+    - echo "Successfully build the docker image for the backend"
+    - docker push docker.io/bidwise/auctionbackend
+  after_script:
+    - echo "Docker Image pushed successfully"
+    - docker logout
   tags:
     - dalfcs_docker_kvm
 
@@ -79,5 +107,6 @@ deploy_build:
   script:  
     - ssh $SSH_USER@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
     - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p4200:4200 bidwise/auctionfrontend"
+    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p8080:8080 bidwise/auctionbackend"
   tags:
     - dalfcs_docker_kvm
