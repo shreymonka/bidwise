@@ -82,6 +82,6 @@ deploy_build:
     - chmod 644 ~/.ssh/known_hosts 
   script:  
     - ssh $SSH_USER@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
-    - docker run -d -p4200:4200 bidwise/auctionfrontend
+    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p4200:4200 bidwise/auctionfrontend"
   tags:
     - dalfcs_docker_kvm
