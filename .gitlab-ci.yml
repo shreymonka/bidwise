@@ -19,7 +19,7 @@ build_frontend:
     - npm install -g @angular/cli
     - ng build
   tags:
-    - auctionrunner
+    - dalfcs_docker_kvm
     
 build_backend:
   stage: build
@@ -30,7 +30,7 @@ build_backend:
     - echo "Build backend"
     - mvn clean install -DskipTests
   tags:
-    - auctionrunner
+    - dalfcs_docker_kvm
 
 test_backend:
   stage: test
@@ -41,7 +41,7 @@ test_backend:
     - echo "Running Tests"
     - mvn test
   tags:
-    - auctionrunner
+    - dalfcs_docker_kvm
 
 publish_frontend:
   stage: publish
@@ -67,4 +67,4 @@ publish_frontend:
     - docker logout
   when: manual
   tags:
-    - auctionrunner
+    - dalfcs_docker_kvm
