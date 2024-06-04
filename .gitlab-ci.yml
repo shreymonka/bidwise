@@ -47,8 +47,8 @@ publish_frontend:
   stage: publish
   image: docker:latest
   variables:
-    DOCKER_HOST: "tcp://docker.cs.dal.ca:2375"
-    DOCKER_TLS_CERTDIR: "/"
+    DOCKER_HOST: tcp://docke:2375
+    DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
   before_script:
