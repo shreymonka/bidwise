@@ -19,7 +19,7 @@ build_frontend:
     - npm install -g @angular/cli
     - ng build
   tags:
-    - dalfcs_docker_kvm
+    - auctionrunner
     
 build_backend:
   stage: build
@@ -30,7 +30,7 @@ build_backend:
     - echo "Build backend"
     - mvn clean install -DskipTests
   tags:
-    - dalfcs_docker_kvm
+    - auctionrunner
 
 test_backend:
   stage: test
@@ -41,14 +41,14 @@ test_backend:
     - echo "Running Tests"
     - mvn test
   tags:
-    - dalfcs_docker_kvm
+    - auctionrunner
 
 publish_frontend:
   stage: publish
   image: docker:latest
-  variables:
-    DOCKER_HOST: "tcp://docker:2375"
-    DOCKER_TLS_CERTDIR: ""
+  # variables:
+  #   DOCKER_HOST: "tcp://docker:2375"
+  #   DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
   before_script:
@@ -67,4 +67,4 @@ publish_frontend:
     - docker logout
   when: manual
   tags:
-    - dalfcs_docker_kvm
+    - auctionrunner
