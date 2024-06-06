@@ -9,7 +9,7 @@ variables:
 
 cache:
   paths:
-    - .m2/repository
+    - $CI_PROJECT_DIR/Auction_backend/.m2/repository
 
 build_frontend:
   stage: build
@@ -71,6 +71,7 @@ publish_backend:
   after_script:
     - echo "Docker Image pushed successfully"
     - docker logout
+  when: manual
   tags:
     - dalfcs_docker_kvm
 
