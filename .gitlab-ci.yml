@@ -27,7 +27,7 @@ build_backend:
     - mvn clean install -DskipTests
   artifacts:
     paths:
-      - Auction_backend/target/auction-0.0.1-SNAPSHOT.jar
+      - Auction_backend/target/
   tags:
     - dalfcs_docker_kvm
 
@@ -106,7 +106,9 @@ deploy_build:
     - chmod 644 ~/.ssh/known_hosts 
   script:  
     - ssh $SSH_USER@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
-    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p4200:4200 bidwise/auctionfrontend"
-    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p8080:8080 bidwise/auctionbackend"
+    - ssh $SSH_USER@$VM_IPADDRESS "docker container rm -f auctionfrontend || true"
+    - ssh $SSH_USER@$VM_IPADDRESS "docker container rm -f auctionbackend || true"
+    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p4200:4200 --name auctionfrontend  bidwise/auctionfrontend"
+    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p8080:8080 --name auctionbackend bidwise/auctionbackend"
   tags:
     - dalfcs_docker_kvm
