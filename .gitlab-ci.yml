@@ -4,12 +4,12 @@ stages:
   - publish
   - deploy
 
-variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/Auction_backend/.m2/repository"
+# variables:
+#   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/Auction_backend/.m2/repository"
 
-cache:
-  paths:
-    - $CI_PROJECT_DIR/Auction_backend/.m2/repository
+# cache:
+#   paths:
+#     - $CI_PROJECT_DIR/Auction_backend/.m2/repository
 
 build_frontend:
   stage: build
