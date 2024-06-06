@@ -96,7 +96,7 @@ publish_frontend:
   after_script:
     - echo "Docker Image pushed successfully"
     - docker logout
-  # when: manual
+  when: manual
   tags:
     - dalfcs_docker_kvm
 
@@ -117,5 +117,6 @@ deploy_build:
     - ssh $SSH_USER@$VM_IPADDRESS "docker container rm -f auctionbackend || true"
     - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p4200:4200 --name auctionfrontend  bidwise/auctionfrontend"
     - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p8080:8080 --name auctionbackend bidwise/auctionbackend"
+  when: manual
   tags:
     - dalfcs_docker_kvm
