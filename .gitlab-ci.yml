@@ -9,7 +9,7 @@ variables:
 
 cache:
   paths:
-    - Auction_backend/.m2/repository
+    - .m2/repository
 
 build_frontend:
   stage: build
