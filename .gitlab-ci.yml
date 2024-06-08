@@ -65,11 +65,11 @@ publish_backend:
     - echo $DOCKER_HOST
     - docker --version
     - echo "Logging Docker"
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
+    - echo $DOCKER_PASSWORD |docker login -u $DOCKER_USERNAME --password-stdin
     - echo "Building the Docker image for the Backend"
-    - docker build -t docker.io/bidwise/auctionbackend .
+    - docker build -t docker.io/$DOCKER_USERNAME/auctionbackend .
     - echo "Successfully build the docker image for the backend"
-    - docker push docker.io/bidwise/auctionbackend
+    - docker push docker.io/$DOCKER_USERNAME/auctionbackend
   after_script:
     - echo "Docker Image pushed successfully"
     - docker logout
@@ -91,11 +91,11 @@ publish_frontend:
     - echo $DOCKER_HOST
     - docker --version
     - echo "Logging Docker"
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
+    - echo $DOCKER_PASSWORD |docker login -u $DOCKER_USERNAME --password-stdin
     - echo "Building the Docker image"
-    - docker build -t docker.io/bidwise/auctionfrontend .
+    - docker build -t docker.io/$DOCKER_USERNAME/auctionfrontend .
     - echo "Successfully build the docker image"
-    - docker push docker.io/bidwise/auctionfrontend
+    - docker push docker.io/$DOCKER_USERNAME/auctionfrontend
   after_script:
     - echo "Docker Image pushed successfully"
     - docker logout
@@ -118,8 +118,8 @@ deploy_build:
     - ssh $SSH_USER@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
     - ssh $SSH_USER@$VM_IPADDRESS "docker container rm -f auctionfrontend || true"
     - ssh $SSH_USER@$VM_IPADDRESS "docker container rm -f auctionbackend || true"
-    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p4200:4200 --name auctionfrontend  bidwise/auctionfrontend"
-    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p8080:8080 --name auctionbackend bidwise/auctionbackend"
+    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p4200:4200 --name auctionfrontend  $DOCKER_USERNAME/auctionfrontend"
+    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p8080:8080 --name auctionbackend $DOCKER_USERNAME/auctionbackend"
   when: manual
   tags:
     - dalfcs_docker_kvm
