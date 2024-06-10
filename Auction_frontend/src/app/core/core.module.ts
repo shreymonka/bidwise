@@ -5,17 +5,24 @@ import { SignupPageComponent } from './components/signup-page/signup-page.compon
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { SharedModule } from '../shared/shared.module';
 import { ServicesComponent } from './services/services.component';
+import { AboutUsComponent } from './components/about-us/about-us.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     LoginPageComponent, 
     SignupPageComponent,
     LandingPageComponent,
-    ServicesComponent],
-  exports : [],
+    ServicesComponent,
+    AboutUsComponent],
+  exports : [
+    LandingPageComponent,
+    AboutUsComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,
+    RouterModule,
   ]
 })
 export class CoreModule { }

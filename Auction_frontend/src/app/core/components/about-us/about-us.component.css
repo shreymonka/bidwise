@@ -10,10 +10,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('auction.jpeg');
+    background-image: url('aboutus_hero.png');
     background-size: cover;
     background-position: center;
-    filter: blur(8px);  /* Apply blur here */
+    
     z-index: 0;  /* Ensure it stays behind the text */
 }
 
@@ -48,4 +48,9 @@
     .container, .container-lg, .container-md, .container-sm, .container-xl {
         max-width: 1432px;
     }
+}
+h1 {
+    background-color: #edecec; /* Grey background color */
+    padding-bottom:  10px;
+    padding-top:  20px;
 }
