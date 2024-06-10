@@ -47,3 +47,8 @@
     background-color: #000000;
     border-color: #000000;
 }
+@media (min-width: 1200px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 1432px;
+    }
+}
