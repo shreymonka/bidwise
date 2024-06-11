@@ -1,7 +1,6 @@
 /* Upcoming Section */ 
 .upcoming-auctions {
     margin-bottom: 50px;
-    /* font-family: 'Minion Pro', serif; */
 }
   
 .auctions-list {
@@ -39,7 +38,6 @@
 /* Feature Section */
 .features {
     margin-bottom: 50px;
-    /* text-align: center; */
 }
   
 .feature-list {
@@ -53,7 +51,7 @@
     margin-bottom: 20px;
     display: flex;
     align-items: center;
-    text-align: left; /* Ensures text is aligned to the left */
+    text-align: left; 
 }
   
 .feature img {
@@ -81,33 +79,35 @@
 .tier {
   flex: 0 1 calc(33.333% - 20px);
   margin-bottom: 20px;
-  background-color: #f8f9fa; /* Card background color */
-  border: 1px solid #dee2e6; /* Card border color */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  padding: 20px;
-  transition: transform 0.3s; /* Smooth hover effect */
+  background-color: #ffffff; 
+  border: 1px solid #000000; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  padding: 0; 
+  transition: transform 0.3s; 
   text-align: center;
 }
 
 .tier:hover {
-  transform: translateY(-10px); /* Slightly lifts the card on hover */
+  transform: translateY(-10px); 
 }
 
 .tier h3 {
   font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #333;
-  background-color: #e0e0e0; /* Grey background for title */
-  padding: 10px;
-  border-radius: 5px;
+  margin: 0; 
+  color: #000000;
+  background-color: #e0e0e0; 
+  padding: 15px 10px; 
+  border-top-left-radius: 10px; 
+  border-top-right-radius: 10px; 
+  border-bottom: 1px solid #000000; 
 }
 
 .tier .price {
   font-size: 2rem;
   font-weight: bold;
-  color: #666565; /* Pricing color */
-  margin-bottom: 20px;
+  color: #000000; 
+  margin: 20px 0;
 }
 
 .tier ul {
@@ -120,26 +120,33 @@
 .tier ul li {
   margin-bottom: 10px;
   font-size: 1rem;
-  color: #555;
+  color: #000000;
 }
 
 .tier .btn {
-  background-color: #f9f9f9;
-  color: #666565;
-  padding: 10px 20px;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 8px 20px; 
   font-size: 1rem;
   border-radius: 7px;
-  border: 2px solid #000000; /* Add border on hover */
+  border: 2px solid #000000; 
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
+  margin-bottom: 20px; 
+  width: 270px; 
 }
 
-.tier .btn:hover{
+.tier .btn:hover {
   background-color: #000000;
-  color: #fcf8f8;
-
+  color: #ffffff;
 }
-  
+
+.tier .price-duration {
+  font-weight: 100; 
+  color: #000000;
+}
+
+
 /* style the headings with a golden underline */
 h2 {
   position: relative;
@@ -152,9 +159,9 @@ h2::after {
   display: block;
   width: 95%;
   height: 3px;
-  background-color: rgb(200, 173, 15); /* Set the color of the underline */
+  background-color: rgb(200, 173, 15); 
   position: absolute;
-  bottom: -5px; /* Adjust this value to control the distance between the text and the underline */
+  bottom: -5px; 
   left: 49%;
   transform: translateX(-50%);
 }

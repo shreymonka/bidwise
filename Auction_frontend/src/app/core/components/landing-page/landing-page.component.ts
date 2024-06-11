@@ -31,11 +31,10 @@ export class LandingPageComponent {
   ngOnInit(): void { }
 
   bidNow(auction: any): void {
-    // Implement the bid now functionality here
     console.log(`Bid now on ${auction.title}`);
   }
   choosePlan(): void {
-    this.router.navigate(['/login']); // Navigate to login page
+    this.router.navigate(['/login']);
   }
 
 }
