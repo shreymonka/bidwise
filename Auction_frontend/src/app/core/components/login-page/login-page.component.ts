@@ -12,4 +12,8 @@ export class LoginPageComponent {
   SignupRedirect(){
     this.router.navigate(['/signup']);
   }
+
+  postLoginRedirect(){
+    this.router.navigate(['/postLogin']);
+  }
 }

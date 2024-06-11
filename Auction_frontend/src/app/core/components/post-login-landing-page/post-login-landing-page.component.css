@@ -1,0 +1,207 @@
+/* Upcoming Section */ 
+.upcoming-auctions {
+    margin-bottom: 50px;
+
+}
+
+.suggested-for-you{
+    margin-bottom: 50px;
+}
+  
+.auctions-categories{
+    margin-bottom: 50px;
+}
+.auctions-list {
+    display: flex;
+    justify-content: space-around;
+}
+  
+.auction-item {
+    text-align: center;
+}
+  
+.auction-item img {
+    max-width: 100%;
+}
+  
+/* How it works Section */
+.how-it-works {
+    
+    margin-bottom: 50px;
+}
+
+.howitworks{
+    font-size: 1.75rem;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-around;
+}
+  
+.step {
+    text-align: center;
+}
+  
+/* Feature Section */
+.features {
+    margin-bottom: 50px;
+    /* text-align: center; */
+}
+  
+.feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+  
+.feature {
+    flex: 0 1 calc(50.333% - 10px);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    text-align: left; /* Ensures text is aligned to the left */
+}
+  
+.feature img {
+    max-width: 50px;
+    margin-right: 10px;
+    margin-top: -46px;
+}
+  
+.feature-text {
+    display: flex;
+    flex-direction: column;
+}
+    
+/* Pricing Section */
+.pricing {
+  margin-bottom: 50px;
+}
+
+.pricing-tiers {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.tier {
+  flex: 0 1 calc(33.333% - 20px);
+  margin-bottom: 20px;
+  background-color: #f8f9fa; /* Card background color */
+  border: 1px solid #dee2e6; /* Card border color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 20px;
+  transition: transform 0.3s; /* Smooth hover effect */
+  text-align: center;
+}
+
+.tier:hover {
+  transform: translateY(-10px); /* Slightly lifts the card on hover */
+}
+
+.tier h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+  background-color: #e0e0e0; /* Grey background for title */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.tier .price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #666565; /* Pricing color */
+  margin-bottom: 20px;
+}
+
+.tier ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.tier ul li {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.tier .btn {
+  background-color: #f9f9f9;
+  color: #666565;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 7px;
+  border: 2px solid #000000; /* Add border on hover */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tier .btn:hover{
+  background-color: #000000;
+  color: #fcf8f8;
+
+}
+  
+/* style the headings with a golden underline */
+h2 {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+h2::after {
+  content: '';
+  display: block;
+  width: 95%;
+  height: 3px;
+  background-color: rgb(200, 173, 15); /* Set the color of the underline */
+  position: absolute;
+  bottom: -5px; /* Adjust this value to control the distance between the text and the underline */
+  left: 49%;
+  transform: translateX(-50%);
+}
+@media (min-width: 1200px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+      max-width: 1432px;
+  }
+}
+
+.card{
+    border: 1px solid rgb(255 255 255 / 13%);
+}
+
+.card-img-top {
+    border-top-left-radius: calc(.25rem - 1px);
+    border-top-right-radius: calc(.25rem - 1px);
+    border-bottom-left-radius: calc(.25rem - 1px);
+    border-bottom-right-radius: calc(.25rem - 1px);
+}
+
+.btn{
+    border: 2px solid;
+}
+
+.btn-outline-dark {
+    border-color: #000;
+    color: #000;
+}
+
+.btn-outline-dark:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-dark {
+    background-color: #000;
+    border-color: #000;
+}
+
+.btn-dark:hover {
+    background-color: #000000;
+    border-color: #000000;
+}

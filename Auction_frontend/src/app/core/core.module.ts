@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ServicesComponent } from './services/services.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { RouterModule } from '@angular/router';
+import { PostLoginLandingPageComponent } from './components/post-login-landing-page/post-login-landing-page.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { RouterModule } from '@angular/router';
     SignupPageComponent,
     LandingPageComponent,
     ServicesComponent,
-    AboutUsComponent],
+    AboutUsComponent,
+    PostLoginLandingPageComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent

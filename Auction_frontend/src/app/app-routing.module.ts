@@ -4,6 +4,7 @@ import { LandingPageComponent } from './core/components/landing-page/landing-pag
 import { LoginPageComponent } from './core/components/login-page/login-page.component';
 import { SignupPageComponent } from './core/components/signup-page/signup-page.component';
 import { AboutUsComponent } from './core/components/about-us/about-us.component'; 
+import { PostLoginLandingPageComponent } from './core/components/post-login-landing-page/post-login-landing-page.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path:'login',component:LoginPageComponent},
   {path:'signup',component:SignupPageComponent},
   {path: 'about-us', component: AboutUsComponent},
+  {path: 'postLogin', component: PostLoginLandingPageComponent},
 
 
 
