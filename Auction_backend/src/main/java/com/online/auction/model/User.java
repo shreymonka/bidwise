@@ -1,4 +1,96 @@
 package com.online.auction.model;
 
-public class User {
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "user")
+public class User implements UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int userId;
+
+    private String firstName;
+    private String lastName;
+    private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "cityId")
+    private City city;
+
+    private String timeZone;
+
+    private String password;
+
+    private boolean isPremium;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.role.getAuthorities();
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "(UserId:" + this.userId + ","
+                        + "firstName:" + this.firstName + ","
+                        + "lastName:" + this.lastName + ","
+                        + "email:" + this.email + ","
+                        + "city:" + this.city + ","
+                        + "timeZone:" + this.timeZone + ","
+                        + "Role:" + this.role + ","
+                        + "isPremium:" + this.isPremium + ","
+                        + ")";
+    }
 }
