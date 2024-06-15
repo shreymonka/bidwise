@@ -39,4 +39,6 @@ public class TestConstants {
     public static final String ROLE = "role";
 
     public static final String ADMIN = "admin";
+
+    public static final String CITY_HALIFAX = "Halifax";
 }

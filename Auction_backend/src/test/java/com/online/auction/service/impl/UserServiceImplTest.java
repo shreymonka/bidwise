@@ -5,9 +5,11 @@ import com.online.auction.dto.AuthenticationRequestDTO;
 import com.online.auction.dto.AuthenticationResponseDTO;
 import com.online.auction.dto.UserDTO;
 import com.online.auction.exception.ServiceException;
+import com.online.auction.model.City;
 import com.online.auction.model.Token;
 import com.online.auction.model.TokenType;
 import com.online.auction.model.User;
+import com.online.auction.repository.CityRepository;
 import com.online.auction.repository.TokenRepository;
 import com.online.auction.repository.UserRepository;
 import com.online.auction.service.JwtService;
@@ -32,6 +34,7 @@ import java.util.Optional;
 
 import static com.online.auction.constant.TestConstants.BAD_CREDENTIALS;
 import static com.online.auction.constant.TestConstants.BEARER;
+import static com.online.auction.constant.TestConstants.CITY_HALIFAX;
 import static com.online.auction.constant.TestConstants.INTEGER_ONE;
 import static com.online.auction.constant.TestConstants.JWT_TOKEN;
 import static com.online.auction.constant.TestConstants.NEW_ACCESS_TOKEN;
@@ -55,6 +58,9 @@ class UserServiceImplTest {
 
     @Mock
     private TokenRepository tokenRepository;
+
+    @Mock
+    private CityRepository cityRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -90,11 +96,17 @@ class UserServiceImplTest {
         user = new User();
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
+        City city = getCity();
+        userDto.setCity(CITY_HALIFAX);
+        user.setCity(city);
     }
 
     @Test
+    @SneakyThrows
     void registerSuccessfulTest() {
+        City city = getCity();
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(cityRepository.findByCityName(anyString())).thenReturn(Optional.of(city));
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(jwtService.generateToken(any(User.class))).thenReturn(jwtToken);
         when(jwtService.generateRefreshToken(any(User.class))).thenReturn(refreshToken);
@@ -108,11 +120,17 @@ class UserServiceImplTest {
 
     @Test
     void registerAlreadyExistingUserTest() {
+        City city = getCity();
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
-
+        when(cityRepository.findByCityName(anyString())).thenReturn(Optional.of(city));
         assertThrows(UsernameNotFoundException.class, () -> userService.register(userDto));
         verify(userRepository).findByEmail(TEST_EMAIL);
         verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void registerUserFailureWhenCityIsNotPresent() {
+        assertThrows(ServiceException.class, () -> userService.register(userDto));
     }
 
     @SneakyThrows
@@ -199,5 +217,12 @@ class UserServiceImplTest {
 
         AuthenticationResponseDTO result = userService.refreshToken(request, response);
         assertNull(result);
+    }
+
+    private City getCity() {
+        City city = new City();
+        city.setCityId(INTEGER_ONE);
+        city.setCityName(CITY_HALIFAX);
+        return city;
     }
 }
