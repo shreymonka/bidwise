@@ -20,6 +20,8 @@ public class TestConstants {
 
     public static final String BAD_CREDENTIALS = "Bad credentials";
 
+    public static final String USER_REGISTRATION_SUCCESS_MSG = "User Registered Successfully";
+
     public static final String SECRET_KEY = "secretKey";
 
     public static final String SECRET_KEY_VALUE = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
