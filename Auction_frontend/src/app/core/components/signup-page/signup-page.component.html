@@ -12,7 +12,7 @@
     <app-logo-header></app-logo-header>
     <!-- Sign Up Form -->
     <div class="container d-flex justify-content-center align-items-center">
-        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
+        <form [formGroup]="signupForm" class="signup-form">
             <h2 class="text-center mb-4">Create an Account</h2>
             <div class="form-group">
                 <label for="email">E-mail</label>
@@ -83,7 +83,7 @@
                     You must agree to the terms.
                 </div>
             </div>
-            <button type="submit" [disabled]="signupForm.invalid" (click)="postLoginRedirect()" class="btn btn-primary btn-block">Sign Up</button>
+            <button type="submit" [disabled]="signupForm.invalid" (click)="postLoginRedirect(signupForm)" class="btn btn-primary btn-block">Sign Up</button>
             <p class="text-center mt-3" style="margin-bottom: 16px;">Already Have An Account? <a (click)="LoginRedirect()" class="text-primary">Log In</a></p>
         </form>
     </div>  

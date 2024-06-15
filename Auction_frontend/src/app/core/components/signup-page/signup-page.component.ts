@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { SignUpServiceService } from '../../services/signup-service/sign-up-service.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-signup-page',
@@ -8,13 +11,18 @@ import { Router } from '@angular/router';
   styleUrl: './signup-page.component.css'
 })
 export class SignupPageComponent implements OnInit {
- 
+
   signupForm: FormGroup;
   countries: string[] = ['Canada', 'United States', 'United Kingdom', 'Australia'];
   cities: string[] = ['Halifax', 'Toronto', 'Vancouver', 'New York'];  // This could be dynamic based on selected country
   passwordMismatch: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router,
+    public signUpService: SignUpServiceService,
+    public route:ActivatedRoute,
+  ) {
     // Initialize the form with empty values and validation rules
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -28,11 +36,35 @@ export class SignupPageComponent implements OnInit {
     });
   }
 
-  LoginRedirect(){
+  LoginRedirect() {
     this.router.navigate(['/login']);
   }
 
-  postLoginRedirect(){
+  postLoginRedirect(signupForm: any) {
+    if (this.signupForm.invalid || this.passwordMismatch) {
+      return;
+    }
+    const formData = this.signupForm.value;
+    console.log('Form Data:', formData);
+
+    Swal.fire({
+      title: 'Are you sure want to add?',
+      text: 'Your blog will be added!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes!',
+      cancelButtonText: 'No '
+    }).then((result) => {
+      if (result.value) {
+      this.signUpService.signUpUser(formData).subscribe((res) => {
+      });
+        Swal.fire(
+          'Added!',
+          'Your blog has been added.',
+          'success'
+        )
+      }
+    })
     this.router.navigate(['/postLogin']);
   }
 
@@ -51,6 +83,7 @@ export class SignupPageComponent implements OnInit {
 
   onSubmit(): void {
     // Check form validity before submission
+    console.log(this.signupForm)
     if (this.signupForm.invalid || this.passwordMismatch) {
       return;
     }
