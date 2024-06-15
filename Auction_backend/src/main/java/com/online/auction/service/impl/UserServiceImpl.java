@@ -15,7 +15,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Optional;
 
+import static com.online.auction.constant.AuctionConstants.INVALID_CREDENTIALS_MSG;
 import static com.online.auction.constant.AuctionConstants.USER_ALREADY_PRESENT_MSG;
 
 @Service
@@ -64,8 +68,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequest) throws ServiceException {
-        return null;
+    public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequestDTO) throws ServiceException {
+        log.info("User authenticate call started in the UserServiceImpl");
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationRequestDTO.getEmail(),
+                            authenticationRequestDTO.getPassword()
+                    )
+            );
+        } catch (BadCredentialsException e) {
+            log.error("Invalid Credentials Exception: {}", e.getMessage());
+            throw new ServiceException(HttpStatus.FORBIDDEN, INVALID_CREDENTIALS_MSG);
+        }
+
+        var user = userRepository.findByEmail(authenticationRequestDTO.getEmail())
+                .orElseThrow();
+        log.info("Generating the Access token for the user");
+        var jwtToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
+        log.info("Successfully completed the access token generation for the user:{}", user);
+        return AuthenticationResponseDTO.builder()
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
     @Override
@@ -74,6 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void saveUserToken(User user, String jwtToken) {
+        log.info("Saving the new Access token generated for the user : {}", user);
         var token = Token.builder()
                 .user(user)
                 .token(jwtToken)
@@ -82,5 +111,17 @@ public class UserServiceImpl implements UserService {
                 .revoked(false)
                 .build();
         tokenRepository.save(token);
+    }
+
+    private void revokeAllUserTokens(User user) {
+        log.info("Revoking all the older access token for the user :{}", user);
+        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getUserId());
+        if (validUserTokens.isEmpty())
+            return;
+        validUserTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
     }
 }
