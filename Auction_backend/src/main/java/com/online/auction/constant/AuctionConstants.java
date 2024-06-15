@@ -23,4 +23,8 @@ public class AuctionConstants {
     public static final String AUTHORIZATION = "Authorization";
 
     public static final String INVALID_CREDENTIALS_MSG = "Invalid Credentials";
+
+    public static final String API_VERSION_V1 = "/api/v1";
+
+    public static final String USER = "/user";
 }
