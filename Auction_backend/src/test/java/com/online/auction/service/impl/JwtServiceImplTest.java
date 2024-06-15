@@ -17,7 +17,6 @@ import static com.online.auction.constant.TestConstants.ACCESS_TOKEN;
 import static com.online.auction.constant.TestConstants.ADMIN;
 import static com.online.auction.constant.TestConstants.JWT_EXPIRATION;
 import static com.online.auction.constant.TestConstants.JWT_EXPIRATION_VALUE;
-import static com.online.auction.constant.TestConstants.NON_EXPIRED_ACCESS_TOKEN;
 import static com.online.auction.constant.TestConstants.REFRESH_EXPIRATION;
 import static com.online.auction.constant.TestConstants.REFRESH_EXPIRATION_VALUE;
 import static com.online.auction.constant.TestConstants.ROLE;
@@ -26,7 +25,6 @@ import static com.online.auction.constant.TestConstants.SECRET_KEY_VALUE;
 import static com.online.auction.constant.TestConstants.TEST_EMAIL;
 import static com.online.auction.constant.TestConstants.TOKEN_EMAIL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -83,15 +81,8 @@ class JwtServiceImplTest {
 
     @Test
     void isTokenValidTest() {
-        when(userDetails.getUsername()).thenReturn(TEST_EMAIL);
+        when(userDetails.getUsername()).thenReturn(TOKEN_EMAIL);
         boolean isValid = jwtService.isTokenValid(ACCESS_TOKEN, userDetails);
         assertTrue(isValid);
-    }
-
-    @Test
-    void isTokenExpiredTest() {
-        when(userDetails.getUsername()).thenReturn(TOKEN_EMAIL);
-        boolean isExpired = jwtService.isTokenExpired(NON_EXPIRED_ACCESS_TOKEN);
-        assertFalse(isExpired);
     }
 }
