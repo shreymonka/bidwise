@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface UserService {
-    AuthenticationResponseDTO register(UserDTO userDto) throws ServiceException;
+    String register(UserDTO userDto) throws ServiceException;
 
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequest) throws ServiceException;
 

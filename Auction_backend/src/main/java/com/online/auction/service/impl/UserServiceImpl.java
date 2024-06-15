@@ -29,6 +29,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Optional;
 
+import static com.online.auction.constant.AuctionConstants.BEARER;
+import static com.online.auction.constant.AuctionConstants.INTEGER_SEVEN;
 import static com.online.auction.constant.AuctionConstants.INVALID_CREDENTIALS_MSG;
 import static com.online.auction.constant.AuctionConstants.USER_ALREADY_PRESENT_MSG;
 
@@ -43,8 +45,15 @@ public class UserServiceImpl implements UserService {
     private final TokenRepository tokenRepository;
     private final AuthenticationManager authenticationManager;
 
+    /**
+     * The registration API for the User to register first time with the application
+     *
+     * @param userDto the user details for the registration
+     * @return the successful message if the user registration is successful
+     * @throws ServiceException when city as input is not present
+     */
     @Override
-    public AuthenticationResponseDTO register(UserDTO userDto) throws ServiceException {
+    public String register(UserDTO userDto) throws ServiceException {
         log.info("User register call started in the UserServiceImpl");
 
         Optional<City> cityDb = cityRepository.findByCityName(userDto.getCity());
@@ -73,12 +82,17 @@ public class UserServiceImpl implements UserService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(userDb, jwtToken);
-        return AuthenticationResponseDTO.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+        return "User Registered Successfully";
     }
 
+    /**
+     * The authentication API for the user to get the access and refresh token
+     * using the email and password
+     *
+     * @param authenticationRequestDTO UserEmail  and Password
+     * @return the JWT access token and refresh token generated
+     * @throws ServiceException when the credentials entered as invalid
+     */
     @Override
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequestDTO) throws ServiceException {
         log.info("User authenticate call started in the UserServiceImpl");
@@ -108,18 +122,26 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    /**
+     * The Refresh token API to get the new access token for the already logged-in user
+     *
+     * @param request             the HTTPServletRequest
+     * @param httpServletResponse the HTTPServletResponse
+     * @return the new access token generated from the refresh token
+     * @throws IOException when IO error while generating the token
+     */
     @Override
     public AuthenticationResponseDTO refreshToken(HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException {
         log.info("Refresh token generation call started in the UserServiceImpl");
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith(BEARER)) {
             log.error("The Authentication header is NULL in the refresh token generation");
             return null;
         }
 
-        refreshToken = authHeader.substring(7);
+        refreshToken = authHeader.substring(INTEGER_SEVEN);
         userEmail = jwtService.extractUsername(refreshToken);
 
         if (userEmail != null) {
@@ -141,6 +163,12 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /**
+     * This method saves the token in the token repository
+     *
+     * @param user     the user object
+     * @param jwtToken the JWT access token to be stored
+     */
     private void saveUserToken(User user, String jwtToken) {
         log.info("Saving the new Access token generated for the user : {}", user);
         var token = Token.builder()
@@ -153,6 +181,11 @@ public class UserServiceImpl implements UserService {
         tokenRepository.save(token);
     }
 
+    /**
+     * This method revokes all the older token present in the database
+     *
+     * @param user the user object
+     */
     private void revokeAllUserTokens(User user) {
         log.info("Revoking all the older access token for the user :{}", user);
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getUserId());

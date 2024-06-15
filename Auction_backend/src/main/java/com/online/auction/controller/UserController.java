@@ -32,9 +32,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<SuccessResponse<AuthenticationResponseDTO>> register(@RequestBody UserDTO userDto) throws ServiceException {
-        AuthenticationResponseDTO authenticationResponse = userService.register(userDto);
-        SuccessResponse<AuthenticationResponseDTO> response = new SuccessResponse<>(200, HttpStatus.OK, authenticationResponse);
+    public ResponseEntity<SuccessResponse<String>> register(@RequestBody UserDTO userDto) throws ServiceException {
+        String authenticationResponse = userService.register(userDto);
+        SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, authenticationResponse);
         return ResponseEntity.ok(response);
     }
 
