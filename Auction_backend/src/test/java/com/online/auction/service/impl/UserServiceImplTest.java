@@ -1,6 +1,5 @@
 package com.online.auction.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.auction.dto.AuthenticationRequestDTO;
 import com.online.auction.dto.AuthenticationResponseDTO;
 import com.online.auction.dto.UserDTO;
@@ -41,6 +40,7 @@ import static com.online.auction.constant.TestConstants.NEW_ACCESS_TOKEN;
 import static com.online.auction.constant.TestConstants.PASSWORD;
 import static com.online.auction.constant.TestConstants.REFRESH_TOKEN;
 import static com.online.auction.constant.TestConstants.TEST_EMAIL;
+import static com.online.auction.constant.TestConstants.USER_REGISTRATION_SUCCESS_MSG;
 import static com.online.auction.constant.TestConstants.VALID_REFRESH_TOKEN;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -80,8 +80,6 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
     private UserDTO userDto;
     private User user;
     private String jwtToken = JWT_TOKEN;
@@ -111,11 +109,10 @@ class UserServiceImplTest {
         when(jwtService.generateToken(any(User.class))).thenReturn(jwtToken);
         when(jwtService.generateRefreshToken(any(User.class))).thenReturn(refreshToken);
 
-        AuthenticationResponseDTO response = userService.register(userDto);
+        String response = userService.register(userDto);
 
         assertNotNull(response);
-        assertEquals(jwtToken, response.getAccessToken());
-        assertEquals(refreshToken, response.getRefreshToken());
+        assertEquals(response, USER_REGISTRATION_SUCCESS_MSG);
     }
 
     @Test
@@ -159,9 +156,7 @@ class UserServiceImplTest {
         authenticationRequest.setPassword(PASSWORD);
         doThrow(new BadCredentialsException(BAD_CREDENTIALS)).when(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
 
-        ServiceException exception = assertThrows(ServiceException.class, () -> {
-            userService.authenticate(authenticationRequest);
-        });
+        ServiceException exception = assertThrows(ServiceException.class, () -> userService.authenticate(authenticationRequest));
     }
 
     @SneakyThrows
