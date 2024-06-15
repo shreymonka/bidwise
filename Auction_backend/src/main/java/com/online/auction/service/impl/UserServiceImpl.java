@@ -4,9 +4,11 @@ import com.online.auction.dto.AuthenticationRequestDTO;
 import com.online.auction.dto.AuthenticationResponseDTO;
 import com.online.auction.dto.UserDTO;
 import com.online.auction.exception.ServiceException;
+import com.online.auction.model.City;
 import com.online.auction.model.Token;
 import com.online.auction.model.TokenType;
 import com.online.auction.model.User;
+import com.online.auction.repository.CityRepository;
 import com.online.auction.repository.TokenRepository;
 import com.online.auction.repository.UserRepository;
 import com.online.auction.service.JwtService;
@@ -35,20 +37,29 @@ import static com.online.auction.constant.AuctionConstants.USER_ALREADY_PRESENT_
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final CityRepository cityRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthenticationResponseDTO register(UserDTO userDto) {
+    public AuthenticationResponseDTO register(UserDTO userDto) throws ServiceException {
         log.info("User register call started in the UserServiceImpl");
+
+        Optional<City> cityDb = cityRepository.findByCityName(userDto.getCity());
+        if (cityDb.isEmpty()) {
+            throw new ServiceException(HttpStatus.BAD_REQUEST, "City requested is not present");
+        }
         var user = com.online.auction.model.User.builder()
                 .firstName(userDto.getFirstname())
                 .lastName(userDto.getLastname())
                 .email(userDto.getEmail())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .role(userDto.getRole())
+                .city(cityDb.get())
+                .timeZone(userDto.getTimezone())
+                .isPremium(userDto.isPremium())
                 .build();
 
         log.info("Checking if the user is present in the database");
