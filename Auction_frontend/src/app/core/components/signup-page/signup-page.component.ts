@@ -48,26 +48,19 @@ export class SignupPageComponent implements OnInit {
     console.log('Form Data:', formData);
 
     Swal.fire({
-      title: 'Are you sure want to add?',
-      text: 'Your blog will be added!',
-      icon: 'warning',
+      title: 'Congratulations!',
+      text: 'You have sucessfully signed up',
+      icon: 'success',
       showCancelButton: true,
-      confirmButtonText: 'Yes!',
-      cancelButtonText: 'No '
+      confirmButtonText: 'Ok',
     }).then((result) => {
       if (result.value) {
       this.signUpService.signUpUser(formData).subscribe((res) => {
       });
-        Swal.fire(
-          'Added!',
-          'Your blog has been added.',
-          'success'
-        )
       }
     })
     this.router.navigate(['/postLogin']);
   }
-
   ngOnInit(): void {
     // Listen for changes in password and confirm password fields to check for mismatch
     this.signupForm.get('confirmPassword')?.valueChanges.subscribe(() => {

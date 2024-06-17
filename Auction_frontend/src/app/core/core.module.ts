@@ -8,6 +8,7 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { RouterModule } from '@angular/router';
 import { PostLoginLandingPageComponent } from './components/post-login-landing-page/post-login-landing-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ]
 })
 export class CoreModule { }

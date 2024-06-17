@@ -13,12 +13,14 @@ import { Router } from '@angular/router';
 })
 
 export class SignUpServiceService {
-  endpoint: string = 'http://localhost:8080';
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
+  endpoint: string = 'http://172.17.3.242:8080/api/v1/user/register';
+  // headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient, public router: Router) { }
 
   signUpUser(userDetails:any): Observable<any>{
-    let api = `${this.endpoint}/signUpUser`;
+    let api = `${this.endpoint}`;
+    console.log("Test payload"+api);
+    
     return this.http.post(api,userDetails).pipe(catchError(this.handleError));
   }
   handleError(error: HttpErrorResponse) {
