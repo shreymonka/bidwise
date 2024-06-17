@@ -5,7 +5,9 @@ import { LoginPageComponent } from './core/components/login-page/login-page.comp
 import { SignupPageComponent } from './core/components/signup-page/signup-page.component';
 import { AboutUsComponent } from './core/components/about-us/about-us.component'; 
 import { PostLoginLandingPageComponent } from './core/components/post-login-landing-page/post-login-landing-page.component';
-
+import { LoginServiceService } from './core/services/login-service/login-service.service';
+import { tokenInterceptorInterceptor } from './core/services/interceptor/token-interceptor.interceptor';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 const routes: Routes = [
   // {
@@ -26,6 +28,14 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers:[
+    LoginServiceService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: tokenInterceptorInterceptor,
+      multi: true
+    }
+  ]
 })
 export class AppRoutingModule { }

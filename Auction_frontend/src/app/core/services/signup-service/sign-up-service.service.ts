@@ -20,7 +20,6 @@ export class SignUpServiceService {
   signUpUser(userDetails:any): Observable<any>{
     let api = `${this.endpoint}`;
     console.log("Test payload"+api);
-    
     return this.http.post(api,userDetails).pipe(catchError(this.handleError));
   }
   handleError(error: HttpErrorResponse) {
