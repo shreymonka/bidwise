@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 
 export class SignUpServiceService {
   endpoint: string = 'http://172.17.3.242:8080/api/v1/user/register';
+  locationEndpoint : string = 'http://172.17.3.242:8080/api/v1/location/country';
+  cityEndpoint : String = 'http://172.17.3.242:8080/api/v1/location/cities/';
   // headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient, public router: Router) { }
 
@@ -22,6 +24,16 @@ export class SignUpServiceService {
     console.log("Test payload"+api);
     return this.http.post(api,userDetails).pipe(catchError(this.handleError));
   }
+
+  fetchAllCountries(): Observable<any>{
+    let api = `${this.locationEndpoint}`;
+    return this.http.get(api).pipe(catchError(this.handleError))
+  }
+
+  fetchAllCities(countryId: String){
+    return this.http.get<any>(`${this.cityEndpoint}`+countryId).pipe(catchError(this.handleError))
+  }
+
   handleError(error: HttpErrorResponse) {
     let msg = '';
     if (error.error instanceof ErrorEvent) {

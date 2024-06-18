@@ -14,8 +14,23 @@ export class SignupPageComponent implements OnInit {
 
   signupForm: FormGroup;
   countries: string[] = ['Canada', 'United States', 'United Kingdom', 'Australia'];
-  cities: string[] = ['Halifax', 'Toronto', 'Vancouver', 'New York'];  // This could be dynamic based on selected country
-  passwordMismatch: boolean = false;
+  cities: string[] = ['Halifax', 'Toronto', 'Vancouver', 'New York'];
+  allTimeZones: string[] = [
+    'ACDT', 'ACST', 'ACT', 'ACWST', 'ADT', 'AEDT', 'AEST', 'AET', 'AFT', 'AKDT', 'AKST', 'ALMT', 'AMST', 'AMT',
+    'ANAT', 'AQTT', 'ART', 'AST', 'AWST', 'AZOST', 'AZOT', 'AZT', 'BNT', 'BIOT', 'BIT', 'BOT', 'BRST', 'BRT',
+    'BST', 'BTT', 'CAT', 'CCT', 'CDT', 'CEST', 'CET', 'CHADT', 'CHAST', 'CHOT', 'CHOST', 'CHST', 'CHUT', 'CIST',
+    'CKT', 'CLST', 'CLT', 'COST', 'COT', 'CST', 'CT', 'CVT', 'CWST', 'CXT', 'DAVT', 'DDUT', 'DFT', 'EASST',
+    'EAST', 'EAT', 'ECT', 'EDT', 'EEST', 'EET', 'EGST', 'EGT', 'EST', 'ET', 'FET', 'FJT', 'FKST', 'FKT', 'FNT',
+    'GALT', 'GAMT', 'GET', 'GFT', 'GILT', 'GIT', 'GMT', 'GST', 'GYT', 'HDT', 'HAEC', 'HST', 'HKT', 'HMT', 'HOVST',
+    'HOVT', 'ICT', 'IDLW', 'IDT', 'IOT', 'IRDT', 'IRKT', 'IRST', 'IST', 'JST', 'KALT', 'KGT', 'KOST', 'KRAT', 'KST',
+    'LHST', 'LINT', 'MAGT', 'MART', 'MAWT', 'MDT', 'MET', 'MEST', 'MHT', 'MIST', 'MIT', 'MMT', 'MSK', 'MST', 'MT',
+    'MUT', 'MVT', 'MYT', 'NCT', 'NDT', 'NFT', 'NOVT', 'NPT', 'NST', 'NT', 'NUT', 'NZDT', 'NZST', 'OMST', 'ORAT',
+    'PDT', 'PET', 'PETT', 'PGT', 'PHOT', 'PHT', 'PHST', 'PKT', 'PMDT', 'PMST', 'PONT', 'PST', 'PT', 'PWT', 'PYST',
+    'PYT', 'RET', 'ROTT', 'SAKT', 'SAMT', 'SAST', 'SBT', 'SCT', 'SDT', 'SGT', 'SLST', 'SRET', 'SRT', 'SST', 'SYOT',
+    'TAHT', 'THA', 'TFT', 'TJT', 'TKT', 'TLT', 'TMT', 'TRT', 'TOT', 'TST', 'TVT', 'ULAST', 'ULAT', 'UTC', 'UYST',
+    'UYT', 'UZT', 'VET', 'VLAT', 'VOLT', 'VOST', 'VUT', 'WAKT', 'WAST', 'WAT', 'WEST', 'WET', 'WIB', 'WIT', 'WITA',
+    'WGST', 'WGT', 'WST', 'YAKT', 'YEKT'
+  ];  passwordMismatch: boolean = false;
 
   constructor(
     private fb: FormBuilder, 
@@ -26,13 +41,16 @@ export class SignupPageComponent implements OnInit {
     // Initialize the form with empty values and validation rules
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstname  : ['', Validators.required],
+      lastname: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
       country: ['', Validators.required],
       city: ['', Validators.required],
-      terms: [false, Validators.requiredTrue]
+      terms: [false, Validators.requiredTrue],
+      timezone:'IST',
+      isPremium:false,
+      role:"USER"
     });
   }
 
@@ -40,27 +58,55 @@ export class SignupPageComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  postLoginRedirect(signupForm: any) {
+  postLoginRedirect() {
     if (this.signupForm.invalid || this.passwordMismatch) {
       return;
     }
-    const formData = this.signupForm.value;
-    console.log('Form Data:', formData);
+    const { firstname, lastname, email, password, role, city, timezone, isPremium } = this.signupForm.value;
+    const payload = { firstname, lastname, email, password, role, city, timezone, isPremium };  
 
-    Swal.fire({
-      title: 'Congratulations!',
-      text: 'You have sucessfully signed up',
-      icon: 'success',
-      showCancelButton: true,
-      confirmButtonText: 'Ok',
-    }).then((result) => {
-      if (result.value) {
-      this.signUpService.signUpUser(formData).subscribe((res) => {
-      });
+    const observer = {
+      next: (res: any) => {
+        console.log(res);
+        if (res?.httpCode === 200) {
+          Swal.fire({
+            title: 'Signup Successful',
+            text: 'You have been registered successfully!',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          }).then(() => {
+            this.router.navigate(['/postLogin']); 
+          });
+        } else {
+          let errorMessage = res?.errorMessage || 'An unexpected error occurred. Please try again later.';
+          Swal.fire({
+            title: 'Signup Failed',
+            text: errorMessage,
+            icon: 'error',
+            confirmButtonText: 'Retry'
+          });
+        }
+      },
+      error: (error: any) => {
+        console.error('Signup error:', error);
+        let errorMessage = error?.error?.errorMessage || 'An unexpected error occurred. Please try again later.';
+        Swal.fire({
+          title: 'Signup Failed',
+          text: errorMessage,
+          icon: 'error',
+          confirmButtonText: 'Retry'
+        });
+      },
+      complete: () => {
+        console.log('Signup process completed.');
       }
-    })
-    this.router.navigate(['/postLogin']);
+    };
+      this.signUpService.signUpUser(payload).subscribe(observer);
   }
+  
+  
+  
+
   ngOnInit(): void {
     // Listen for changes in password and confirm password fields to check for mismatch
     this.signupForm.get('confirmPassword')?.valueChanges.subscribe(() => {

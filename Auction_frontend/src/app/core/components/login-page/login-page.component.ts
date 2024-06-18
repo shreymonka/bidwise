@@ -22,9 +22,7 @@ export class LoginPageComponent {
     this.loginService.login(loginData).subscribe(
       (response: any) => {
         if (response.token) {
-          // Store token
           this.loginService.storeToken(response.token);
-          // Navigate to post login page
           this.router.navigate(['/postLogin']);
         }
       },
