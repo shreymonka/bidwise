@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { SignUpServiceService } from '../../services/signup-service/sign-up-service.service';
 import Swal from 'sweetalert2';
+import { LoginServiceService } from '../../services/login-service/login-service.service';
 
 @Component({
   selector: 'app-signup-page',
@@ -37,6 +38,7 @@ export class SignupPageComponent implements OnInit {
     private router: Router,
     public signUpService: SignUpServiceService,
     public route:ActivatedRoute,
+    public loginService:LoginServiceService
   ) {
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -74,7 +76,7 @@ export class SignupPageComponent implements OnInit {
             icon: 'success',
             confirmButtonText: 'Ok'
           }).then(() => {
-            this.router.navigate(['/postLogin']); 
+            this.router.navigate(['/login']); 
           });
         } else {
           let errorMessage = res?.errorMessage || 'An unexpected error occurred. Please try again later.';

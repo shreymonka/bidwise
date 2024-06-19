@@ -1,27 +1,25 @@
 // token-interceptor.interceptor.ts
-import { HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { LoginServiceService } from '../login-service/login-service.service';
 
-export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
-  // Use Angular's inject function to get the LoginServiceService instance
-  const loginService = inject(LoginServiceService);
+@Injectable()
+export class TokenInterceptor implements HttpInterceptor {
+  constructor(private loginService: LoginServiceService) {}
 
-  // Retrieve the token from the LoginServiceService
-  const token = loginService.getToken();
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const token = this.loginService.getToken();
 
-  // Check if the token is available
-  if (token) {
-    // Clone the request and add the Authorization header with the token
-    const clonedRequest = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    // Pass the cloned request to the next handler in the chain
-    return next(clonedRequest);
+    if (token) {
+      const clonedRequest = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return next.handle(clonedRequest);
+    }
+
+    return next.handle(req);
   }
-
-  // If no token, pass the original request to the next handler
-  return next(req);
-};
+}
