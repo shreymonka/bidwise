@@ -38,7 +38,6 @@ export class SignupPageComponent implements OnInit {
     public signUpService: SignUpServiceService,
     public route:ActivatedRoute,
   ) {
-    // Initialize the form with empty values and validation rules
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       firstname  : ['', Validators.required],
