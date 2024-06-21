@@ -4,17 +4,17 @@ import { LoginPageComponent } from './components/login-page/login-page.component
 import { SignupPageComponent } from './components/signup-page/signup-page.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { SharedModule } from '../shared/shared.module';
-import { ServicesComponent } from './services/services.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { RouterModule } from '@angular/router';
 import { PostLoginLandingPageComponent } from './components/post-login-landing-page/post-login-landing-page.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     LoginPageComponent, 
     SignupPageComponent,
     LandingPageComponent,
-    ServicesComponent,
     AboutUsComponent,
     PostLoginLandingPageComponent],
   exports : [
@@ -25,6 +25,9 @@ import { PostLoginLandingPageComponent } from './components/post-login-landing-p
     CommonModule,
     SharedModule,
     RouterModule,
-  ]
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
+  ],
 })
 export class CoreModule { }
