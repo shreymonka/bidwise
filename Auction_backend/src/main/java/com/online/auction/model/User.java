@@ -45,6 +45,8 @@ public class User implements UserDetails {
 
     private boolean isPremium;
 
+    private String resetToken;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

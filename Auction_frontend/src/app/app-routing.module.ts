@@ -7,6 +7,8 @@ import { AboutUsComponent } from './core/components/about-us/about-us.component'
 import { PostLoginLandingPageComponent } from './core/components/post-login-landing-page/post-login-landing-page.component';
 import { LoginServiceService } from './core/services/login-service/login-service.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ForgetPasswordComponent } from './core/components/forget-password/forget-password.component';
+import { ResetPasswordComponent } from './core/components/reset-password/reset-password.component';
 
 const routes: Routes = [
   // {
@@ -20,9 +22,8 @@ const routes: Routes = [
   {path:'signup',component:SignupPageComponent},
   {path: 'about-us', component: AboutUsComponent},
   {path: 'postLogin', component: PostLoginLandingPageComponent},
-
-
-
+  {path: 'forget-password', component: ForgetPasswordComponent},
+  {path: 'reset-password', component: ResetPasswordComponent},
 ];
 
 @NgModule({

@@ -8,7 +8,6 @@ import { LoginServiceService } from './core/services/login-service/login-service
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './core/services/interceptor/token.interceptor';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,9 +15,10 @@ import { TokenInterceptor } from './core/services/interceptor/token.interceptor'
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     CoreModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     LoginServiceService,

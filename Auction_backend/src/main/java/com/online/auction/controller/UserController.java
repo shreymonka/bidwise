@@ -2,6 +2,8 @@ package com.online.auction.controller;
 
 import com.online.auction.dto.AuthenticationRequestDTO;
 import com.online.auction.dto.AuthenticationResponseDTO;
+import com.online.auction.dto.ResetEmailDTO;
+import com.online.auction.dto.ResetTokenAndPasswordDTO;
 import com.online.auction.dto.SuccessResponse;
 import com.online.auction.dto.UserDTO;
 import com.online.auction.exception.ServiceException;
@@ -64,4 +66,22 @@ public class UserController {
     public ResponseEntity<String> getWelcomeMsgForAdmin() {
         return ResponseEntity.ok("Hey Admin!");
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<SuccessResponse<String>> forgotPassword(@RequestBody ResetEmailDTO emailDTO) throws ServiceException {
+        String email = emailDTO.getEmail();
+        String resetLinkResponse = userService.sendPasswordResetLink(email);
+        SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, resetLinkResponse);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<SuccessResponse<String>> resetPassword(@RequestBody ResetTokenAndPasswordDTO resetDTO) throws ServiceException {
+        String token = resetDTO.getToken();
+        String newPassword = resetDTO.getNewPassword();
+        String passwordUpdateResponse = userService.resetPassword(token, newPassword);
+        SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, passwordUpdateResponse);
+        return ResponseEntity.ok(response);
+    }
+
 }
