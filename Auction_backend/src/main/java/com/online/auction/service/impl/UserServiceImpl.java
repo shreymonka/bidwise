@@ -30,10 +30,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.online.auction.constant.AuctionConstants.BEARER;
-import static com.online.auction.constant.AuctionConstants.INTEGER_SEVEN;
-import static com.online.auction.constant.AuctionConstants.INVALID_CREDENTIALS_MSG;
-import static com.online.auction.constant.AuctionConstants.USER_ALREADY_PRESENT_MSG;
+import static com.online.auction.constant.AuctionConstants.*;
 
 @Service
 @AllArgsConstructor
@@ -84,7 +81,7 @@ public class UserServiceImpl implements UserService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(userDb, jwtToken);
-        emailUtils.sendEmail(userDto.getEmail(),"Welcome to Bidwise!","You have successfully registered in our system!\nTake control and enjoy bidding");
+        emailUtils.sendEmail(userDto.getEmail(),EMAIL_SUBJECT,EMAIL_BODY_REGISTER);
         return "User Registered Successfully";
     }
 
