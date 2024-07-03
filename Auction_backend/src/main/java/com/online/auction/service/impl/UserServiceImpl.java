@@ -13,7 +13,7 @@ import com.online.auction.repository.TokenRepository;
 import com.online.auction.repository.UserRepository;
 import com.online.auction.service.JwtService;
 import com.online.auction.service.UserService;
-import com.online.auction.utils.EmailService;
+import com.online.auction.utils.EmailUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
     private final AuthenticationManager authenticationManager;
-    private final EmailService emailService;
+    private final EmailUtils emailUtils;
 
     /**
      * The registration API for the User to register first time with the application
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(userDb, jwtToken);
-        emailService.sendEmail(userDto.getEmail(),"Welcome to Bidwise!","You have successfully registered in our system!\nTake control and enjoy bidding");
+        emailUtils.sendEmail(userDto.getEmail(),"Welcome to Bidwise!","You have successfully registered in our system!\nTake control and enjoy bidding");
         return "User Registered Successfully";
     }
 
