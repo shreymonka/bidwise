@@ -43,4 +43,8 @@ public class TestConstants {
     public static final String ADMIN = "admin";
 
     public static final String CITY_HALIFAX = "Halifax";
+    public static final String RECEPIENT_EMAIL = "test@example.com";
+    public static final String EMAIL_SUBJECT = "Test Subject";
+    public static final String EMAIL_BODY = "Test Body";
+
 }
