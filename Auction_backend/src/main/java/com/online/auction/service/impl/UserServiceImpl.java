@@ -13,6 +13,7 @@ import com.online.auction.repository.TokenRepository;
 import com.online.auction.repository.UserRepository;
 import com.online.auction.service.JwtService;
 import com.online.auction.service.UserService;
+import com.online.auction.utils.EmailUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -29,10 +30,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.online.auction.constant.AuctionConstants.BEARER;
-import static com.online.auction.constant.AuctionConstants.INTEGER_SEVEN;
-import static com.online.auction.constant.AuctionConstants.INVALID_CREDENTIALS_MSG;
-import static com.online.auction.constant.AuctionConstants.USER_ALREADY_PRESENT_MSG;
+import static com.online.auction.constant.AuctionConstants.*;
 
 @Service
 @AllArgsConstructor
@@ -44,6 +42,7 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
     private final AuthenticationManager authenticationManager;
+    private final EmailUtils emailUtils;
 
     /**
      * The registration API for the User to register first time with the application
@@ -82,6 +81,7 @@ public class UserServiceImpl implements UserService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(userDb, jwtToken);
+        emailUtils.sendEmail(userDto.getEmail(),EMAIL_SUBJECT,EMAIL_BODY_REGISTER);
         return "User Registered Successfully";
     }
 

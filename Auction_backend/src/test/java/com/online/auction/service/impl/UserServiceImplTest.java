@@ -12,6 +12,7 @@ import com.online.auction.repository.CityRepository;
 import com.online.auction.repository.TokenRepository;
 import com.online.auction.repository.UserRepository;
 import com.online.auction.service.JwtService;
+import com.online.auction.utils.EmailUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
@@ -45,6 +46,7 @@ import static com.online.auction.constant.TestConstants.VALID_REFRESH_TOKEN;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -80,6 +82,9 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
+    @Mock
+    private EmailUtils emailUtils;
+
     private UserDTO userDto;
     private User user;
     private String jwtToken = JWT_TOKEN;
@@ -108,9 +113,8 @@ class UserServiceImplTest {
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(jwtService.generateToken(any(User.class))).thenReturn(jwtToken);
         when(jwtService.generateRefreshToken(any(User.class))).thenReturn(refreshToken);
-
+        doNothing().when(emailUtils).sendEmail(anyString(), anyString(), anyString());
         String response = userService.register(userDto);
-
         assertNotNull(response);
         assertEquals(response, USER_REGISTRATION_SUCCESS_MSG);
     }
