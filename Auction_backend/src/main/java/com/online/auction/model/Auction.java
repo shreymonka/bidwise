@@ -6,16 +6,25 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "auction")
 public class Auction {
@@ -31,8 +40,13 @@ public class Auction {
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
 
-    @OneToMany(mappedBy = "auction")
-    private Set<Item> items = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name="itemId",nullable = false)
+    private Item items;
 
     private boolean isOpen;
+
+    @Column(name = "endTime", columnDefinition = "DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endTime;
 }

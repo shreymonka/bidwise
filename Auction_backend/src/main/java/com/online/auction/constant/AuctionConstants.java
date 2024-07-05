@@ -29,6 +29,7 @@ public class AuctionConstants {
     public static final String USER = "/user";
     public static final String EMAIL_SUBJECT = "Welcome to Bidwise!";
     public static final String EMAIL_BODY_REGISTER = "You have successfully registered in our system!\nTake control and enjoy bidding";
+    public static final String ITEM = "/item";
 
     public static final String PASSWORD_RESET_REQUEST = "Password Reset Request";
     public static final String PASSWORD_RESET_LINK_BODY = "To reset your password, click the link below:\n";
