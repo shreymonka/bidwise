@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.online.auction.constant.AuctionConstants.*;
 
@@ -196,5 +197,34 @@ public class UserServiceImpl implements UserService {
             token.setRevoked(true);
         });
         tokenRepository.saveAll(validUserTokens);
+    }
+
+    /**
+     * This method sends password reset link
+     *
+     * @param email takes user email to validate the email and send reset password link
+     * @return a string
+     */
+    public String sendPasswordResetLink(String email) throws ServiceException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "User not found"));
+        user.setResetToken(UUID.randomUUID().toString());
+        userRepository.save(user);
+        emailUtils.sendEmail(email,PASSWORD_RESET_REQUEST,PASSWORD_RESET_LINK_BODY + PASSWORD_RESET_LINK  + user.getResetToken());
+        return "Password Reset Link Successfully";
+    }
+
+    /**
+     * This method updates the user password
+     *
+     * @param token resetToken which is used to validate that user has received reset password link
+     * @param newPassword new user password string
+     * @return a string
+     */
+    public String resetPassword(String token, String newPassword) throws ServiceException {
+        User user = userRepository.findByResetToken(token).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST,"Invalid token"));
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetToken(null);
+        userRepository.save(user);
+        return "Password Reset Successful";
     }
 }

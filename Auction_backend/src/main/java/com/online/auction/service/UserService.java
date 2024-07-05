@@ -15,4 +15,8 @@ public interface UserService {
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequest) throws ServiceException;
 
     AuthenticationResponseDTO refreshToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException;
+
+    String sendPasswordResetLink(String email) throws ServiceException;
+
+    String resetPassword(String token, String newPassword) throws ServiceException;
 }

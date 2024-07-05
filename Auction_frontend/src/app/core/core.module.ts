@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
 import { PostLoginLandingPageComponent } from './components/post-login-landing-page/post-login-landing-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { HttpClientModule } from '@angular/common/http';
     SignupPageComponent,
     LandingPageComponent,
     AboutUsComponent,
-    PostLoginLandingPageComponent],
+    PostLoginLandingPageComponent,
+    ForgetPasswordComponent,
+    ResetPasswordComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent
