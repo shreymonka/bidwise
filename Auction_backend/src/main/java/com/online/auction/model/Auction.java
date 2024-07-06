@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class Auction {
 
     @Column(name = "startTime", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @ManyToOne
     @JoinColumn(name="itemId",nullable = false)
@@ -48,5 +49,5 @@ public class Auction {
 
     @Column(name = "endTime", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endTime;
+    private LocalDateTime endTime;
 }
