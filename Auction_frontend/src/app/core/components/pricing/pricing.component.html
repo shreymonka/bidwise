@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="pricing-container">
+    <h2>Upgrade to Premium</h2>
+    <form [formGroup]="pricingForm" (ngSubmit)="submitPayment()">
+      <div>
+        <label for="cardNumber">Card Number</label>
+        <input id="cardNumber" formControlName="cardNumber" placeholder="Card Number" />
+      </div>
+      <div>
+        <label for="expiryDate">Expiry Date</label>
+        <input id="expiryDate" formControlName="expiryDate" placeholder="MM/YY" />
+      </div>
+      <div>
+        <label for="cvv">CVV</label>
+        <input id="cvv" formControlName="cvv" placeholder="CVV" />
+      </div>
+      <div>
+        <label for="cardHolderName">Card Holder Name</label>
+        <input id="cardHolderName" formControlName="cardHolderName" placeholder="Card Holder Name" />
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input id="email" formControlName="email" placeholder="Email" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+  </div>
+  
+</body>
+</html>
+<app-footer></app-footer>

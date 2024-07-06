@@ -1,0 +1,35 @@
+.pricing-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .pricing-container div {
+    margin-bottom: 15px;
+  }
+  
+  .pricing-container label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .pricing-container input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  .btn-primary {
+    color: #000;
+    background-color:#D1CECE;
+    border-color: #000;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #000;
+    border-color: #fff;
+}
+  

@@ -1,29 +1,16 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
-  styleUrl: './landing-page.component.css',
+  styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent {
   auctions = [
-    {
-      title: 'Samsung Earbuds',
-      date: new Date('2024-05-14T14:00:00Z'),
-      image: 'path/to/samsung-earbuds.jpg'
-    },
-    {
-      title: 'Avocado Art',
-      date: new Date('2024-05-14T14:00:00Z'),
-      image: 'path/to/avocado-art.jpg'
-    },
-    {
-      title: 'Porsche',
-      date: new Date('2024-05-14T14:00:00Z'),
-      image: 'path/to/porsche.jpg'
-    }
+    { title: 'Samsung Earbuds', date: new Date('2024-05-14T14:00:00Z'), image: '/assets/images/avacado.jpeg' },
+    { title: 'Avocado Art', date: new Date('2024-05-14T14:00:00Z'), image: '/assets/images/avacado.jpeg' },
+    { title: 'Porsche', date: new Date('2024-05-14T14:00:00Z'), image: '/assets/images/avacado.jpeg' }
   ];
 
   constructor(private router: Router) { }
@@ -34,7 +21,7 @@ export class LandingPageComponent {
     console.log(`Bid now on ${auction.title}`);
   }
   choosePlan(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login'], { queryParams: { returnUrl: '/pricing' } });
   }
 
 }
