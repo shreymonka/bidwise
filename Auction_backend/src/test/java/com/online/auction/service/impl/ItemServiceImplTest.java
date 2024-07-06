@@ -57,7 +57,6 @@ class ItemServiceImplTest {
     private ItemCondition itemCondition;
     @BeforeEach
     void setUp() {
-        // Setup a sample ItemDTO
         itemDto = new ItemDTO();
         itemDto.setItemName("Antique Vase");
         itemDto.setItemMaker("Unknown");
@@ -71,7 +70,6 @@ class ItemServiceImplTest {
         itemDto.setStartTime(START_TIME);
         itemDto.setEndTime(END_TIME);
 
-        // Setup a sample User
         user = new User();
         user.setUserId(INTEGER_ONE);
         user.setEmail(TEST_EMAIL);
@@ -86,12 +84,9 @@ class ItemServiceImplTest {
         when(itemCategoryRepository.findByItemCategoryName(anyString())).thenReturn(Optional.of(itemCategory));
         when(itemRepository.save(any(Item.class))).thenReturn(new Item());
         when(auctionListingRepository.save(any(Auction.class))).thenReturn(new Auction());
-
         String response = itemService.addItem(itemDto, user);
-
         assertNotNull(response);
         assertEquals("Item listed successfully for Auction", response);
-
         verify(itemCategoryRepository).findByItemCategoryName(itemDto.getCategoryName());
         verify(itemRepository).save(any(Item.class));
         verify(auctionListingRepository).save(any(Auction.class));
@@ -100,13 +95,10 @@ class ItemServiceImplTest {
     @Test
     void addItemFailureDueToMissingCategoryTest() {
         when(itemCategoryRepository.findByItemCategoryName(anyString())).thenReturn(Optional.empty());
-
         ServiceException exception = assertThrows(ServiceException.class, () -> itemService.addItem(itemDto, user));
-
         assertNotNull(exception);
-        assertEquals(400, exception.getStatusCode());
-        assertEquals("Item category is not present", exception.getMessage());
-
+        assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
+        assertEquals("Item category is not present", exception.getErrorMessage());
         verify(itemCategoryRepository).findByItemCategoryName(itemDto.getCategoryName());
         verify(itemRepository, never()).save(any(Item.class));
         verify(auctionListingRepository, never()).save(any(Auction.class));
@@ -114,20 +106,20 @@ class ItemServiceImplTest {
 
     @Test
     void addItemWithInvalidDataTest() {
-        // Here we will create various invalid scenarios for itemDto and test each
-
-        // Test with null Item Name
+        ItemCategory itemCategory = new ItemCategory();
+        itemCategory.setItemCategoryName("Valid Category");
+        when(itemCategoryRepository.findByItemCategoryName(anyString())).thenReturn(Optional.of(itemCategory));
         itemDto.setItemName(null);
         ServiceException exception = assertThrows(ServiceException.class, () -> itemService.addItem(itemDto, user));
-        assertEquals(400, exception.getStatusCode());
-        assertEquals("Item name is required", exception.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
+        assertEquals("Item name is required", exception.getErrorMessage());
         itemDto.setItemName("Antique Vase");
         itemDto.setMinBidAmount(-10);
         exception = assertThrows(ServiceException.class, () -> itemService.addItem(itemDto, user));
-        assertEquals(400, exception.getStatusCode());
-        assertEquals("Minimum bid amount must be positive", exception.getMessage());
-        verify(itemCategoryRepository, never()).findByItemCategoryName(anyString());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
+        assertEquals("Minimum bid amount must be positive", exception.getErrorMessage());
         verify(itemRepository, never()).save(any(Item.class));
         verify(auctionListingRepository, never()).save(any(Auction.class));
     }
+
 }

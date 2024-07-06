@@ -25,6 +25,6 @@ public class ItemDTO {
     private String itemPhoto;
     private ItemCondition itemCondition;
     private String categoryName;
-    private Date startTime;
-    private Date endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }

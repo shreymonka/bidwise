@@ -1,7 +1,6 @@
 package com.online.auction.service.impl;
 
 import com.online.auction.dto.ItemDTO;
-import com.online.auction.dto.UserDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Auction;
 import com.online.auction.model.Item;
@@ -23,18 +22,31 @@ import java.util.Optional;
 @Slf4j
 public class ItemServiceImpl implements ItemService {
 
-    private ItemRepository itemRepository;
-    private ItemCategoryRepository itemCategoryRepository;
-    private AuctionListingRepository auctionListingRepository;
+    private final ItemRepository itemRepository;
+    private final ItemCategoryRepository itemCategoryRepository;
+    private final AuctionListingRepository auctionListingRepository;
 
     @Override
     public String addItem(ItemDTO itemDto, User user) throws ServiceException {
+        log.debug("Attempting to add a new item: {}", itemDto);
+
         Optional<ItemCategory> itemCategory = itemCategoryRepository.findByItemCategoryName(itemDto.getCategoryName());
         if (itemCategory.isEmpty()) {
-            throw new ServiceException(HttpStatus.BAD_REQUEST, "Item requested is not present");
+            log.warn("Item category '{}' is not present", itemDto.getCategoryName());
+            throw new ServiceException(HttpStatus.BAD_REQUEST, "Item category is not present");
         }
 
-        var item = com.online.auction.model.Item.builder()
+        if (itemDto.getMinBidAmount() < 0) {
+            log.warn("Minimum bid amount is negative: {}", itemDto.getMinBidAmount());
+            throw new ServiceException(HttpStatus.BAD_REQUEST, "Minimum bid amount must be positive");
+        }
+
+        if (itemDto.getItemName() == null || itemDto.getItemName().isEmpty()) {
+            log.warn("Item name is missing in the provided item data: {}", itemDto);
+            throw new ServiceException(HttpStatus.BAD_REQUEST, "Item name is required");
+        }
+
+        var item = Item.builder()
                 .item_name(itemDto.getItemName())
                 .item_maker(itemDto.getItemMaker())
                 .description(itemDto.getDescription())
@@ -46,17 +58,27 @@ public class ItemServiceImpl implements ItemService {
                 .itemcategory(itemCategory.get())
                 .sellerId(user)
                 .build();
-        Item savedItem = itemRepository.save(item);
 
-        var auction = com.online.auction.model.Auction.builder()
+        log.debug("Built item entity: {}", item);
+
+        Item savedItem = itemRepository.save(item);
+        log.info("Item saved successfully: {}", savedItem);
+
+        var auction = Auction.builder()
                 .startTime(itemDto.getStartTime())
                 .endTime(itemDto.getEndTime())
                 .items(savedItem)
                 .isOpen(false)
                 .sellerId(user)
                 .build();
-        Auction savedAuction = auctionListingRepository.save(auction);
 
-        return "";
+        log.debug("Built auction entity: {}", auction);
+
+        Auction savedAuction = auctionListingRepository.save(auction);
+        log.info("Auction saved successfully: {}", savedAuction);
+
+        String successMessage = "Item listed successfully for Auction";
+        log.info(successMessage);
+        return successMessage;
     }
 }
