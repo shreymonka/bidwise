@@ -19,4 +19,7 @@ public interface UserService {
     String sendPasswordResetLink(String email) throws ServiceException;
 
     String resetPassword(String token, String newPassword) throws ServiceException;
+
+    String upgradeToPremium(String email) throws ServiceException;
+
 }

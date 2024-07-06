@@ -1,11 +1,6 @@
 package com.online.auction.controller;
 
-import com.online.auction.dto.AuthenticationRequestDTO;
-import com.online.auction.dto.AuthenticationResponseDTO;
-import com.online.auction.dto.ResetEmailDTO;
-import com.online.auction.dto.ResetTokenAndPasswordDTO;
-import com.online.auction.dto.SuccessResponse;
-import com.online.auction.dto.UserDTO;
+import com.online.auction.dto.*;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +22,7 @@ import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 import static com.online.auction.constant.AuctionConstants.USER;
 
 @RestController
-@CrossOrigin(origins = "http://172.17.3.242:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(API_VERSION_V1 + USER)
 @RequiredArgsConstructor
 public class UserController {
@@ -83,5 +78,14 @@ public class UserController {
         SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, passwordUpdateResponse);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/upgrade-to-premium")
+    public ResponseEntity<SuccessResponse<String>> upgradeToPremium(@RequestBody PaymentDetailsDTO paymentDetails) throws ServiceException {
+        userService.upgradeToPremium(paymentDetails.getEmail());
+        SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, "User upgraded to premium successfully");
+        return ResponseEntity.ok(response);
+    }
+
+
 
 }
