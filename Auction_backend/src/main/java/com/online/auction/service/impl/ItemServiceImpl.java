@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.online.auction.constant.AuctionConstants.EMPTY_ITEM_NAME;
+import static com.online.auction.constant.AuctionConstants.ITEM_CATEGORY_NOT_FOUND;
+import static com.online.auction.constant.AuctionConstants.NEGATIVE_BID_AMOUNT;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -33,17 +37,17 @@ public class ItemServiceImpl implements ItemService {
         Optional<ItemCategory> itemCategory = itemCategoryRepository.findByItemCategoryName(itemDto.getCategoryName());
         if (itemCategory.isEmpty()) {
             log.warn("Item category '{}' is not present", itemDto.getCategoryName());
-            throw new ServiceException(HttpStatus.BAD_REQUEST, "Item category is not present");
+            throw new ServiceException(HttpStatus.BAD_REQUEST,ITEM_CATEGORY_NOT_FOUND );
         }
 
         if (itemDto.getMinBidAmount() < 0) {
             log.warn("Minimum bid amount is negative: {}", itemDto.getMinBidAmount());
-            throw new ServiceException(HttpStatus.BAD_REQUEST, "Minimum bid amount must be positive");
+            throw new ServiceException(HttpStatus.BAD_REQUEST,NEGATIVE_BID_AMOUNT );
         }
 
         if (itemDto.getItemName() == null || itemDto.getItemName().isEmpty()) {
             log.warn("Item name is missing in the provided item data: {}", itemDto);
-            throw new ServiceException(HttpStatus.BAD_REQUEST, "Item name is required");
+            throw new ServiceException(HttpStatus.BAD_REQUEST,EMPTY_ITEM_NAME );
         }
 
         var item = Item.builder()
