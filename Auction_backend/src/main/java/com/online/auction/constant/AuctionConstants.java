@@ -34,6 +34,7 @@ public class AuctionConstants {
     public static final String ITEM_CATEGORY_NOT_FOUND = "Item category is not present";
     public static final String NEGATIVE_BID_AMOUNT = "Minimum bid amount must be positive";
     public static final String EMPTY_ITEM_NAME = "Item name is required";
+    public static final String IMAGE_UPLOAD_FAILED = "Failed to upload image";
 
 
     public static final String PASSWORD_RESET_REQUEST = "Password Reset Request";

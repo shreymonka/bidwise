@@ -1,5 +1,7 @@
 package com.online.auction.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.online.auction.dto.ItemDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Auction;
@@ -14,12 +16,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
-import static com.online.auction.constant.AuctionConstants.EMPTY_ITEM_NAME;
-import static com.online.auction.constant.AuctionConstants.ITEM_CATEGORY_NOT_FOUND;
-import static com.online.auction.constant.AuctionConstants.NEGATIVE_BID_AMOUNT;
+import static com.online.auction.constant.AuctionConstants.*;
 
 @Service
 @AllArgsConstructor
@@ -29,26 +32,30 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final ItemCategoryRepository itemCategoryRepository;
     private final AuctionListingRepository auctionListingRepository;
+    private final Cloudinary cloudinary;
 
     @Override
-    public String addItem(ItemDTO itemDto, User user) throws ServiceException {
+    public String addItem(ItemDTO itemDto,MultipartFile file, User user) throws ServiceException {
         log.debug("Attempting to add a new item: {}", itemDto);
 
         Optional<ItemCategory> itemCategory = itemCategoryRepository.findByItemCategoryName(itemDto.getCategoryName());
         if (itemCategory.isEmpty()) {
             log.warn("Item category '{}' is not present", itemDto.getCategoryName());
-            throw new ServiceException(HttpStatus.BAD_REQUEST,ITEM_CATEGORY_NOT_FOUND );
+            throw new ServiceException(HttpStatus.BAD_REQUEST, ITEM_CATEGORY_NOT_FOUND);
         }
 
         if (itemDto.getMinBidAmount() < 0) {
             log.warn("Minimum bid amount is negative: {}", itemDto.getMinBidAmount());
-            throw new ServiceException(HttpStatus.BAD_REQUEST,NEGATIVE_BID_AMOUNT );
+            throw new ServiceException(HttpStatus.BAD_REQUEST, NEGATIVE_BID_AMOUNT);
         }
 
         if (itemDto.getItemName() == null || itemDto.getItemName().isEmpty()) {
             log.warn("Item name is missing in the provided item data: {}", itemDto);
-            throw new ServiceException(HttpStatus.BAD_REQUEST,EMPTY_ITEM_NAME );
+            throw new ServiceException(HttpStatus.BAD_REQUEST, EMPTY_ITEM_NAME);
         }
+
+        String imageUrl = uploadImageToCloudinary(file);
+        itemDto.setItemPhoto(imageUrl);
 
         var item = Item.builder()
                 .item_name(itemDto.getItemName())
@@ -84,5 +91,15 @@ public class ItemServiceImpl implements ItemService {
         String successMessage = "Item listed successfully for Auction";
         log.info(successMessage);
         return successMessage;
+    }
+
+    private String uploadImageToCloudinary(MultipartFile file) throws ServiceException {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return uploadResult.get("url").toString();
+        } catch (IOException e) {
+            log.error("Failed to upload image to Cloudinary", e);
+            throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR,IMAGE_UPLOAD_FAILED);
+        }
     }
 }
