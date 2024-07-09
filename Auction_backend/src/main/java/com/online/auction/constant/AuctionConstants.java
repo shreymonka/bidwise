@@ -29,6 +29,13 @@ public class AuctionConstants {
     public static final String USER = "/user";
     public static final String EMAIL_SUBJECT = "Welcome to Bidwise!";
     public static final String EMAIL_BODY_REGISTER = "You have successfully registered in our system!\nTake control and enjoy bidding";
+    public static final String ITEM = "/item";
+
+    public static final String ITEM_CATEGORY_NOT_FOUND = "Item category is not present";
+    public static final String NEGATIVE_BID_AMOUNT = "Minimum bid amount must be positive";
+    public static final String EMPTY_ITEM_NAME = "Item name is required";
+    public static final String IMAGE_UPLOAD_FAILED = "Failed to upload image";
+
 
     public static final String PASSWORD_RESET_REQUEST = "Password Reset Request";
     public static final String PASSWORD_RESET_LINK_BODY = "To reset your password, click the link below:\n";

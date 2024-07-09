@@ -1,5 +1,9 @@
 package com.online.auction.constant;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 public class TestConstants {
     public static final String JWT_TOKEN = "jwtToken123";
 
@@ -46,5 +50,13 @@ public class TestConstants {
     public static final String RECEPIENT_EMAIL = "test@example.com";
     public static final String EMAIL_SUBJECT = "Test Subject";
     public static final String EMAIL_BODY = "Test Body";
+
+    // Define the formatter to parse the ISO-8601 date-time string
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+    // Use the formatter to parse the date-time string into a LocalDateTime object
+    public static final LocalDateTime START_TIME = LocalDateTime.parse("2016-12-01T00:00:00", FORMATTER);
+
+    public static final LocalDateTime END_TIME = LocalDateTime.parse("2016-12-01T00:00:00") ;
 
 }
