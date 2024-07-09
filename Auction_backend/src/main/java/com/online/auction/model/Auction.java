@@ -33,7 +33,7 @@ public class Auction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int auctionId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "seller_id")
     private User sellerId;
 

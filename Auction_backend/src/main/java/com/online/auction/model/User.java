@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -53,6 +54,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
+    @OneToMany(mappedBy = "sellerId")
+    private Set<Auction> auctions;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.role.getAuthorities();
