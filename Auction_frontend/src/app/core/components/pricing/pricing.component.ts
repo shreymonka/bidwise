@@ -31,7 +31,7 @@ export class PricingComponent {
     const token = localStorage.getItem('token');  // Assuming you store JWT in localStorage after login
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.post('http://localhost:8080/api/v1/user/upgrade-to-premium', paymentDetails, { headers }).subscribe(
+    this.http.post('http://172.17.3.242/api/v1/user/upgrade-to-premium', paymentDetails, { headers }).subscribe(
       (response: any) => {
         Swal.fire({
           title: 'Success!',
