@@ -59,4 +59,7 @@ public class TestConstants {
 
     public static final LocalDateTime END_TIME = LocalDateTime.parse("2016-12-01T00:00:00") ;
 
+    public static final String USER_NOT_FOUND = "User not found";
+
+
 }

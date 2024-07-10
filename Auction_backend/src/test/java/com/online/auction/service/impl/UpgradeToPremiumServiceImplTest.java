@@ -12,6 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static com.online.auction.constant.TestConstants.TEST_EMAIL;
+import static com.online.auction.constant.TestConstants.USER_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,7 +36,7 @@ public class UpgradeToPremiumServiceImplTest {
     @BeforeEach
     public void setUp() {
         user = new User();
-        user.setEmail("test@example.com");
+        user.setEmail(TEST_EMAIL);
         user.setPremium(false);
     }
 
@@ -43,11 +45,11 @@ public class UpgradeToPremiumServiceImplTest {
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        String result = upgradeToPremiumService.upgradeToPremium("test@example.com");
+        String result = upgradeToPremiumService.upgradeToPremium(TEST_EMAIL);
 
-        assertEquals("test@example.com", result);
+        assertEquals(TEST_EMAIL, result);
         assertEquals(true, user.isPremium());
-        verify(userRepository, times(1)).findByEmail("test@example.com");
+        verify(userRepository, times(1)).findByEmail(TEST_EMAIL);
         verify(userRepository, times(1)).save(user);
     }
 
@@ -56,11 +58,11 @@ public class UpgradeToPremiumServiceImplTest {
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
 
         ServiceException exception = assertThrows(ServiceException.class, () -> {
-            upgradeToPremiumService.upgradeToPremium("test@example.com");
+            upgradeToPremiumService.upgradeToPremium(TEST_EMAIL);
         });
 
-        assertEquals("User not found", exception.getMessage());
-        verify(userRepository, times(1)).findByEmail("test@example.com");
+        assertEquals(USER_NOT_FOUND, exception.getErrorMessage());
+        verify(userRepository, times(1)).findByEmail(TEST_EMAIL);
         verify(userRepository, times(0)).save(any(User.class));
     }
 }
