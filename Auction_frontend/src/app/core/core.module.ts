@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { PricingComponent } from './components/pricing/pricing.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     AboutUsComponent,
     PostLoginLandingPageComponent,
     ForgetPasswordComponent,
-    ResetPasswordComponent],
+    ResetPasswordComponent,
+    PricingComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent

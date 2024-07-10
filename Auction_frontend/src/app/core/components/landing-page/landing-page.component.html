@@ -13,17 +13,18 @@
 </head>
 <body>
   <div class="container">
-    <div class="upcoming-auctions">
-        <h2>Upcoming Auctions</h2>
-        <div class="auctions-list">
-          <div *ngFor="let auction of auctions" class="auction-item">
-            <img [src]="auction.image" alt="{{ auction.title }}">
-            <h3>{{ auction.title }}</h3>
-            <p>{{ auction.date | date: 'dd MMM yyyy, h:mm a' }}</p>
-            <button (click)="bidNow(auction)">Bid Now</button>
-          </div>
-        </div>
+  <div class="upcoming-auctions">
+    <h2>Upcoming Auctions</h2>
+    <div class="container d-inline-flex">
+        <div *ngFor="let auction of auctions" class="container">
+            <div class="card" style="width: 18rem;">
+              <img src="assets\images\avacado.jpeg" class="card-img-top" alt="...">
+              <p style="margin-bottom: 0px; font-weight:500; font-size: larger">{{ auction.title }}</p>
+              <p style="margin-bottom: 0px; font-size: 0.85rem;">{{ auction.date | date: 'dd MMM yyyy' }} | {{ auction.date | date: 'h:mm a' }}</p>
+              <button class="btn btn-outline-dark" style="margin-top: 8px; padding-top: 3px; padding-bottom: 3px;" (click)="bidNow(auction)">BID NOW</button>
+            </div>
     </div>
+</div>
       
     <div class="how-it-works">
         <h2>How It Works</h2>
@@ -119,6 +120,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </div>
   </div>
 </body>
 </html>

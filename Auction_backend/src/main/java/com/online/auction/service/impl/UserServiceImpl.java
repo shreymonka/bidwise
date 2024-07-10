@@ -227,4 +227,20 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return "Password Reset Successful";
     }
+
+    /**
+     * Upgrades a user to premium status.
+     *
+     * @param email the user email to upgrade
+     * @return the email of the upgraded user
+     * @throws ServiceException if the user is not found
+     */
+    public String upgradeToPremium(String email) throws ServiceException {
+        log.info("Upgrading user to premium");
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "User not found"));
+        user.setPremium(true);
+        userRepository.save(user);
+
+        return email;
+    }
 }

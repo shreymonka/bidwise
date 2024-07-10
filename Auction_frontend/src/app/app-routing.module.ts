@@ -9,6 +9,7 @@ import { LoginServiceService } from './core/services/login-service/login-service
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ForgetPasswordComponent } from './core/components/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './core/components/reset-password/reset-password.component';
+import { PricingComponent } from './core/components/pricing/pricing.component';
 
 const routes: Routes = [
   // {
@@ -24,6 +25,7 @@ const routes: Routes = [
   {path: 'postLogin', component: PostLoginLandingPageComponent},
   {path: 'forget-password', component: ForgetPasswordComponent},
   {path: 'reset-password', component: ResetPasswordComponent},
+  { path: 'pricing', component: PricingComponent },
 ];
 
 @NgModule({
