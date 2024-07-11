@@ -78,14 +78,4 @@ public class UserController {
         SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, passwordUpdateResponse);
         return ResponseEntity.ok(response);
     }
-
-    @PostMapping("/upgrade-to-premium")
-    public ResponseEntity<SuccessResponse<String>> upgradeToPremium(@RequestBody PaymentDetailsDTO paymentDetails) throws ServiceException {
-        userService.upgradeToPremium(paymentDetails.getEmail());
-        SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, "User upgraded to premium successfully");
-        return ResponseEntity.ok(response);
-    }
-
-
-
 }
