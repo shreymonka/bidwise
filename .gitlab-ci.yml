@@ -69,7 +69,7 @@ publish_backend:
     - docker --version
     - echo "Logging Docker"
     #- echo $DOCKER_PASSWORD |docker login -u $DOCKER_USERNAME --password-stdin
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker login -u $DOCKER_USERNAME -p auction@123
     - echo "Building the Docker image for the Backend"
     - docker build -t docker.io/$DOCKER_USERNAME/auctionbackend .
     - echo "Successfully build the docker image for the backend"
@@ -96,7 +96,7 @@ publish_frontend:
     - docker --version
     - echo "Logging Docker"
     #- echo $DOCKER_PASSWORD |docker login -u $DOCKER_USERNAME --password-stdin
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker login -u $DOCKER_USERNAME -p auction@123
     - echo "Building the Docker image"
     - docker build -t docker.io/$DOCKER_USERNAME/auctionfrontend .
     - echo "Successfully build the docker image"
