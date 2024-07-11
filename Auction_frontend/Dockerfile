@@ -1,11 +1,24 @@
-FROM node:latest
+# FROM node:latest as build
 
-WORKDIR /usr/src/app
+# WORKDIR /usr/src/app
 
-COPY . /usr/src/app
+# COPY package*.json ./
 
-RUN npm install -g @angular/cli
+# RUN npm install
 
-RUN npm install
+# RUN npm install -g @angular/cli
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+# COPY . .
+
+# # RUN ng build --configuration=production
+# RUN npm run build
+
+# RUN ls -la /usr/src/app/dist
+
+FROM nginx:latest
+
+COPY nginx.conf /etc/nginx/nginx.conf
+
+COPY /dist/auction-frontend/browser /usr/share/nginx/html
+
+EXPOSE 80
