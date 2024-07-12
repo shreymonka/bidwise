@@ -1,24 +1,11 @@
-# FROM node:latest as build
+FROM node:22-slim
 
-# WORKDIR /usr/src/app
+WORKDIR /usr/src/app
 
-# COPY package*.json ./
+COPY . /usr/src/app
 
-# RUN npm install
+RUN npm install -g @angular/cli
 
-# RUN npm install -g @angular/cli
+RUN npm install
 
-# COPY . .
-
-# # RUN ng build --configuration=production
-# RUN npm run build
-
-# RUN ls -la /usr/src/app/dist
-
-FROM nginx:latest
-
-COPY nginx.conf /etc/nginx/nginx.conf
-
-COPY /dist/auction-frontend/browser /usr/share/nginx/html
-
-EXPOSE 80
+CMD ["ng", "serve", "--host", "0.0.0.0"]
