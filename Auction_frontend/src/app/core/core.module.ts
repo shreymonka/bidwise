@@ -12,17 +12,24 @@ import { HttpClientModule } from '@angular/common/http';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { PricingComponent } from './components/pricing/pricing.component';
+import { ItemCategoryListingComponent } from './components/item-category-listing/item-category-listing.component';
+import { SellerPortalComponent } from './components/seller-portal/seller-portal.component';
+import { ItemListingComponent } from './components/item-listing/item-listing.component';
 
 @NgModule({
   declarations: [
-    LoginPageComponent, 
+    LoginPageComponent,
     SignupPageComponent,
     LandingPageComponent,
     AboutUsComponent,
     PostLoginLandingPageComponent,
     ForgetPasswordComponent,
     ResetPasswordComponent,
-    PricingComponent],
+    PricingComponent,
+    PostLoginLandingPageComponent,
+    ItemCategoryListingComponent,
+    SellerPortalComponent,
+    ItemListingComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent
