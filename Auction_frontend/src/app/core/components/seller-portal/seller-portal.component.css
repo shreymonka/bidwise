@@ -8,12 +8,37 @@ body {
     background-color: #ffffff;
 }
 
-h1 {
+/* h1 {
     font-size: 1.5rem;
     font-weight: 700;
     border: 2px solid #000;
+} */
+
+/* If no items are listed */
+.main-content {
+    text-align: center;
+    padding: 50px 20px;
+    border: 2px solid #000;
+    height: calc(100vh - 100px); /* Adjust height to fill the screen, subtracting navbar height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
+.main-content p {
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+.main-content a {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #0000FF;
+}
+
+
+/* If 1 or more items are listed */
 @media (max-width: 767.98px) {
     .custom-padding {
         padding-top: 20px; /* Apply padding for mobile devices */
