@@ -23,7 +23,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfig {
-    private static final String[] WHITE_LIST_URL = {"/api/v1/user/register", "/api/v1/user/authenticate", "/api/v1/user/refresh-token", "/api/v1/user/forgot-password", "/api/v1/user/reset-password"};
+    private static final String[] WHITE_LIST_URL = {"/api/v1/user/register", "/api/v1/user/authenticate", "/api/v1/user/refresh-token", "/api/v1/user/forgot-password", "/api/v1/user/reset-password","/gs-guide-websocket"};
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
