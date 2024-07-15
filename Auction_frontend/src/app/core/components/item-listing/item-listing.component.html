@@ -1,1 +1,100 @@
-<p>item-listing works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITEM LISTING</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="item-listing.component.css">
+
+</head>
+<body>   
+    <!-- Navbar -->
+    <!-- Body Header -->
+    <!-- Main Body -->
+    <div class="container mt-5">
+        <h3>GENERAL INFORMATION</h3>
+        <form>
+            <div class="form-group row">
+                <label for="itemName" class="col-sm-2 col-form-label">NAME OF ITEM</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="itemName" placeholder="SAMSUNG EARBUDS">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="itemMaker" class="col-sm-2 col-form-label">MAKER OF THE ITEM</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="itemMaker" placeholder="SAMSUNG">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="pricePaid" class="col-sm-2 col-form-label">PRICE PAID</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="pricePaid" placeholder="$70">
+                </div>
+                <label for="currency" class="col-sm-2 col-form-label">CURRENCY</label>
+                <div class="col-sm-4">
+                    <select class="form-control" id="currency">
+                        <option>USD</option>
+                        <option>EUR</option>
+                        <option>GBP</option>
+                        <option>INR</option>
+                    </select>
+                </div>
+            </div>
+            <h3>CONDITION</h3>
+            <div class="d-flex flex-column form-group flex-md-row">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input custom-radio-checkbox" type="radio" name="condition" id="newCondition" checked>
+                    <label class="form-check-label" for="newCondition">NEW</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input custom-radio-checkbox" type="radio" name="condition" id="usedCondition">
+                    <label class="form-check-label" for="usedCondition">USED A FEW TIMES</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input custom-radio-checkbox" type="radio" name="condition" id="restoredCondition">
+                    <label class="form-check-label" for="restoredCondition">RESTORED/REFURBISHED</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input custom-radio-checkbox" type="radio" name="condition" id="oldCondition">
+                    <label class="form-check-label" for="oldCondition">OLD/USED VERY OFTEN</label>
+                </div>
+            </div>
+            <h3>PRICE</h3>
+            <div class="form-group row">
+                <label for="initialBidPrice" class="col-sm-2 col-form-label">INITIAL BIDDING PRICE</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="initialBidPrice" placeholder="$55">
+                </div>
+            </div>
+            <h3>TIME</h3> 
+            <div class="form-group row align-items-center">
+                <label for="biddingStartDate" class="col-sm-2 col-form-label">BIDDING START DATE</label>
+                <div class="col-sm-4">
+                    <input type="date" class="form-control" id="biddingStartDate" value="2024-05-21">
+                </div>
+            </div>
+            <div class="form-group row align-items-center">
+                <label for="biddingStartTime" class="col-sm-2 col-form-label">BIDDING START TIME</label>
+                <div class="col-sm-4">
+                    <input type="time" class="form-control" id="biddingStartTime" value="14:00">
+                </div>
+            </div>
+            <h3>PHOTOS</h3>
+            <div class="form-group">
+                <button type="button" class="btn btn-outline-dark">UPLOAD PHOTOS</button>
+                <!-- <small class="form-text text-muted">1 PHOTO UPLOADED SUCCESSFULLY</small> -->
+            </div>
+            <h2 class="font-weight-bold">LIST THE ITEM</h2>
+            <button type="submit" class="btn btn-outline-dark">LIST ITEM</button>
+        </form>
+    </div>
+    <!-- Footer -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
