@@ -31,7 +31,7 @@ import { AuctionComponent } from './components/auction/auction.component';
     ItemCategoryListingComponent,
     SellerPortalComponent,
     ItemListingComponent,
-    AuctionComponent]
+    AuctionComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent
