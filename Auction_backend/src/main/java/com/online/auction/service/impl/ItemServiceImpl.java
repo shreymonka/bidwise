@@ -14,13 +14,16 @@ import com.online.auction.repository.ItemRepository;
 import com.online.auction.service.ItemService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.online.auction.constant.AuctionConstants.*;
 
@@ -102,4 +105,49 @@ public class ItemServiceImpl implements ItemService {
             throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR,IMAGE_UPLOAD_FAILED);
         }
     }
+
+    @Override
+    public List<ItemDTO> getAllItemsByUser(User user) {
+        log.debug("Fetching items for user: {}", user.getEmail());
+
+        List<Item> items = itemRepository.findBySellerId(user);
+        List<ItemDTO> itemDTOs = items.stream().map(this::convertToItemDTO).collect(Collectors.toList());
+
+        log.debug("Fetched {} items for user: {}", items.size(), user.getEmail());
+
+        return itemDTOs;
+    }
+    private ItemDTO convertToItemDTO(Item item) {
+        Auction auction = auctionListingRepository.findByItems(item).orElse(null);
+        return ItemDTO.builder()
+                .itemId(item.getItemId())
+                .itemName(item.getItem_name())
+                .itemMaker(item.getItem_maker())
+                .description(item.getDescription())
+                .minBidAmount(item.getMin_bid_amount())
+                .pricePaid(item.getPrice_paid())
+                .currency(item.getCurrency())
+                .itemPhoto(item.getItem_photo())
+                .itemCondition(item.getItem_condition())
+                .categoryName(item.getItemcategory().getItemCategoryName())
+                .startTime(auction != null ? auction.getStartTime() : null)
+                .endTime(auction != null ? auction.getEndTime() : null)
+                .build();
+    }
+
+    public void deleteItem(int itemId, User user) throws ServiceException {
+        log.debug("Deleting item with ID: {} for user: {}", itemId, user.getEmail());
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, ITEM_NOT_FOUND));
+
+        if (item.getSellerId().getUserId() != user.getUserId()) {
+            throw new ServiceException(HttpStatus.UNAUTHORIZED, USER_NOT_AUTHORIZED);
+        }
+        log.info("Deleted Auction for ID: {} for user: {}", itemId, user.getEmail());
+        auctionListingRepository.deleteByItems(item);
+        log.info("Deleted Item for ID: {} for user: {}:", itemId, user.getEmail());
+        itemRepository.delete(item);
+        log.info("Deleted item with ID: {} for user: {}", itemId, user.getEmail());
+    }
+
 }

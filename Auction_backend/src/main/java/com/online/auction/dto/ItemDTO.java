@@ -17,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemDTO {
+    private int itemId;
     private String itemName;
     private String itemMaker;
     private String description;

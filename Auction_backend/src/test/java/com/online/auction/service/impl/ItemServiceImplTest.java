@@ -26,6 +26,8 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.online.auction.constant.TestConstants.END_TIME;
 import static com.online.auction.constant.TestConstants.INTEGER_ONE;
@@ -86,6 +88,8 @@ class ItemServiceImplTest {
         user.setUserId(INTEGER_ONE);
         user.setEmail(TEST_EMAIL);
         user.setPassword(PASSWORD);
+        user.setUserId(1);
+
     }
 
     @Test
@@ -139,6 +143,82 @@ class ItemServiceImplTest {
         assertEquals("Minimum bid amount must be positive", exception.getErrorMessage());
         verify(itemRepository, never()).save(any(Item.class));
         verify(auctionListingRepository, never()).save(any(Auction.class));
+    }
+
+    @Test
+    void getAllItemsByUserTest() {
+        // Mocking repository to return items for a specific user
+        ItemCategory itemCategory = new ItemCategory();
+        itemCategory.setItemCategoryName("Paintings");
+
+        Item item1 = Item.builder()
+                .itemId(1)
+                .item_name("Item 1")
+                .sellerId(user)
+                .itemcategory(itemCategory)
+                .build();
+
+        Item item2 = Item.builder()
+                .itemId(2)
+                .item_name("Item 221")
+                .sellerId(user)
+                .itemcategory(itemCategory)
+                .build();
+        when(itemRepository.findBySellerId(any(User.class))).thenReturn(Arrays.asList(item1, item2));
+        List<ItemDTO> items = itemService.getAllItemsByUser(user);
+        assertEquals(2, items.size());
+        assertEquals("Item 1", items.get(0).getItemName());
+        assertEquals("Item 221", items.get(1).getItemName());
+    }
+
+    @Test
+    void deleteItemSuccessfulTest() throws ServiceException {
+        // Mocking repository to return an item for deletion
+        Item item = new Item();
+        item.setItemId(1);
+        item.setSellerId(user);
+
+        when(itemRepository.findById(1)).thenReturn(Optional.of(item));
+
+        // Call the service method
+        itemService.deleteItem(1, user);
+
+        // Verify repository interactions
+        verify(itemRepository).findById(1);
+        verify(auctionListingRepository).deleteByItems(item);
+        verify(itemRepository).delete(item);
+    }
+
+    @Test
+    void deleteItemUnauthorizedTest() {
+        // Mocking repository to return an item for deletion
+        Item item = new Item();
+        item.setItemId(1);
+        item.setSellerId(new User()); // Different user
+
+        when(itemRepository.findById(1)).thenReturn(Optional.of(item));
+
+        // Call the service method and assert ServiceException
+        assertThrows(ServiceException.class, () -> itemService.deleteItem(1, user));
+
+        // Verify repository interactions
+        verify(itemRepository).findById(1);
+        verify(auctionListingRepository, never()).deleteByItems(any(Item.class));
+        verify(itemRepository, never()).delete(any(Item.class));
+    }
+
+    @Test
+    void deleteItemNotFoundTest() {
+        // Mocking repository to return empty for item deletion
+        when(itemRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Call the service method and assert ServiceException
+        assertThrows(ServiceException.class, () -> itemService.deleteItem(1, user));
+
+        // Verify repository interactions
+        verify(itemRepository).findById(1);
+        verify(auctionListingRepository, never()).deleteByItems(any(Item.class));
+        verify(itemRepository, never()).delete(any(Item.class));
     }
 
 }

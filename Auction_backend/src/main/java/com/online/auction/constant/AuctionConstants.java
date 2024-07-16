@@ -28,6 +28,9 @@ public class AuctionConstants {
     public static final String PASSWORD_RESET_REQUEST = "Password Reset Request";
     public static final String PASSWORD_RESET_LINK_BODY = "To reset your password, click the link below:\n";
     public static final String PASSWORD_RESET_LINK = "http://172.17.3.242:4200/reset-password?token=";
+    public static final String ITEM_NOT_FOUND = "Item not found";
+    public static final String USER_NOT_AUTHORIZED = "User is not authorized";
+
     public static final String NATIVE_HEADERS = "nativeHeaders";
     public static final int INTEGER_ZERO = 0;
     public static final String AUCTION_NOT_FOUND_MSG = "Auction not found";
