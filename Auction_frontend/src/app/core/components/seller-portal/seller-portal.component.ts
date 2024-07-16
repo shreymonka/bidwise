@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ItemListingServiceService } from '../../services/item-listing-service/item-listing-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-seller-portal',
@@ -33,4 +34,42 @@ export class SellerPortalComponent implements OnInit  {
       }
     );
   }
+
+  deleteItem(itemId: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to delete this item? This process cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.itemService.deleteItem(itemId).subscribe(
+          (response) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'Your item has been deleted.',
+              icon: 'success',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'Ok'
+            }).then(() => {
+              this.ngOnInit();
+            });
+          },
+          (error) => {
+            console.error('Error deleting item:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: 'An error occurred while deleting your item. Please try again.',
+              icon: 'error',
+              confirmButtonColor: '#dc3545',
+            });
+          }
+        );
+      }
+    });
+  }
+  
 }

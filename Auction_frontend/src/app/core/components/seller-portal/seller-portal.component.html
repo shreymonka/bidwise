@@ -22,7 +22,7 @@
 <!-- Main Body -->
     <div class="container" *ngIf="items.data.length > 0; else noItems">
         <div class="card p-3 mb-4" *ngFor="let item of items.data" style="border: 2px solid #000;">
-            <hr class="my-4" style="border: 1px solid #000;"> 
+            <!-- <hr class="my-4" style="border: 1px solid #000;">  -->
             <div class="d-flex flex-column flex-md-row">    
                 <div class="item-image mr-3">
                     <img [src]="item.itemPhoto" class="img-fluid" [alt]="item.itemName">
@@ -61,12 +61,12 @@
                         </div>
                     </div>
                     <div class="button-container justify-content-start">
-                        <button class="btn btn-outline-dark mr-2">REVIEW</button>
-                        <button class="btn btn-outline-dark">DELETE</button>
+                        <button class="btn btn-outline-dark mr-2" >REVIEW</button>
+                        <button class="btn btn-outline-dark" (click)="deleteItem(item.itemId)">DELETE</button>
                     </div>
                 </div>
             </div>
-            <hr class="my-4" style="border: 1px solid #000;">
+            <!-- <hr class="my-4" style="border: 1px solid #000;"> -->
         </div>
     </div>
 

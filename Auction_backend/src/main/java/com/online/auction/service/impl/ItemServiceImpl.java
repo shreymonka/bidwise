@@ -107,10 +107,15 @@ public class ItemServiceImpl implements ItemService {
     }
     @Override
     public List<ItemDTO> getAllItemsByUser(User user) {
-        List<Item> items = itemRepository.findBySellerId(user);
-        return items.stream().map(this::convertToItemDTO).collect(Collectors.toList());
-    }
+        log.debug("Fetching items for user: {}", user.getEmail());
 
+        List<Item> items = itemRepository.findBySellerId(user);
+        List<ItemDTO> itemDTOs = items.stream().map(this::convertToItemDTO).collect(Collectors.toList());
+
+        log.debug("Fetched {} items for user: {}", items.size(), user.getEmail());
+
+        return itemDTOs;
+    }
     private ItemDTO convertToItemDTO(Item item) {
         Auction auction = auctionListingRepository.findByItems(item).orElse(null);
         return ItemDTO.builder()
@@ -130,15 +135,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public void deleteItem(int itemId, User user) throws ServiceException {
-        // Find the item by ID and check if it belongs to the user
+        log.debug("Deleting item with ID: {} for user: {}", itemId, user.getEmail());
         Item item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST,ITEM_NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, ITEM_NOT_FOUND));
 
         if (item.getSellerId().getUserId() != user.getUserId()) {
             throw new ServiceException(HttpStatus.UNAUTHORIZED, USER_NOT_AUTHORIZED);
         }
+        log.info("Deleted Auction for ID: {} for user: {}", itemId, user.getEmail());
         auctionListingRepository.deleteByItems(item);
+        log.info("Deleted Item for ID: {} for user: {}:", itemId, user.getEmail());
         itemRepository.delete(item);
+        log.info("Deleted item with ID: {} for user: {}", itemId, user.getEmail());
     }
 
 }
