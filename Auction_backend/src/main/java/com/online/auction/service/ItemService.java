@@ -11,4 +11,5 @@ import java.util.List;
 public interface ItemService {
     String addItem(ItemDTO userDto, MultipartFile file, User user) throws ServiceException;
     List<ItemDTO> getAllItemsByUser(User user) throws ServiceException;
+    void deleteItem(int itemId, User user) throws ServiceException;
 }

@@ -14,6 +14,7 @@ import com.online.auction.repository.ItemRepository;
 import com.online.auction.service.ItemService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -113,6 +114,7 @@ public class ItemServiceImpl implements ItemService {
     private ItemDTO convertToItemDTO(Item item) {
         Auction auction = auctionListingRepository.findByItems(item).orElse(null);
         return ItemDTO.builder()
+                .itemId(item.getItemId())
                 .itemName(item.getItem_name())
                 .itemMaker(item.getItem_maker())
                 .description(item.getDescription())
@@ -125,6 +127,18 @@ public class ItemServiceImpl implements ItemService {
                 .startTime(auction != null ? auction.getStartTime() : null)
                 .endTime(auction != null ? auction.getEndTime() : null)
                 .build();
+    }
+
+    public void deleteItem(int itemId, User user) throws ServiceException {
+        // Find the item by ID and check if it belongs to the user
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST,ITEM_NOT_FOUND));
+
+        if (item.getSellerId().getUserId() != user.getUserId()) {
+            throw new ServiceException(HttpStatus.UNAUTHORIZED, USER_NOT_AUTHORIZED);
+        }
+        auctionListingRepository.deleteByItems(item);
+        itemRepository.delete(item);
     }
 
 }

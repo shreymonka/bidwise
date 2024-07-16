@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,4 +51,15 @@ public class ItemController {
         SuccessResponse<List<ItemDTO>> response = new SuccessResponse<>(200, HttpStatus.OK, items);
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/deleteItemListed")
+    public ResponseEntity<SuccessResponse<String>> deleteItem(
+            @RequestParam("itemId") int itemId,
+            @AuthenticationPrincipal User user
+    ) throws ServiceException {
+        itemService.deleteItem(itemId, user);
+        SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, "Item deleted successfully");
+        return ResponseEntity.ok(response);
+    }
+
 }
