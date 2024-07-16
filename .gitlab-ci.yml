@@ -21,6 +21,9 @@ build_frontend:
     - npm install
     - npm install -g @angular/cli
     - ng build
+  artifacts:
+    paths:
+      - Auction_frontend/dist/auction-frontend/
   tags:
     - dalfcs_docker_kvm
     

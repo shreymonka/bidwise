@@ -13,6 +13,7 @@ import { PricingComponent } from './core/components/pricing/pricing.component';
 import { ItemCategoryListingComponent } from './core/components/item-category-listing/item-category-listing.component';
 import { SellerPortalComponent } from './core/components/seller-portal/seller-portal.component';
 import { ItemListingComponent } from './core/components/item-listing/item-listing.component';
+import { AuctionComponent } from './core/components/auction/auction.component';
 
 const routes: Routes = [
   // {
@@ -28,10 +29,11 @@ const routes: Routes = [
   {path: 'postLogin', component: PostLoginLandingPageComponent},
   {path: 'forget-password', component: ForgetPasswordComponent},
   {path: 'reset-password', component: ResetPasswordComponent},
-  {path: 'pricing', component: PricingComponent },
+  { path: 'pricing', component: PricingComponent },
   {path: 'itemCategory', component: ItemCategoryListingComponent},
   {path: 'sellerPortal', component: SellerPortalComponent},
   {path: 'itemListing', component: ItemListingComponent},
+  {path: 'auction', component:AuctionComponent}
 ];
 
 @NgModule({

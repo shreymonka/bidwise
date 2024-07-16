@@ -12,4 +12,5 @@ public interface AuctionListingRepository extends JpaRepository<Auction, Integer
     Optional<Auction> findByItems(Item items);
     @Transactional
     void deleteByItems(Item item);
+    Optional<Auction> findByItems_ItemId(int itemId);
 }
