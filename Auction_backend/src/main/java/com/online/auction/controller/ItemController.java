@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +20,13 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 import static com.online.auction.constant.AuctionConstants.ITEM;
 
 @RestController
-@CrossOrigin(origins = "http://172.17.3.242:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(API_VERSION_V1 + ITEM)
 @RequiredArgsConstructor
 public class ItemController {
@@ -31,13 +34,20 @@ public class ItemController {
     private ItemService itemService;
 
     @PostMapping("/additem")
-    public ResponseEntity<SuccessResponse<String>> register(
+    public ResponseEntity<SuccessResponse<String>> addItem(
             @RequestPart("itemDTO") ItemDTO itemDTO,
             @RequestPart("file") MultipartFile files,
             @AuthenticationPrincipal User user
     ) throws ServiceException {
         String addResponseItem = itemService.addItem(itemDTO,files, user);
         SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, addResponseItem);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getitems")
+    public ResponseEntity<SuccessResponse<List<ItemDTO>>> getAllItems(@AuthenticationPrincipal User user) throws ServiceException {
+        List<ItemDTO> items = itemService.getAllItemsByUser(user);
+        SuccessResponse<List<ItemDTO>> response = new SuccessResponse<>(200, HttpStatus.OK, items);
         return ResponseEntity.ok(response);
     }
 }

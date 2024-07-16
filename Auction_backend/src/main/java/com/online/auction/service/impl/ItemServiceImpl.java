@@ -19,8 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.online.auction.constant.AuctionConstants.*;
 
@@ -102,4 +104,27 @@ public class ItemServiceImpl implements ItemService {
             throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR,IMAGE_UPLOAD_FAILED);
         }
     }
+    @Override
+    public List<ItemDTO> getAllItemsByUser(User user) {
+        List<Item> items = itemRepository.findBySellerId(user);
+        return items.stream().map(this::convertToItemDTO).collect(Collectors.toList());
+    }
+
+    private ItemDTO convertToItemDTO(Item item) {
+        Auction auction = auctionListingRepository.findByItems(item).orElse(null);
+        return ItemDTO.builder()
+                .itemName(item.getItem_name())
+                .itemMaker(item.getItem_maker())
+                .description(item.getDescription())
+                .minBidAmount(item.getMin_bid_amount())
+                .pricePaid(item.getPrice_paid())
+                .currency(item.getCurrency())
+                .itemPhoto(item.getItem_photo())
+                .itemCondition(item.getItem_condition())
+                .categoryName(item.getItemcategory().getItemCategoryName())
+                .startTime(auction != null ? auction.getStartTime() : null)
+                .endTime(auction != null ? auction.getEndTime() : null)
+                .build();
+    }
+
 }
