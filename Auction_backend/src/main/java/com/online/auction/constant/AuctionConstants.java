@@ -17,6 +17,7 @@ public class AuctionConstants {
     public static final String INVALID_CREDENTIALS_MSG = "Invalid Credentials";
     public static final String API_VERSION_V1 = "/api/v1";
     public static final String USER = "/user";
+    public static final String AUCTION_MAPPING = "/auction";
     public static final String EMAIL_SUBJECT = "Welcome to Bidwise!";
     public static final String EMAIL_BODY_REGISTER = "You have successfully registered in our system!\nTake control and enjoy bidding";
     public static final String ITEM = "/item";
