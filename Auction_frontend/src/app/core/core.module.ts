@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { PricingComponent } from './components/pricing/pricing.component';
+import { AuctionComponent } from './components/auction/auction.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PricingComponent } from './components/pricing/pricing.component';
     PostLoginLandingPageComponent,
     ForgetPasswordComponent,
     ResetPasswordComponent,
-    PricingComponent],
+    PricingComponent,
+    AuctionComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent
