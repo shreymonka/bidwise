@@ -1,8 +1,11 @@
 package com.online.auction.service.impl;
 
 
+import com.online.auction.dto.AuctionDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Auction;
+import com.online.auction.model.Item;
+import com.online.auction.model.User;
 import com.online.auction.repository.AuctionListingRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,12 +36,26 @@ class AuctionServiceImplTest {
 
     @Test
     void getAuctionDetailsTest() throws ServiceException {
+        Item item = new Item();
+        item.setItemId(INTEGER_ONE);
+
+        AuctionDTO auctionDTO = new AuctionDTO();
+        auctionDTO.setAuctionId(String.valueOf(INTEGER_ONE));
+        auctionDTO.setItemId(String.valueOf(INTEGER_ONE));
+        auctionDTO.setSellerId(String.valueOf(INTEGER_ONE));
+
+        User user = new User();
+        user.setUserId(INTEGER_ONE);
+
         Auction auction = new Auction();
+        auction.setAuctionId(INTEGER_ONE);
+        auction.setItems(item);
+        auction.setSellerId(user);
         when(auctionListingRepository.findByItems_ItemId(INTEGER_ONE)).thenReturn(Optional.of(auction));
 
-        Auction result = auctionService.getAuctionDetails(INTEGER_ONE);
+        AuctionDTO result = auctionService.getAuctionDetails(INTEGER_ONE);
 
-        assertEquals(auction, result);
+        assertEquals(auctionDTO, result);
     }
 
     @Test
