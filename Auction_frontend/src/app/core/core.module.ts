@@ -15,6 +15,7 @@ import { PricingComponent } from './components/pricing/pricing.component';
 import { ItemCategoryListingComponent } from './components/item-category-listing/item-category-listing.component';
 import { SellerPortalComponent } from './components/seller-portal/seller-portal.component';
 import { ItemListingComponent } from './components/item-listing/item-listing.component';
+import { AuctionComponent } from './components/auction/auction.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ItemListingComponent } from './components/item-listing/item-listing.com
     PostLoginLandingPageComponent,
     ItemCategoryListingComponent,
     SellerPortalComponent,
-    ItemListingComponent],
+    ItemListingComponent,
+    AuctionComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent

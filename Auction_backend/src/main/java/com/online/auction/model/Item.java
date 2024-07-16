@@ -46,7 +46,7 @@ public class Item {
     private double min_bid_amount;
 
     @Column(nullable = true)
-    private double selling_amount;
+    private Double selling_amount;
 
     private String item_photo;
 
