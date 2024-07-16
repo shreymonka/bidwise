@@ -102,7 +102,6 @@ export class ItemListingComponent implements OnInit {
         }).then(() => {
           this.router.navigate(['/sellerPortal']); 
         });;
-        console.log('Item added successfully!', response);
       }, error => {
         console.error('Error adding item', error);
         Swal.fire({
