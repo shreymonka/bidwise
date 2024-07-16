@@ -27,7 +27,6 @@ export class SellerPortalComponent implements OnInit  {
     this.itemService.getAllItems().subscribe(
       (response) => {
         this.items = response;
-        console.log(JSON.stringify(this.items, null, 2));
       },
       (error) => {
         console.error('Error fetching items:', error);
