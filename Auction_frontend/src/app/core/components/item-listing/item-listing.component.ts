@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ItemListingServiceService } from '../../services/item-listing-service/item-listing-service.service';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-item-listing',
   templateUrl: './item-listing.component.html',
@@ -19,7 +21,8 @@ export class ItemListingComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private itemService: ItemListingServiceService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.itemForm = this.fb.group({
       itemName: ['', Validators.required],
@@ -90,9 +93,24 @@ export class ItemListingComponent implements OnInit {
       formData.append('file', this.selectedFile);
 
       this.itemService.addItemForAuction(formData).subscribe(response => {
+        Swal.fire({
+          title: 'Item Added Successfully!',
+          text: 'Your item has been submitted for auction.',
+          icon: 'success',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Ok'
+        }).then(() => {
+          this.router.navigate(['/sellerPortal']); 
+        });;
         console.log('Item added successfully!', response);
       }, error => {
         console.error('Error adding item', error);
+        Swal.fire({
+          title: 'Error Adding Item',
+          text: 'An error occurred while adding your item. Please try again.',
+          icon: 'error',
+          confirmButtonColor: '#dc3545',
+        });
       });
     } else {
       this.itemPhotoTouched = true;
