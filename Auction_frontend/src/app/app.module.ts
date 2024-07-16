@@ -21,7 +21,6 @@ import { TokenInterceptor } from './core/services/interceptor/token.interceptor'
     ReactiveFormsModule
   ],
   providers: [
-    LoginServiceService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

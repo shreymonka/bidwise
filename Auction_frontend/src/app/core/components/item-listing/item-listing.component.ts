@@ -12,6 +12,9 @@ export class ItemListingComponent implements OnInit {
 
   itemForm: FormGroup;
   categoryName: string = "";
+  selectedFile: File | null = null;
+  itemPhotoInvalid: boolean = false;
+  itemPhotoTouched: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +33,6 @@ export class ItemListingComponent implements OnInit {
       startTime: ['', Validators.required],
       endDate: ['', Validators.required],
       endTime: ['', Validators.required],
-      itemPhoto: ['', Validators.required],
       categoryName: ''
     });
   }
@@ -46,10 +48,13 @@ export class ItemListingComponent implements OnInit {
 
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.itemForm.patchValue({
-        itemPhoto: file
-      });
+      this.selectedFile = event.target.files[0];
+      this.itemPhotoInvalid = false;
+      this.itemPhotoTouched = true;
+    } else {
+      this.selectedFile = null;
+      this.itemPhotoInvalid = true;
+      this.itemPhotoTouched = false;
     }
   }
 
@@ -58,7 +63,7 @@ export class ItemListingComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.itemForm.valid) {
+    if (this.itemForm.valid && this.selectedFile) {
       const formData = new FormData();
       const formValues = this.itemForm.value;
 
@@ -66,32 +71,32 @@ export class ItemListingComponent implements OnInit {
       const startDateTime = this.combineDateTime(formValues.startDate, formValues.startTime);
       const endDateTime = this.combineDateTime(formValues.endDate, formValues.endTime);
 
-      // Append form values to FormData
-      formData.append('itemName', formValues.itemName);
-      formData.append('itemMaker', formValues.itemMaker);
-      formData.append('description', formValues.description);
-      formData.append('pricePaid', formValues.pricePaid);
-      formData.append('currency', formValues.currency);
-      formData.append('itemCondition', formValues.itemCondition);
-      formData.append('minBidAmount', formValues.minBidAmount);
-      formData.append('startTime', startDateTime);
-      formData.append('endTime', endDateTime);
-      formData.append('itemPhoto', formValues.itemPhoto);
-      formData.append('categoryName', this.categoryName);
-
-      // Log the form data as JSON
-      const formValuesJson = {
-        ...formValues,
+      // Append JSON data as part of FormData
+      formData.append('itemDTO', new Blob([JSON.stringify({
+        itemName: formValues.itemName,
+        itemMaker: formValues.itemMaker,
+        description: formValues.description,
+        pricePaid: formValues.pricePaid,
+        currency: formValues.currency,
+        itemCondition: formValues.itemCondition,
+        minBidAmount: formValues.minBidAmount,
         startTime: startDateTime,
-        endTime: endDateTime
-      };
-      console.log("Form data as JSON:", JSON.stringify(formValuesJson, null, 2));
+        endTime: endDateTime,
+        categoryName: this.categoryName
+      })],{type:'application/json'}));
 
-      // this.itemService.addItemForAuction(formData).subscribe(response => {
-      //   console.log('Item added successfully!', response);
-      // }, error => {
-      //   console.error('Error adding item', error);
-      // });
+      // Append file to FormData
+      // const validtTypes = ["image/jpeg","image/png","image/jpg"]
+      formData.append('file', this.selectedFile);
+
+      this.itemService.addItemForAuction(formData).subscribe(response => {
+        console.log('Item added successfully!', response);
+      }, error => {
+        console.error('Error adding item', error);
+      });
+    } else {
+      this.itemPhotoTouched = true;
+      this.itemPhotoInvalid = true;
     }
   }
 }

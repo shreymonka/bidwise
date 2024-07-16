@@ -6,7 +6,7 @@ import { catchError, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class LoginServiceService {
-  private loginUrl = 'http://172.17.3.242:8080/api/v1/user/authenticate';
+  private loginUrl = 'http://localhost:8080/api/v1/user/authenticate';
   private tokenKey = 'authToken';
 
   constructor(private http: HttpClient) { }

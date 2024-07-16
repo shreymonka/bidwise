@@ -121,12 +121,13 @@
       </div>
     </div>
     <h3>PHOTOS</h3>
-    <div class="form-group">
-      <input type="file" class="form-control-file" (change)="onFileChange($event)">
-      <div *ngIf="itemForm.controls['itemPhoto'].invalid && itemForm.controls['itemPhoto'].touched" class="text-danger">
-        Photo is required.
-      </div>
-    </div>
+<div class="form-group">
+  <input type="file" class="form-control-file" (change)="onFileChange($event)" accept="image/*" id="itemPhoto" name="itemPhoto">
+  <div *ngIf="itemPhotoInvalid && itemPhotoTouched" class="text-danger">
+    Photo is required.
+  </div>
+</div>
+
     <h2 class="font-weight-bold">LIST THE ITEM</h2>
     <button type="submit" class="btn btn-outline-dark" style="margin-bottom: 8px;" [disabled]="itemForm.invalid">LIST ITEM</button>
   </form>
