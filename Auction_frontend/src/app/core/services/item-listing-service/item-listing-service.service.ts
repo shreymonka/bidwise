@@ -7,13 +7,20 @@ import { Route, Router } from '@angular/router';
   providedIn: 'root'
 })
 export class ItemListingServiceService {
-  endpoint: string = 'http://localhost:8080/api/v1/item/additem';
+  addItemEndPoint: string = 'http://localhost:8080/api/v1/item/additem';
+  getAllItemsEndPoint: string = 'http://localhost:8080/api/v1/item/getitems';
 
   constructor(private http: HttpClient,public router:Router) { }
   addItemForAuction(itemDetails:any): Observable<any>{
-    let api = `${this.endpoint}`;
+    let api = `${this.addItemEndPoint}`;
     console.log("Test payload"+api);
     return this.http.post(api,itemDetails).pipe(catchError(this.handleError));
+  }
+
+
+  getAllItems():Observable<any>{
+    let api = `${this.getAllItemsEndPoint}`;
+    return this.http.get(api).pipe(catchError(this.handleError));
   }
 
   private handleError(error: any): Observable<never> {
