@@ -8,8 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,8 +30,8 @@ public class Auction {
     @JoinColumn(name = "seller_id")
     private User sellerId;
 
-    @Column(name = "startTime", columnDefinition = "DATETIME")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "start_time", columnDefinition = "DATETIME")
+//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime startTime;
 
     @ManyToOne
@@ -42,7 +40,7 @@ public class Auction {
 
     private boolean isOpen;
 
-    @Column(name = "endTime", columnDefinition = "DATETIME")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "end_time", columnDefinition = "DATETIME")
+//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime endTime;
 }
