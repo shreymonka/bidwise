@@ -105,6 +105,7 @@ public class ItemServiceImpl implements ItemService {
             throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR,IMAGE_UPLOAD_FAILED);
         }
     }
+
     @Override
     public List<ItemDTO> getAllItemsByUser(User user) {
         log.debug("Fetching items for user: {}", user.getEmail());
