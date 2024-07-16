@@ -1,113 +1,126 @@
-<div class="container px-0">
-    <!-- <nav class="navbar navbar-expand-lg navbar-light border-bottom ">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">tolkon</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="fas fa-bars"></span>
-        </button>
-        <div class="collapse navbar-collapse " id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Market</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Activity</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Featrues</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link " href="#">Connect Wallet</a>
-            </li>
-          </ul>
+<app-post-login-header></app-post-login-header>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="auction.component.css">
+</head>
+<body>   
+
+<!-- Navbar -->
+    <!-- Body Header -->
+    <div class="container mt-5">
+        <div class="text-start mb-4">
+            <h1 class="p-4">AUCTION</h1>
         </div>
-      </div>
-    </nav> -->
-    <div class="row">
-      <div class="col-lg-8 border-end">
-        <div class="pic">
-          <img src="https://images.pexels.com/photos/886317/pexels-photo-886317.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-        </div>
-      </div>
-      <div class="col-lg-4 ps-0">
-        <div class="content">
-          <div class="content-head">
-            <div class="d-flex align-items-center justify-content-between ">
-              <p class="h-1 mb-0">Sparkle Twinkle</p>
-              <p class="icon mb-0">
-                <span class="fas fa-heart pe-1"></span>82
-              </p>
-            </div>
-            <p class="text-white mb-3">
-              <span class="textmuted">Minimum bid Amount</span> 15 ETH
-            </p>
-          </div>
-          <div class="content-body">
-            <div>
-              <div class="topnav mb-3">
-                <div class="d-flex px-1 border-bottom">
-                  <a href="#" class="active textmuted">Details</a>
-                  <a href="#" class="textmuted">Bids</a>
-                </div>
-              </div>
-              <div class="text-white">
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam nulla ad laborum quod libero, quam quos consequuntur </p>
-                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem minima mollitia doloribus asperiores nihil, maiores aut iusto repudiandae doloremque veritatis. </p>
-              </div>
-              <div class=" text-white d-flex align-items-center justify-content-between">
-                <div class="d-flex flex-column">
-                  <p class="textmuted mb-2">Creator</p>
-                  <div class=" d-flex align-items-center justify-content-between content-img">
-                    <div class="box-img">
-                      <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="">
-                      <span class="fas fa-shield-alt"></span>
-                    </div>
-                    <p class="mb-0 ms-3">MAJIDZ</p>
-                  </div>
-                </div>
-                <div class="d-flex flex-column">
-                  <p class="textmuted mb-2">Collection</p>
-                  <div class=" d-flex align-items-center justify-content-between content-img">
-                    <img src="https://images.pexels.com/photos/5653734/pexels-photo-5653734.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="">
-                    <p class="mb-0 ms-3">Tolkon</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="progress mt-4">
-            <div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <form [formGroup]="formdata"> 
-          <div class="content-footer">
-            <div class="d-flex align-items-center justify-content-between mt-3">
-              <div class="d-flex flex-column text-white">
-                <p class="mb-2 textmuted">Minimum bid Amount</p>
-                <p class="mb-0 bid">15 bid</p>
-              </div>
-              <div class="d-flex flex-column text-white">
-                <p class="mb-2 textmuted">Available untill</p>
-                <!-- <p class="mb-0 bid">2:20:16</p> -->
-                <!-- <p class="mb-0 bid">{{timeLeft}}</p> -->
-              </div>
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">$</span>
-                <div class="form-group">
-                  <input type="text" class="form-control" formControlName = "currentBid" aria-label="current Bid">
-                <input type="text" class="form-control" formControlName = "itemId" aria-label="Item ID">
-                <input type="text" class="form-control" formControlName = "bid" aria-label="Amount (to the nearest dollar)">
-              </div>
-                <span class="input-group-text">.00</span>
-            </div>
-  
-            <!-- <div class="btn btn-primary w-100 my-4" >Place a Bid</div> -->
-            <button class="btn btn-primary" (click)="onSubmit()">Subscribe Bid Channel</button>
-            <button class="btn btn-primary" (click)="onSubmit2()">Place a Bid!</button>
-          </div>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+    <!-- Main body -->
+    <div class="container">
+        <div class="card p-3 mb-4" style="border: 2px solid #000;">
+            <div class="d-flex flex-column flex-md-row">    
+                <div class="item-image mr-3">
+                    <img src="images/earbuds.jpg" class="img-fluid" alt="Samsung Earbuds">
+                </div>
+                <div class="d-flex flex-column w-100 custom-padding">
+                    <div class="auctiondetail">
+                        <p>NAME OF ITEM</p>
+                        <h4>SAMSUNG EARBUDS</h4>
+                        <hr class="my-4" style="border: 1px solid #000;"> 
+                    </div>
+                    <div class="auctiondetail">
+                        <p>MAKER OF THE ITEM</p>
+                        <h4>SAMSUNG</h4>
+                        <hr class="my-4" style="border: 1px solid #000;"> 
+                    </div>
+                    <div class="d-flex flex-column flex-md-row w-100">
+                        <div class="auctiondetail">
+                            <p>ORIGINAL PRICE</p>
+                            <h4>$70</h4>
+                            <hr class="my-4" style="border: 1px solid #000;"> 
+                        </div>
+                        <div class="auctiondetail">
+                            <p>CONDITION</p>
+                            <h4>NEW</h4>
+                            <hr class="my-4" style="border: 1px solid #000;"> 
+                        </div>
+                        <div class="auctiondetail">
+                            <p>INITIAL BIDDING PRICE</p>
+                            <h4>$55</h4>
+                            <hr class="my-4" style="border: 1px solid #000;"> 
+                        </div>
+                        <div class="auctiondetail">
+                            <p>CURRENT BID</p>
+                            <h4>$67</h4>
+                            <hr class="my-4" style="border: 1px solid #000;"> 
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- AUCTION NOT STARTED -->
+
+            <div class="d-flex flex-column">
+                <div class="auctiondetail">
+                    <p style="font-weight: bold; padding-bottom: 10px;">AUCTION WILL BEGIN AT X DATE AND Y TIME!</p>
+                </div>
+                <div class="button-container justify-content-start auctiondetail">
+                    <button class="btn btn-outline-dark mr-2">ALL AUCTIONS</button>
+                </div>
+            </div>
+
+            <!-- AUCTION STARTED -->
+
+            <!-- <div class="d-flex flex-column">
+                <div class="auctiondetail">
+                    <p style="font-weight: bold; padding-bottom: 10px;">BIDDING ENDS IN X MINS!</p>
+                </div>
+                <div class="auctiondetail">  
+                    <p>ACCOUNT BALANCE</p>
+                    <h4>$120</h4>
+                </div>
+                <div class="d-flex flex-md-row auctiondetail">
+                    <label for="initialBidPrice">ENTER YOUR BID AMOUNT</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control auctiondetail" id="initialBidPrice" placeholder="$55">
+                    </div>
+                </div>
+                <div class="button-container justify-content-start auctiondetail">
+                    <button class="btn btn-outline-dark mr-2">PLACE YOUR BID</button>
+                </div>
+            </div> -->
+
+            <!-- AFTER FIRST BID -->
+
+            <!-- <div class="d-flex flex-column">
+                <div class="auctiondetail">
+                    <p style="font-weight: bold; padding-bottom: 10px;">YOU PLACED YOUR BID, SIT BACK AND RELAX OR PLACE A ANOTHER BID!</p>
+                </div>
+                <div class="auctiondetail">  
+                    <p>REMAINING ACCOUNT BALANCE</p>
+                    <h4>$90</h4>
+                </div>
+                <div class="button-container justify-content-start auctiondetail">
+                    <button class="btn btn-outline-dark mr-2">PLACE ANOTHER YOUR BID</button>
+                    <button class="btn btn-outline-dark mr-2">ALL AUCTIONS</button>
+                </div>
+            </div> -->
+
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+<!-- Footer -->
+<app-footer></app-footer>
