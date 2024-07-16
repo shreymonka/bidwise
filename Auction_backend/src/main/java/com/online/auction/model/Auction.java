@@ -7,8 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -18,9 +16,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Builder
@@ -42,7 +37,7 @@ public class Auction {
     private LocalDateTime startTime;
 
     @ManyToOne
-    @JoinColumn(name="itemId",nullable = false)
+    @JoinColumn(name = "itemId", nullable = false)
     private Item items;
 
     private boolean isOpen;
