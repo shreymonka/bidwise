@@ -12,5 +12,5 @@ public interface ItemService {
     List<ItemDTO> getAllItemsByUser(User user) throws ServiceException;
     void deleteItem(int itemId, User user) throws ServiceException;
 
-    List<ItemDTO> getAllAuctionItems() throws ServiceException;
+    List<ItemDTO> findItemsByItemId(Integer itemId) throws ServiceException;
 }

@@ -152,15 +152,14 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
-    public List<ItemDTO> getAllAuctionItems() throws ServiceException {
-        log.debug("Fetching all auction items");
+    public List<ItemDTO> findItemsByItemId(Integer itemId) throws ServiceException {
+        log.debug("Fetching items by itemId");
 
-        List<Item> items = itemRepository.findAllByOOrderByItem_nameAsc();
+        List<Item> items = itemRepository.findByItemId(itemId);
         List<ItemDTO> itemDTOs = items.stream().map(this::convertToItemDTO).collect(Collectors.toList());
 
-        log.debug("Fetched {} auction items", items.size());
+        log.debug("Fetched {} items by itemId", items.size());
 
         return itemDTOs;
     }
-
 }

@@ -54,6 +54,7 @@ public class Item {
     @Column(name = "item_condition")
     private ItemCondition item_condition;
 
+    @Column(name = "item_name")
     private String item_name;
 
     private String item_maker;
