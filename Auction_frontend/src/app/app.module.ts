@@ -25,7 +25,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ToastrModule.forRoot(  {timeOut: 1000})
   ],
   providers: [
-    LoginServiceService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
