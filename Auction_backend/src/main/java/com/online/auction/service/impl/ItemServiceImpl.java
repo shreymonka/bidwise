@@ -150,4 +150,16 @@ public class ItemServiceImpl implements ItemService {
         log.info("Deleted item with ID: {} for user: {}", itemId, user.getEmail());
     }
 
+
+    @Override
+    public List<ItemDTO> findItemsByItemId(Integer itemId) throws ServiceException {
+        log.debug("Fetching items by itemId");
+
+        List<Item> items = itemRepository.findByItemId(itemId);
+        List<ItemDTO> itemDTOs = items.stream().map(this::convertToItemDTO).collect(Collectors.toList());
+
+        log.debug("Fetched {} items by itemId", items.size());
+
+        return itemDTOs;
+    }
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -28,6 +27,7 @@ import static com.online.auction.constant.AuctionConstants.ITEM;
 
 @RestController
 @CrossOrigin(origins = "http://172.17.3.242:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(API_VERSION_V1 + ITEM)
 @RequiredArgsConstructor
 public class ItemController {
@@ -59,6 +59,15 @@ public class ItemController {
     ) throws ServiceException {
         itemService.deleteItem(itemId, user);
         SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, "Item deleted successfully");
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/itemsById")
+    public ResponseEntity<SuccessResponse<List<ItemDTO>>> getItemsByItemId(
+            @RequestParam("itemId") Integer itemId
+    ) throws ServiceException {
+        List<ItemDTO> items = itemService.findItemsByItemId(itemId);
+        SuccessResponse<List<ItemDTO>> response = new SuccessResponse<>(200, HttpStatus.OK, items);
         return ResponseEntity.ok(response);
     }
 
