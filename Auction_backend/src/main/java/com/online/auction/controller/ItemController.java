@@ -62,4 +62,9 @@ public class ItemController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("items")
+    public ResponseEntity<SuccessResponse<AuctionItem>> getAllAuctionItems(){
+        return itemService.getAllAuctionItems();
+    }
+
 }
