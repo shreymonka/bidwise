@@ -1,6 +1,5 @@
 package com.online.auction.controller;
 
-import com.online.auction.dto.AuctionItemDTO;
 import com.online.auction.dto.ItemDTO;
 import com.online.auction.dto.SuccessResponse;
 import com.online.auction.exception.ServiceException;
@@ -63,8 +62,10 @@ public class ItemController {
     }
 
     @GetMapping("/items")
-    public ResponseEntity<SuccessResponse<AuctionItemDTO>> getAllAuctionItems(){
-        return itemService.getAllAuctionItems();
+    public ResponseEntity<SuccessResponse<List<ItemDTO>>> getAllAuctionItems() throws ServiceException{
+         List<ItemDTO> auctionItems = itemService.getAllAuctionItems();
+         SuccessResponse<List<ItemDTO>> response = new SuccessResponse<>(200, HttpStatus.OK, auctionItems);
+         return ResponseEntity.ok(response);
     }
 
 }

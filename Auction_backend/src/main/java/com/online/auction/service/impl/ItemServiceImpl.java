@@ -150,4 +150,17 @@ public class ItemServiceImpl implements ItemService {
         log.info("Deleted item with ID: {} for user: {}", itemId, user.getEmail());
     }
 
+
+    @Override
+    public List<ItemDTO> getAllAuctionItems() throws ServiceException {
+        log.debug("Fetching all auction items");
+
+        List<Item> items = itemRepository.findAllByOOrderByItem_nameAsc();
+        List<ItemDTO> itemDTOs = items.stream().map(this::convertToItemDTO).collect(Collectors.toList());
+
+        log.debug("Fetched {} auction items", items.size());
+
+        return itemDTOs;
+    }
+
 }
