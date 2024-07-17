@@ -27,6 +27,7 @@ import static com.online.auction.constant.AuctionConstants.ITEM;
 
 @RestController
 @CrossOrigin(origins = "http://172.17.3.242:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(API_VERSION_V1 + ITEM)
 @RequiredArgsConstructor
 public class ItemController {
@@ -61,11 +62,13 @@ public class ItemController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/items")
-    public ResponseEntity<SuccessResponse<List<ItemDTO>>> getAllAuctionItems() throws ServiceException{
-         List<ItemDTO> auctionItems = itemService.getAllAuctionItems();
-         SuccessResponse<List<ItemDTO>> response = new SuccessResponse<>(200, HttpStatus.OK, auctionItems);
-         return ResponseEntity.ok(response);
+    @GetMapping("/itemsById")
+    public ResponseEntity<SuccessResponse<List<ItemDTO>>> getItemsByItemId(
+            @RequestParam("itemId") Integer itemId
+    ) throws ServiceException {
+        List<ItemDTO> items = itemService.findItemsByItemId(itemId);
+        SuccessResponse<List<ItemDTO>> response = new SuccessResponse<>(200, HttpStatus.OK, items);
+        return ResponseEntity.ok(response);
     }
 
 }
