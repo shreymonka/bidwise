@@ -7,38 +7,60 @@
 
 body {
     background-color: #ffffff;
+    font-size: 1.3rem;
 }
 
-.btn-primary {
-    color: #000;
-    background-color:#D1CECE;
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    border: 2px solid #000;
+}
+
+p{
+    margin: 0;
+}
+
+.form-control-plaintext {
+    padding-left: 0;
+}
+
+@media (max-width: 767.98px) {
+    .custom-padding {
+        padding-top: 20px; 
+    }
+}
+@media (min-width:1024px) {
+    .auctiondetail {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+.auctiondetail {
+    flex: 1;
+    text-align: start; /* Center align text within each detail */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.item-image {
+    width: 100%;
+    max-width: 300px;
+    height: 300px; /* Fixed height */
+    overflow: hidden;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.btn {
+    border: 2px solid;
+}
+
+.btn-outline-dark {
     border-color: #000;
-}
-
-.btn-primary:hover {
-    color: #fff;
-    background-color: #000;
-    border-color: #fff;
-}
-
-.btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
-    color: #fff;
-    background-color: #000;
-    border-color: #000;
-}
-
-.navbar {
-    margin-bottom: 20px;
-}
-
-.navbar-brand img {
-    height: 70px;
-}
-
-.nav-link {
     color: #000;
-}
-
-.nav-link:hover {
-    color: rgba(0, 0, 0);
 }
