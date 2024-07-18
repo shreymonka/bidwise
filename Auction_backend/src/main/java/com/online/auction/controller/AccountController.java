@@ -14,6 +14,7 @@ import static com.online.auction.constant.AuctionConstants.ACCOUNT;
 import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 
 @RestController
+@CrossOrigin(origins = "http://172.17.3.242:4200")
 @RequestMapping(API_VERSION_V1 + ACCOUNT)
 @RequiredArgsConstructor
 public class AccountController {
