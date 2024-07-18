@@ -8,13 +8,14 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root',
 })
 export class AuctionServiceService {
-  private baseUrl = 'ws://172.17.3.242:8080/gs-guide-websocket';
+  private websockerUrl = 'ws://172.17.3.242:8080/gs-guide-websocket';
+  private baseUrl = "http://172.17.3.242:8080/api/v1";
   constructor(private http: HttpClient, private toastr: ToastrService) {}
   private client: any;
 
   connect(formdata: FormGroup) {
-    console.log("The base URL is:"+this.baseUrl)
-    var socket = new WebSocket(this.baseUrl, 'v10.stomp');
+    console.log("The base URL is:"+this.websockerUrl)
+    var socket = new WebSocket(this.websockerUrl, 'v10.stomp');
     this.client = Stomp.over(socket);
     this.client.connect({}, (x: Frame) => {
       console.log('Connected!!!!!!!!: ' + x);
@@ -36,12 +37,12 @@ export class AuctionServiceService {
   }
 
   publish(formdata: FormGroup,accessToken: string |null) {
-    console.log('The base URL is:'+this.baseUrl)
+    console.log('The base URL is:'+this.websockerUrl)
     const headers = {
       Authorization: accessToken,
       // Add other headers as needed
     };
-    var socket = new WebSocket(this.baseUrl, 'v10.stomp');
+    var socket = new WebSocket(this.websockerUrl, 'v10.stomp');
     this.client = Stomp.over(socket);
     this.client.connect({}, (x: any) => {
       console.log(formdata.value.itemId);
@@ -59,7 +60,11 @@ export class AuctionServiceService {
   }
 
 
-  getAuctionDetails(){
-    //Need to fetch the auction details
+  getAuctionDetails(itemId: any){
+    return this.http.get(this.baseUrl+"/auction/"+itemId);
+  }
+
+  closeAuction(itemId: any){
+    return this.http.get(this.baseUrl+"/auction/postAuction/"+itemId);
   }
 }
