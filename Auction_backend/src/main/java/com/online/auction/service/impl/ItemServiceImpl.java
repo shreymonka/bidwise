@@ -82,7 +82,7 @@ public class ItemServiceImpl implements ItemService {
                 .startTime(itemDto.getStartTime())
                 .endTime(itemDto.getEndTime())
                 .items(savedItem)
-                .isOpen(false)
+                .isOpen(true)
                 .sellerId(user)
                 .build();
 
