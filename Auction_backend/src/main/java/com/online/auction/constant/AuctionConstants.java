@@ -35,4 +35,6 @@ public class AuctionConstants {
     public static final int INTEGER_ZERO = 0;
     public static final String AUCTION_NOT_FOUND_MSG = "Auction not found";
     public static final String ITEM_NOT_FOUND_MSG = "Item not found";
+
+    public static final String ACCOUNT = "/account";
 }
