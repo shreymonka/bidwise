@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { LoginServiceService } from '../../services/login-service/login-service.service';
 import { Subscription, interval } from 'rxjs';
 import { ItemListingServiceService } from '../../services/item-listing-service/item-listing-service.service';
+import { AccountServiceService } from '../../services/account-service/account-service.service';
 
 @Component({
   selector: 'app-auction',
@@ -29,10 +30,13 @@ export class AuctionComponent implements OnInit, OnDestroy {
   currentBid:any;
   hasBid = false;
   isAuctionClosed = false;
+  accountDetails:any;
+  funds:any;
 
   constructor(
     private auctionService: AuctionServiceService,
     private itemListingService : ItemListingServiceService,
+    private accountService:AccountServiceService,
     private route: ActivatedRoute,
     private loginService: LoginServiceService,
     private toastr: ToastrService
@@ -49,7 +53,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
     // Temporary taking item Id as 1
     // this.itemId=this.route.snapshot.params['itemId'];
     console.log('The current time is:' + this.currentTime);
-    this.itemId = 29;
+    this.itemId = 5;
     console.log('The item Id is:' + this.itemId);
     // this.formdata.patchValue({
     //   itemId: 5
@@ -58,6 +62,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
     if (this.itemId != undefined) {
       this.loadItemData(this.itemId);
       this.loadAuctionData(this.itemId);
+      this.loadAccountFundsData();
     }
     this.subscribe();
   }
@@ -71,12 +76,18 @@ export class AuctionComponent implements OnInit, OnDestroy {
     console.log('The bidded amount entered is:'+this.formdata.get('bid'));
     //const currentBid = this.formdata.get('currentBid')?.value
     console.log('The current Bid is:'+this.formdata.get('currentBid')?.value);
+
     if(((Number(this.formdata.get('bid')?.value) < Number(this.itemDetails.minBidAmount)))
         || (Number((this.formdata.get('bid')?.value) < Number(this.formdata.get('currentBid')?.value)))){
       this.toastr.error(
         'Please enter amount higher than the minimum Bid'
       );
-    }else{
+    }else if(Number(this.formdata.get('bid')?.value) > this.funds){
+      this.toastr.error(
+        'Not enough funds in the account'
+      );
+    }
+    else{
       console.log("Typed OnSubmit2");
       this.auctionService.publish(this.formdata, this.loginService.getToken());
     }
@@ -109,6 +120,19 @@ export class AuctionComponent implements OnInit, OnDestroy {
         this.endTime = new Date(this.auctionDetails.data.endTime);
         console.log('The startTime for the auction is:' + this.startTime);
         this.startCountdown(this.startTime, this.endTime);
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  loadAccountFundsData(){
+    this.accountService.getAccountFunds().subscribe(
+      (fundsDetails) => {
+        console.log('The data fecthed from the account is:'+fundsDetails);
+        this.accountDetails = fundsDetails;
+        this.funds = this.accountDetails.data;
       },
       error => {
         console.log(error);
