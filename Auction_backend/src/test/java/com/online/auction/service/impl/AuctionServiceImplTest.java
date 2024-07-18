@@ -7,6 +7,7 @@ import com.online.auction.model.Auction;
 import com.online.auction.model.Item;
 import com.online.auction.model.User;
 import com.online.auction.repository.AuctionListingRepository;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -68,5 +69,16 @@ class AuctionServiceImplTest {
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
         assertEquals(AUCTION_NOT_FOUND_MSG, exception.getErrorMessage());
+    }
+
+    @Test
+    @SneakyThrows
+    public void processPostAuctionStateSuccessTest() {
+
+    }
+
+    @Test
+    public void testProcessPostAuctionStateNoBidDetails() {
+
     }
 }
