@@ -10,8 +10,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +21,8 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "auction_bid_detail")
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuctionBidDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
