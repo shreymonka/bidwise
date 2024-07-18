@@ -3,6 +3,7 @@ package com.online.auction.service.impl;
 import com.online.auction.dto.AuctionDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Auction;
+import com.online.auction.repository.AuctionBidDetailRepository;
 import com.online.auction.repository.AuctionListingRepository;
 import com.online.auction.service.AuctionService;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG
 public class AuctionServiceImpl implements AuctionService {
 
     private AuctionListingRepository auctionListingRepository;
+    private AuctionBidDetailRepository auctionBidDetailRepository;
 
     @Override
     public AuctionDTO getAuctionDetails(int itemId) throws ServiceException {
@@ -35,5 +37,10 @@ public class AuctionServiceImpl implements AuctionService {
                 .sellerId(String.valueOf(auctionDb.getSellerId().getUserId()))
                 .itemId(String.valueOf(auctionDb.getItems().getItemId()))
                 .build();
+    }
+
+    @Override
+    public boolean processPostAuctionState(int itemId) throws ServiceException {
+        return true;
     }
 }
