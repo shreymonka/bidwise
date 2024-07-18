@@ -24,4 +24,15 @@ public class AccountServiceImpl implements AccountService {
         }
         return account.getFunds();
     }
+
+    @Override
+    public void addFunds(Integer userId, float amount) throws ServiceException {
+        Account account = accountRepository.findByUserId(userId);
+        if (account == null) {
+            throw new ServiceException(HttpStatus.NOT_FOUND, "Account not found for user id: " + userId);
+        }
+
+        account.setFunds(account.getFunds() + amount);
+        accountRepository.save(account);
+    }
 }
