@@ -16,7 +16,7 @@ export class AddFundsService {
   constructor(private http: HttpClient) {}
 
   addFunds(userId: number, amount: number): Observable<any> {
-    const url = `${this.endpoint}/add-funds`;
+    const url = `${this.endpoint}`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
     });
