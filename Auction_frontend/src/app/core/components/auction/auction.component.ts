@@ -53,7 +53,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
     // Temporary taking item Id as 1
     // this.itemId=this.route.snapshot.params['itemId'];
     console.log('The current time is:' + this.currentTime);
-    this.itemId = 5;
+    this.itemId = 29;
     console.log('The item Id is:' + this.itemId);
     // this.formdata.patchValue({
     //   itemId: 5
@@ -64,7 +64,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
       this.loadAuctionData(this.itemId);
       this.loadAccountFundsData();
     }
-    this.subscribe();
+    //this.subscribe();
   }
 
   subscribe() {
