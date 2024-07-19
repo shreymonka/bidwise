@@ -37,6 +37,9 @@ const routes: Routes = [
   {path: 'sellerPortal', component: SellerPortalComponent},
   {path: 'itemListing', component: ItemListingComponent},
   {path: 'auction', component:AuctionComponent},
+  {path: 'upcoming-all-auctions', component: UpcomingAllAuctionsComponent},
+  {path: 'pre-login-upcoming-all-auctions', component: PreLoginUpcomingAllAuctionsComponent}
+  {path: 'auction', component:AuctionComponent},
   {path: 'addFunds', component:AddFundsComponent},
   {path: 'auction', component:AuctionComponent},
   {path: 'tradebook',component:TradebookComponent},

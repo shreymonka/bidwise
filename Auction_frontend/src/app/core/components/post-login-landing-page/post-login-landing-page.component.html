@@ -28,18 +28,27 @@
     </div>
       
     <div class="upcoming-auctions">
+      <div class="heading-container">
         <h2>Upcoming Auctions</h2>
-        <div class="container d-inline-flex">
-            <div *ngFor="let auction of auctions" class="container">
-                <div class="card" style="width: 18rem;">
-                  <img src="assets\images\avacado.jpeg" class="card-img-top" alt="...">
-                  <p style="margin-bottom: 0px; font-weight:500; font-size: larger">{{ auction.title }}</p>
-                  <p style="margin-bottom: 0px; font-size: 0.85rem;">{{ auction.date | date: 'dd MMM yyyy' }} | {{ auction.date | date: 'h:mm a' }}</p>
-                  <button class="btn btn-outline-dark" style="margin-top: 8px; padding-top: 3px; padding-bottom: 3px;" (click)="bidNow(auction)">BID NOW</button>
-                </div>
-            </div>
+        <div class="more-link">
+          <a (click)="navigateToAllAuctions()">+ more</a>
         </div>
+      </div>
+      <div class="container d-inline-flex">
+        <div *ngFor="let auction of firstThreeUpcomingAuctions" class="container">
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" [src]="auction.itemPhoto" alt="{{ auction.itemName }}">
+            <p style="margin-bottom: 0px; font-weight:500; font-size: larger">{{ auction.itemName }}</p>
+            <p style="margin-bottom: 0px; font-size: 0.85rem;">
+              {{ auction.auctionStartTime | date: 'dd MMM yyyy' }} | {{
+              auction.auctionStartTime | date: 'h:mm a' }} UTC | {{ auction.location }}
+            </p>
+            <button class="btn btn-outline-dark" style="margin-top: 8px; padding-top: 3px; padding-bottom: 3px;" (click)="bidNow(auction)">BID NOW</button>
+          </div>
+        </div>
+      </div>
     </div>
+    
 
     <div class="auctions-categories">
         <h2>Auctions According To Categories</h2>

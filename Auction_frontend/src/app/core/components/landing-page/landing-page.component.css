@@ -1,21 +1,80 @@
 /* Upcoming Section */ 
 .upcoming-auctions {
-    margin-bottom: 50px;
+  margin-bottom: 50px;
 }
-  
+
+.suggested-for-you{
+  margin-bottom: 50px;
+}
+
+.auctions-categories{
+  margin-bottom: 50px;
+}
 .auctions-list {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
-  
+
 .auction-item {
-    text-align: center;
+  text-align: center;
 }
-  
+
 .auction-item img {
-    max-width: 100%;
+  max-width: 100%;
 }
-  
+
+
+.heading-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px; 
+}
+
+.heading-container h2 {
+  margin: 0; 
+}
+
+.heading-container .more-link a {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: larger;
+  text-decoration: none; 
+  color: #000; 
+}
+
+.heading-container .more-link a:hover {
+  text-decoration: underline;
+}
+
+.upcoming-auctions .container.d-inline-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.upcoming-auctions .container .card {
+  width: 18rem;
+  margin-right: 15px; 
+}
+
+.more-link {
+  align-self: center;
+  margin-left: auto; 
+}
+
+.more-link a {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: larger;
+  align-self: center;
+  text-decoration: none; 
+  color: #000; 
+}
+
+.more-link a:hover {
+  text-decoration: underline; 
+}
 /* How it works Section */
 .how-it-works {
     
@@ -169,4 +228,39 @@ h2::after {
   .container, .container-lg, .container-md, .container-sm, .container-xl {
       max-width: 1432px;
   }
+}
+
+.card{
+    border: 1px solid rgb(255 255 255 / 13%);
+}
+
+.card-img-top {
+    border-top-left-radius: calc(.25rem - 1px);
+    border-top-right-radius: calc(.25rem - 1px);
+    border-bottom-left-radius: calc(.25rem - 1px);
+    border-bottom-right-radius: calc(.25rem - 1px);
+}
+
+.btn{
+    border: 2px solid;
+}
+
+.btn-outline-dark {
+    border-color: #000;
+    color: #000;
+}
+
+.btn-outline-dark:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-dark {
+    background-color: #000;
+    border-color: #000;
+}
+
+.btn-dark:hover {
+    background-color: #000000;
+    border-color: #000000;
 }

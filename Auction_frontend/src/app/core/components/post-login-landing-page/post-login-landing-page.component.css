@@ -23,6 +23,58 @@
 .auction-item img {
     max-width: 100%;
 }
+
+.heading-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px; 
+}
+
+.heading-container h2 {
+  margin: 0; 
+}
+
+.heading-container .more-link a {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: larger;
+  text-decoration: none; 
+  color: #000; 
+}
+
+.heading-container .more-link a:hover {
+  text-decoration: underline; 
+}
+
+.upcoming-auctions .container.d-inline-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.upcoming-auctions .container .card {
+  width: 18rem;
+  margin-right: 15px; 
+}
+
+.more-link {
+  align-self: center;
+  margin-left: auto; 
+}
+
+.more-link a {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: larger;
+  align-self: center;
+  text-decoration: none;
+  color: #000; 
+}
+
+.more-link a:hover {
+  text-decoration: underline; 
+}
   
 /* How it works Section */
 .how-it-works {
