@@ -18,6 +18,7 @@ import { ItemListingComponent } from './components/item-listing/item-listing.com
 import { AuctionComponent } from './components/auction/auction.component';
 import { AddFundsComponent } from './components/add-funds/add-funds.component';
 import { TradebookComponent } from './components/tradebook/tradebook.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { TradebookComponent } from './components/tradebook/tradebook.component';
     AuctionComponent,
     TradebookComponent,
     AuctionComponent,
-    AddFundsComponent],
+    AddFundsComponent,
+    UserProfileComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent
