@@ -1,1 +1,185 @@
-<p>user-profile works!</p>
+<app-post-login-header></app-post-login-header>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY PROFILE</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="user-profile.component.css">
+</head>
+<body>   
+    <!-- Body Header -->
+    <div class="container mt-5">
+        <div class="text-start mb-4">
+            <h1 class="p-4">MY PROFILE</h1>
+        </div>
+    </div>
+
+
+    <!-- Profile Info -->
+    <div class="container mt-5">
+        <div class="row text-start">
+            <div class="col-md-3 mb-4">
+                <p class="font-weight-bold">NAME</p>
+                <p>TOM RAIDER</p>
+                <hr>
+            </div>
+            <div class="col-md-3 mb-4">
+                <p class="font-weight-bold">EMAIL</p>
+                <p>tomraid@abc.com</p>
+                <hr>
+            </div>
+            <div class="col-md-3 mb-4">
+                <p class="font-weight-bold">COUNTRY</p>
+                <p>CANADA</p>
+                <hr>
+            </div>
+            <div class="col-md-3 mb-4">
+                <p class="font-weight-bold">CITY</p>
+                <p>HALIFAX</p>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dahsboard Header -->
+    <div class="container">
+        <div class="text-start mb-4">
+            <h1 class="p-4">DASHBOARD</h1>
+        </div>
+    </div>
+
+    <!-- DashBoard -->
+
+    <div class="container">
+        <div class="row text-start">
+            <div class="col-md-3 mb-4">
+                <p class="font-weight-bold">AUCTIONS PARTICIPATED</p>
+                <p>15</p>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buttons to toggle charts -->
+    <div class="container text-start mb-4">
+        <button class="btn btn-primary" onclick="showChart('chart1')">Show Chart 1</button>
+        <button class="btn btn-secondary" onclick="showChart('chart2')">Show Chart 2</button>
+    </div>
+
+    <!-- Charts -->
+    <div class="container text-start">
+        <!-- Chart 1 -->
+        <div id="chart1" class="chart-container">
+            <h2>WON BIDS AND LOST BIDS</h2>
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <!-- Chart 2 -->
+        <div id="chart2" class="chart-container hidden">
+            <h2>DIFFERENT CATEGORIES</h2>
+            <canvas id="secondChart"></canvas>
+        </div>
+    </div> 
+
+    <!-- Footer -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+        
+        function showChart(chartId) {
+            // Hide all charts
+            document.getElementById('chart1').classList.add('hidden');
+            document.getElementById('chart2').classList.add('hidden');
+
+            // Show the selected chart
+            document.getElementById(chartId).classList.remove('hidden');
+        }
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Dataset 1',
+                        data: [40, 60, 60, 20, 20, 20, 20],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        type: 'line',
+                        label: 'Dataset 2',
+                        data: [50, 100, 120, 80, 60, 60, 80],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    // Second chart configuration
+    var ctx2 = document.getElementById('secondChart').getContext('2d');
+    var secondChart = new Chart(ctx2, {
+        type: 'pie',
+        data: {
+            labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+            datasets: [{
+                label: 'Categories',
+                data: [30, 50, 70, 20, 40],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 205, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    </script>
+</body>
+</html>
+
+<app-footer></app-footer>
