@@ -1,6 +1,7 @@
 package com.online.auction.service.impl;
 
 import com.online.auction.dto.AuctionDTO;
+import com.online.auction.dto.AuctionItemsDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Account;
 import com.online.auction.model.Auction;
@@ -8,6 +9,8 @@ import com.online.auction.model.AuctionBidDetails;
 import com.online.auction.model.Item;
 import com.online.auction.repository.AccountRepository;
 import com.online.auction.repository.AuctionBidDetailRepository;
+import com.online.auction.model.Item;
+import com.online.auction.model.User;
 import com.online.auction.repository.AuctionListingRepository;
 import com.online.auction.repository.ItemRepository;
 import com.online.auction.service.AuctionService;
@@ -18,7 +21,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG;
 
@@ -96,5 +103,62 @@ public class AuctionServiceImpl implements AuctionService {
             log.info("Successfully closed the Auction: {}", auction);
         }
         return true;
+    }
+
+    @Override
+    public List<AuctionItemsDTO> getUpcomingAuctions() {
+
+        List<Auction> upcomingAuctions = auctionListingRepository.findUpcomingAndCurrentAuctions(LocalDateTime.now());
+
+        return upcomingAuctions.stream()
+                .map(auction -> AuctionItemsDTO.builder()
+                        .itemId(auction.getItems().getItemId())
+                        .itemName(auction.getItems().getItem_name())
+                        .auctionStartTime(auction.getStartTime())
+                        .itemPhoto(auction.getItems().getItem_photo())
+                        .itemMaker(auction.getItems().getItem_maker())
+                        .description(auction.getItems().getDescription())
+                        .minBidAmount(auction.getItems().getMin_bid_amount())
+                        .price_paid(auction.getItems().getPrice_paid())
+                        .currency(auction.getItems().getCurrency())
+                        .item_condition(auction.getItems().getItem_condition())
+                        .itemcategory(auction.getItems().getItemcategory())
+                        .auctionEndTime(auction.getEndTime())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AuctionItemsDTO> getItemsForExistingUser(int sellerId) throws ServiceException {
+        User seller = new User();
+        seller.setUserId(sellerId);
+
+        List<Item> items = itemRepository.findUpcomingAndCurrentItemsExcludingUserItems(LocalDateTime.now(), seller);
+        List<AuctionItemsDTO> auctionItemsDTOList = new ArrayList<>();
+        for(Item item: items){
+            Optional<Auction> auctionOptional = auctionListingRepository.findByItems_ItemId(item.getItemId());
+            if (auctionOptional.isEmpty()) {
+                throw new ServiceException(HttpStatus.BAD_REQUEST, AUCTION_NOT_FOUND_MSG);
+            }
+            Auction auctionDb = auctionOptional.get();
+            AuctionItemsDTO auctionItemsDTO=AuctionItemsDTO.builder()
+                    .itemId(item.getItemId())
+                    .itemName(item.getItem_name())
+                    .auctionStartTime(auctionDb.getStartTime())
+                    .itemPhoto(item.getItem_photo())
+                    .itemMaker(item.getItem_maker())
+                    .description(item.getDescription())
+                    .minBidAmount(item.getMin_bid_amount())
+                    .price_paid(item.getPrice_paid())
+                    .currency(item.getCurrency())
+                    .item_condition(item.getItem_condition())
+                    .itemcategory(item.getItemcategory())
+                    .auctionEndTime(auctionDb.getEndTime())
+                    .build();
+
+            auctionItemsDTOList.add(auctionItemsDTO);
+
+        }
+        return auctionItemsDTOList;
     }
 }
