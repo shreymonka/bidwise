@@ -2,6 +2,7 @@ package com.online.auction.controller;
 
 import com.online.auction.dto.SuccessResponse;
 import com.online.auction.exception.ServiceException;
+import com.online.auction.model.User;
 import com.online.auction.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import static com.online.auction.constant.AuctionConstants.ACCOUNT;
 import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 
 @RestController
-@CrossOrigin(origins = "http://172.17.3.242:4200")
 @RequestMapping(API_VERSION_V1 + ACCOUNT)
 @RequiredArgsConstructor
 public class AccountController {
@@ -32,9 +32,9 @@ public class AccountController {
 
     @PostMapping("/addFunds")
     public ResponseEntity<SuccessResponse<String>> addFunds(
-            @AuthenticationPrincipal Integer userId,
+            @AuthenticationPrincipal User user,
             @RequestParam("amount") float amount) throws ServiceException{
-        accountService.addFunds(userId, amount);
+        accountService.addFunds(user.getUserId(), amount);
         SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, "Funds added successfully");
         return ResponseEntity.ok(response);
     }
