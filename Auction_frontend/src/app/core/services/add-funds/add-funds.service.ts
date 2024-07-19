@@ -11,7 +11,8 @@ import {
   providedIn: 'root'
 })
 export class AddFundsService {
-  endpoint: string = 'http://localhost:8080/api/v1/account/addFunds';
+  // endpoint: string = 'http://localhost:8080/api/v1/account/addFunds';
+  endpoint: string = 'http://172.17.3.242:8080/api/v1/account/addFunds';
 
   constructor(private http: HttpClient) {}
 
