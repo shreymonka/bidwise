@@ -16,9 +16,9 @@
         </div>
     </div>
     <div class="container">
-        <div class="card p-3 mb-4" style="border: 2px solid #000;">
+        <div *ngIf="trades.data != ''" class="card p-3 mb-4" style="border: 2px solid #000;">
             <hr class="my-4" style="border: 1px solid #000;"> 
-            <div class="d-flex flex-column flex-md-row">    
+            <div *ngFor="let trade of trades.data"class="d-flex flex-column flex-md-row">    
                 <!-- <div class="item-image mr-3">
                     <img [src]="item.itemPhoto" class="img-fluid" [alt]="item.itemName">
                 </div> -->
@@ -26,25 +26,27 @@
                     <div class="item-details w-100 d-flex justify-content-between flex-column flex-lg-row">
                         <div class="detail custom-padding">
                             <p>NAME OF ITEM</p>
-                            <h4>item.itemName</h4>
+                            <h4>{{trade.nameOfItem}}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
                         <div class="detail">
                             <p>SOLD PRICE</p>
-                            <h4>item.minBidAmount</h4>
+                            <h4>{{trade.soldPrice}}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
                         <div class="detail">
                             <p>MY HIGHEST BID</p>
-                            <h4>item.minBidAmount</h4>
+                            <h4>{{trade.userHighestBid}}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
                         <div class="detail">
                             <p>DATE OF AUCTION</p>
-                            <h4>item.startTime</h4>
+                            <h4>{{trade.dateOfAuction | date:'MM/dd/yyyy'}}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
-                        <button class="btn btn-outline-dark">GET INVOICE</button>
+                        <button *ngIf="trade.auctionWon==true" button class="btn btn-outline-dark">GET INVOICE</button>
+                        <button *ngIf="trade.auctionWon==false" button class="btn btn-outline-dark">Auction Lost</button>
+
                     </div>
                 
                 </div>
@@ -53,15 +55,12 @@
         </div>
     </div>
 
-    <ng-template #noItems>
-        <div class="container" style="margin-bottom: 16px;">
+        <div *ngIf="trades.data == ''" class="container" style="margin-bottom: 16px;">
             <div class="main-content text-center">
                 <h1>THERE'S NOTHING HERE TO SEE</h1>
-                <h3>Post a new item to get started</h3>
-                <h6>Check the <a href="#">DEMO AUCTION</a> if you are new here</h6>
+                <h3>Participate in a Auction</h3>
             </div>
         </div>
-    </ng-template>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

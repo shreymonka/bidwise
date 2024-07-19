@@ -8,7 +8,7 @@ import { Route, Router } from '@angular/router';
 })
 export class ItemListingServiceService {
   addItemEndPoint: string = 'http://172.17.3.242:8080/api/v1/item/additem';
-  getAllItemsEndPoint: string = 'http://172.17.3.242:8080/api/v1/item/getitems';
+  getAllItemsEndPoint: string = 'http://localhost:8080/api/v1/item/getitems';
   deleteItemEndPoint: String = 'http://172.17.3.242:8080/api/v1/item/deleteItemListed';
 
   constructor(private http: HttpClient,public router:Router) { }
