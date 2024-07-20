@@ -1,10 +1,12 @@
 package com.online.auction.service.impl;
 
+import com.online.auction.dto.InvoiceDTO;
 import com.online.auction.dto.TradebookDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Auction;
 import com.online.auction.model.AuctionBidDetails;
 import com.online.auction.model.Item;
+import com.online.auction.model.ItemCategory;
 import com.online.auction.model.User;
 import com.online.auction.repository.TradebookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,10 +21,13 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.online.auction.constant.TestConstants.TEST_EMAIL;
 import static com.online.auction.constant.TestConstants.USER_NOT_FOUND;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
@@ -55,6 +60,9 @@ public class TradebookServiceImplTest {
         testAuction.setAuctionId(1);
         testAuction.setEndTime(LocalDateTime.now());
 
+    }
+    @Test
+    public void testGetAllTradesByUser_Success() throws ServiceException {
         AuctionBidDetails bidDetails1 = AuctionBidDetails.builder()
                 .auctionId(testAuction)
                 .itemId(testItem)
@@ -73,9 +81,6 @@ public class TradebookServiceImplTest {
 
         when(tradebookRepository.findAllByUser(testUser))
                 .thenReturn(Arrays.asList(bidDetails1, bidDetails2));
-    }
-    @Test
-    public void testGetAllTradesByUser_Success() throws ServiceException {
         List<TradebookDTO> tradebookDTOList = tradebookService.getAllTradesByUser(testUser);
 
         assertEquals(2, tradebookDTOList.size());
@@ -120,5 +125,42 @@ public class TradebookServiceImplTest {
         assertEquals(HttpStatus.NOT_FOUND.value(), exception.getStatusCode());
         assertEquals("Error fetching tradebook details", exception.getErrorMessage());
         verify(tradebookRepository, times(1)).findAllByUser(testUser);
+    }
+
+    @Test
+    public void testGetInvoiceByAuctionId_Success() throws ServiceException {
+        when(tradebookRepository.findByAuctionIdAndIsWonTrue(anyInt())).thenReturn(Optional.of(mockAuctionBidDetails()));
+
+        InvoiceDTO invoice = tradebookService.getInvoiceByAuctionId(1);
+
+        assertNotNull(invoice);
+        assertEquals("Test Item", invoice.getItemName());
+        assertEquals("John Doe", invoice.getSellerName());
+        assertEquals("john.doe@example.com", invoice.getSellerEmail());
+        assertEquals("Electronics", invoice.getItemCategory());
+        assertEquals(LocalDateTime.now().getDayOfYear(), invoice.getDateOfInvoice().getDayOfYear());
+        assertEquals(100.0, invoice.getPricePaid());
+        verify(tradebookRepository, times(1)).findByAuctionIdAndIsWonTrue(1);
+    }
+
+    @Test
+    public void testGetInvoiceByAuctionId_NotFound() {
+        when(tradebookRepository.findByAuctionIdAndIsWonTrue(anyInt())).thenReturn(Optional.empty());
+
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            tradebookService.getInvoiceByAuctionId(1);
+        });
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), exception.getStatusCode());
+        assertEquals("No winning bid found for the given auction ID", exception.getErrorMessage());
+        verify(tradebookRepository, times(1)).findByAuctionIdAndIsWonTrue(1);
+    }
+
+    private AuctionBidDetails mockAuctionBidDetails() {
+        User seller = User.builder().firstName("John").lastName("Doe").email("john.doe@example.com").build();
+        ItemCategory category = ItemCategory.builder().itemCategoryName("Electronics").build();
+        Item item = Item.builder().item_name("Test Item").sellerId(seller).itemcategory(category).build();
+        Auction auction = Auction.builder().endTime(LocalDateTime.now().minusDays(1)).build();
+        return AuctionBidDetails.builder().auctionId(auction).itemId(item).bid_amount(100.0).isWon(true).build();
     }
 }
