@@ -19,6 +19,7 @@ import { AuctionComponent } from './components/auction/auction.component';
 import { AddFundsComponent } from './components/add-funds/add-funds.component';
 import { TradebookComponent } from './components/tradebook/tradebook.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgChartsModule
   ],
 })
 export class CoreModule { }
