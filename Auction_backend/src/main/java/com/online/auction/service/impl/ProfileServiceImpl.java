@@ -1,5 +1,6 @@
 package com.online.auction.service.impl;
 
+import com.online.auction.dto.UserProfileDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.User;
 import com.online.auction.repository.ProfileRepository;
@@ -17,11 +18,11 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
 
     @Override
-    public User getUserDetails(Integer userId) throws ServiceException {
-        User user = profileRepository.findByUserId(userId);
-        if (user == null) {
+    public UserProfileDTO getUserProfile(Integer userId) throws ServiceException {
+        UserProfileDTO userProfile = profileRepository.findUserProfileByUserId(userId);
+        if (userProfile == null) {
             throw new ServiceException(HttpStatus.NOT_FOUND, "User not found for user id: " + userId);
         }
-        return user;
+        return userProfile;
     }
 }

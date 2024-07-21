@@ -1,6 +1,7 @@
 package com.online.auction.controller;
 
 import com.online.auction.dto.SuccessResponse;
+import com.online.auction.dto.UserProfileDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.User;
 import com.online.auction.service.ProfileService;
@@ -26,10 +27,10 @@ public class ProfileController {
     private ProfileService profileService;
 
     @GetMapping("/details")
-    public ResponseEntity<SuccessResponse<User>> getUserDetails(
-            @AuthenticationPrincipal User user) throws ServiceException {
-        profileService.getUserDetails(user.getUserId());
-        SuccessResponse<User> response = new SuccessResponse<>(200, HttpStatus.OK, user);
+    public ResponseEntity<SuccessResponse<UserProfileDTO>> getUserProfile(
+            @RequestParam("userId") Integer userId) throws ServiceException {
+        UserProfileDTO userProfile = profileService.getUserProfile(userId);
+        SuccessResponse<UserProfileDTO> response = new SuccessResponse<>(200, HttpStatus.OK, userProfile);
         return ResponseEntity.ok(response);
     }
 }
