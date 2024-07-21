@@ -2,12 +2,14 @@ package com.online.auction.service.impl;
 
 
 import com.online.auction.dto.AuctionDTO;
+import com.online.auction.dto.AuctionItemsDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Account;
 import com.online.auction.model.Auction;
 import com.online.auction.model.AuctionBidDetails;
 import com.online.auction.model.Item;
 import com.online.auction.model.ItemCategory;
+import com.online.auction.model.ItemCondition;
 import com.online.auction.model.User;
 import com.online.auction.repository.AccountRepository;
 import com.online.auction.repository.AuctionBidDetailRepository;
@@ -21,21 +23,27 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG;
 import static com.online.auction.constant.AuctionConstants.INTEGER_SEVEN;
-import static com.online.auction.constant.TestConstants.AUCTION_RECORD_NOT_FOUND_MSG;
+import static com.online.auction.constant.TestConstants.END_TIME;
 import static com.online.auction.constant.TestConstants.INTEGER_ONE;
-import static com.online.auction.constant.TestConstants.ITEM_NAME_1;
-import static com.online.auction.constant.TestConstants.PAINTING_ITEM_CATEGORY;
+import static com.online.auction.constant.TestConstants.START_TIME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+
+
 
 class AuctionServiceImplTest {
     @Mock
@@ -161,4 +169,100 @@ class AuctionServiceImplTest {
         assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
         assertEquals(AUCTION_RECORD_NOT_FOUND_MSG, exception.getErrorMessage());
     }
+
+    @Test
+    void getUpcomingAuctionsTest() {
+
+
+        List<Auction> auctions = new ArrayList<>();
+        Item item = new Item();
+        item.setItemId(INTEGER_ONE);
+        item.setItem_name("Test Item");
+        item.setItem_photo("photo_url");
+        item.setItem_maker("Maker");
+        item.setDescription("Description");
+        item.setMin_bid_amount(100);
+        item.setPrice_paid(200);
+        item.setCurrency("USD");
+        item.setItem_condition(ItemCondition.NEW);
+
+        ItemCategory itemCategory = new ItemCategory();
+        itemCategory.setItemCategoryName("Electronics");
+
+        Auction auction = new Auction();
+        auction.setAuctionId(INTEGER_ONE);
+        auction.setItems(item);
+        auction.setStartTime(START_TIME);
+        auction.setEndTime(END_TIME);
+        auctions.add(auction);
+
+        when(auctionListingRepository.findUpcomingAndCurrentAuctions(any(LocalDateTime.class))).thenReturn(auctions);
+
+        List<AuctionItemsDTO> result = auctionService.getUpcomingAuctions();
+
+        assertEquals(1, result.size());
+        assertEquals("Test Item", result.get(0).getItemName());
+    }
+
+    @Test
+    void getItemsForExistingUserTest() throws ServiceException {
+        User user = new User();
+        user.setUserId(INTEGER_ONE);
+
+        Item item = new Item();
+        item.setItemId(INTEGER_ONE);
+        item.setItem_name("Test Item");
+        item.setItem_photo("photo_url");
+        item.setItem_maker("Maker");
+        item.setDescription("Description");
+        item.setMin_bid_amount(100);
+        item.setPrice_paid(200);
+        item.setCurrency("USD");
+        item.setItem_condition(ItemCondition.NEW);
+
+        ItemCategory itemCategory = new ItemCategory();
+        itemCategory.setItemCategoryName("Electronics");
+
+        List<Item> items = new ArrayList<>();
+        items.add(item);
+
+        Auction auction = new Auction();
+        auction.setAuctionId(INTEGER_ONE);
+        auction.setItems(item);
+        auction.setStartTime(START_TIME);
+        auction.setEndTime(END_TIME);
+
+        when(itemRepository.findUpcomingAndCurrentItemsExcludingUserItems(any(LocalDateTime.class), eq(user))).thenReturn(items);
+        when(auctionListingRepository.findByItems_ItemId(item.getItemId())).thenReturn(Optional.of(auction));
+
+        List<AuctionItemsDTO> result = auctionService.getItemsForExistingUser(INTEGER_ONE);
+
+        assertEquals(1, result.size());
+        assertEquals("Test Item", result.get(0).getItemName());
+    }
+
+    @Test
+    void getItemsForExistingUserWhenAuctionNotPresentTest() {
+        User user = new User();
+        user.setUserId(INTEGER_ONE);
+
+        Item item = new Item();
+        item.setItemId(INTEGER_ONE);
+
+        List<Item> items = new ArrayList<>();
+        items.add(item);
+
+        when(itemRepository.findUpcomingAndCurrentItemsExcludingUserItems(any(LocalDateTime.class), eq(user))).thenReturn(items);
+        when(auctionListingRepository.findByItems_ItemId(item.getItemId())).thenReturn(Optional.empty());
+
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            auctionService.getItemsForExistingUser(INTEGER_ONE);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
+        assertEquals(AUCTION_NOT_FOUND_MSG, exception.getErrorMessage());
+    }
+
+
+
 }
