@@ -9,4 +9,5 @@ import java.util.List;
 public interface ProfileService {
     UserProfileDTO getUserProfile(Integer userId) throws ServiceException;
     long countUserParticipatedAuctions(Integer userId) throws ServiceException;
+    List<BidStatsDTO> getBidStats(Integer userId) throws ServiceException;
 }

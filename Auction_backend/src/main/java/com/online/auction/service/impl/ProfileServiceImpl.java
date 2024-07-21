@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,5 +37,25 @@ public class ProfileServiceImpl implements ProfileService {
             throw new ServiceException(HttpStatus.NOT_FOUND, "No auctions found for user id: " + userId);
         }
         return auctionCount;
+    }
+
+    @Override
+    public List<BidStatsDTO> getBidStats(Integer userId) throws ServiceException {
+        List<BidStatsDTO> bidStats = profileRepository.findBidStatsByUserIdForCurrentYear(userId);
+        List<BidStatsDTO> allMonthsStats = initializeMonthlyStats();
+
+        for (BidStatsDTO stat : bidStats) {
+            allMonthsStats.set(stat.getMonth() - 1, stat);
+        }
+
+        return allMonthsStats;
+    }
+
+    private List<BidStatsDTO> initializeMonthlyStats() {
+        List<BidStatsDTO> stats = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            stats.add(new BidStatsDTO(i, 0, 0));
+        }
+        return stats;
     }
 }

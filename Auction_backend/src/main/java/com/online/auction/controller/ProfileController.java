@@ -44,4 +44,12 @@ public class ProfileController {
         SuccessResponse<Long> response = new SuccessResponse<>(200, HttpStatus.OK, auctionCount);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/bidStats")
+    public ResponseEntity<SuccessResponse<List<BidStatsDTO>>> getBidStats(
+            @RequestParam("userId") Integer userId) throws ServiceException {
+        List<BidStatsDTO> bidStats = profileService.getBidStats(userId);
+        SuccessResponse<List<BidStatsDTO>> response = new SuccessResponse<>(200, HttpStatus.OK, bidStats);
+        return ResponseEntity.ok(response);
+    }
 }
