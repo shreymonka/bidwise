@@ -14,6 +14,7 @@ import { ItemCategoryListingComponent } from './core/components/item-category-li
 import { SellerPortalComponent } from './core/components/seller-portal/seller-portal.component';
 import { ItemListingComponent } from './core/components/item-listing/item-listing.component';
 import { AuctionComponent } from './core/components/auction/auction.component';
+import { AddFundsComponent } from './core/components/add-funds/add-funds.component';
 
 const routes: Routes = [
   // {
@@ -33,7 +34,8 @@ const routes: Routes = [
   {path: 'itemCategory', component: ItemCategoryListingComponent},
   {path: 'sellerPortal', component: SellerPortalComponent},
   {path: 'itemListing', component: ItemListingComponent},
-  {path: 'auction', component:AuctionComponent}
+  {path: 'auction', component:AuctionComponent},
+  {path: 'addFunds', component:AddFundsComponent}
 ];
 
 @NgModule({

@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceImplTest {
@@ -49,6 +49,27 @@ public class AccountServiceImplTest {
 
         ServiceException exception = assertThrows(ServiceException.class, () -> {
             accountService.getAccountBalance(1);
+        });
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), exception.getStatusCode());
+    }
+
+    @Test
+    void addFundsSuccessTest() throws ServiceException {
+        when(accountRepository.findByUserId(anyInt())).thenReturn(account);
+
+        accountService.addFunds(1, 50.0f);
+
+        verify(accountRepository, times(1)).save(account);
+        assertEquals(180.0f, account.getFunds());
+    }
+
+    @Test
+    void addFundsAccountNotFoundTest() {
+        when(accountRepository.findByUserId(anyInt())).thenReturn(null);
+
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            accountService.addFunds(1, 50.0f);
         });
 
         assertEquals(HttpStatus.NOT_FOUND.value(), exception.getStatusCode());
