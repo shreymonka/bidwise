@@ -39,12 +39,10 @@ import { NgChartsModule } from 'ng2-charts';
     ItemListingComponent,
     AuctionComponent,
     UpcomingAllAuctionsComponent,
-    PreLoginUpcomingAllAuctionsComponent],
-    AuctionComponent,
+    PreLoginUpcomingAllAuctionsComponent,
     TradebookComponent,
-    AuctionComponent,
-    AddFundsComponent,
-    UserProfileComponent],
+    UserProfileComponent,
+    AddFundsComponent]
   exports : [
     LandingPageComponent,
     AboutUsComponent

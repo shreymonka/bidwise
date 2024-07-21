@@ -17,6 +17,8 @@ import { AuctionComponent } from './core/components/auction/auction.component';
 import { AddFundsComponent } from './core/components/add-funds/add-funds.component';
 import { TradebookComponent } from './core/components/tradebook/tradebook.component';
 import { UserProfileComponent } from './core/components/user-profile/user-profile.component';
+import { UpcomingAllAuctionsComponent } from './core/components/upcoming-all-auctions/upcoming-all-auctions.component';
+import { PreLoginUpcomingAllAuctionsComponent } from './core/components/pre-login-upcoming-all-auctions/pre-login-upcoming-all-auctions.component';
 
 const routes: Routes = [
   // {
@@ -38,10 +40,8 @@ const routes: Routes = [
   {path: 'itemListing', component: ItemListingComponent},
   {path: 'auction', component:AuctionComponent},
   {path: 'upcoming-all-auctions', component: UpcomingAllAuctionsComponent},
-  {path: 'pre-login-upcoming-all-auctions', component: PreLoginUpcomingAllAuctionsComponent}
-  {path: 'auction', component:AuctionComponent},
+  {path: 'pre-login-upcoming-all-auctions', component: PreLoginUpcomingAllAuctionsComponent},
   {path: 'addFunds', component:AddFundsComponent},
-  {path: 'auction', component:AuctionComponent},
   {path: 'tradebook',component:TradebookComponent},
   {path: 'profile', component:UserProfileComponent}
 ];
