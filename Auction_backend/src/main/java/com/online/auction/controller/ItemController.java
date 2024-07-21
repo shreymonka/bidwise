@@ -26,8 +26,6 @@ import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 import static com.online.auction.constant.AuctionConstants.ITEM;
 
 @RestController
-@CrossOrigin(origins = "http://172.17.3.242:4200")
-//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(API_VERSION_V1 + ITEM)
 @RequiredArgsConstructor
 public class ItemController {

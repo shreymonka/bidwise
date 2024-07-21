@@ -31,4 +31,13 @@ public class AccountController {
         return ResponseEntity.ok(response);
 
     }
+
+    @PostMapping("/addFunds")
+    public ResponseEntity<SuccessResponse<String>> addFunds(
+            @AuthenticationPrincipal User user,
+            @RequestParam("amount") float amount) throws ServiceException{
+        accountService.addFunds(user.getUserId(), amount);
+        SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, "Funds added successfully");
+        return ResponseEntity.ok(response);
+    }
 }
