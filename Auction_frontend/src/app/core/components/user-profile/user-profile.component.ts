@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartType, ChartOptions, ChartDataset, Color } from 'chart.js'; 
+import { ChartType, ChartOptions, ChartDataset, Color } from 'chart.js';
+import { UserProfileService } from '../../services/user-profile/user-profile.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -9,42 +10,80 @@ import { ChartType, ChartOptions, ChartDataset, Color } from 'chart.js';
 export class UserProfileComponent implements OnInit {
   currentChart: string = 'chart1';
 
+  // User data
+  userProfile: any = {};
+  auctionsParticipated: number = 0;
+
   // Chart 1 - Bar Chart
   public barChartOptions: ChartOptions = {
     responsive: true,
   };
-  public barChartLabels: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public barChartLabels: string[] = [];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartData: ChartDataset<'bar'>[] = [
-    { data: [40, 60, 60, 20, 20, 20, 20], label: 'Dataset 1' },
-    { data: [50, 100, 120, 80, 60, 60, 80], label: 'Dataset 2' }
-  ];
-  public barChartColors: Array<any> = [
-    { backgroundColor: 'rgba(255, 99, 132, 0.2)', borderColor: 'rgba(255, 99, 132, 1)' },
-    { backgroundColor: 'rgba(54, 162, 235, 0.2)', borderColor: 'rgba(54, 162, 235, 1)' }
+    { data: [], label: 'Won Bids' },
+    { data: [], label: 'Lost Bids' }
   ];
 
   // Chart 2 - Pie Chart
   public pieChartOptions: ChartOptions = {
     responsive: true,
   };
-  public pieChartLabels: string[] = ['Red', 'Orange', 'Yellow', 'Green', 'Blue'];
+  public pieChartLabels: string[] = [];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartData: ChartDataset<'pie'>[] = [
-    { data: [30, 50, 70, 20, 40] }
-  ];
-  public pieChartColors: Array<any> = [
-    { backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)'] }
+    { data: [] }
   ];
 
-  constructor() {}
+  constructor(private userProfileService: UserProfileService) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    const userId = 1; // Replace with the actual user ID
+
+    this.userProfileService.getUserProfile(userId).subscribe(data => {
+      this.userProfile = data.data;
+    });
+
+    this.userProfileService.getAuctionParticipation(userId).subscribe(data => {
+      this.auctionsParticipated = data.data;
+    });
+
+    this.userProfileService.getBidStats(userId).subscribe(data => {
+      const bidStats = data.data;
+      const wonBids: number[] = [];
+      const lostBids: number[] = [];
+      const labels: string[] = [];
+
+      for (let i = 1; i <= 12; i++) {
+        const stat = bidStats.find((s: any) => s.month === i) || { wonBids: 0, lostBids: 0 };
+        wonBids.push(stat.wonBids);
+        lostBids.push(stat.lostBids);
+        labels.push(new Date(0, i - 1).toLocaleString('default', { month: 'long' }));
+      }
+
+      this.barChartLabels = labels;
+      this.barChartData[0].data = wonBids;
+      this.barChartData[1].data = lostBids;
+    });
+
+    this.userProfileService.getCategoryBidStats(userId).subscribe(data => {
+      const categoryStats = data.data;
+      const labels: string[] = [];
+      const counts: number[] = [];
+
+      categoryStats.forEach((stat: any) => {
+        labels.push(stat.categoryName);
+        counts.push(stat.bidCount);
+      });
+
+      this.pieChartLabels = labels;
+      this.pieChartData[0].data = counts;
+    });
+  }
 
   showChart(chartId: string): void {
-    console.log(`Switching to ${chartId}`); // Debugging log
-    this.currentChart = chartId;  
+    this.currentChart = chartId;
   }
 }

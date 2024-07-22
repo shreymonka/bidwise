@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="user-profile.component.css">
 </head>
-<body>   
+<body>
     <!-- Body Header -->
     <div class="container mt-5">
         <div class="text-start mb-4">
@@ -24,22 +24,22 @@
         <div class="row text-start">
             <div class="col-md-3 mb-4">
                 <p class="font-weight-bold">NAME</p>
-                <p>TOM RAIDER</p>
+                <p>{{ userProfile.firstName }} {{ userProfile.lastName }}</p>
                 <hr>
             </div>
             <div class="col-md-3 mb-4">
                 <p class="font-weight-bold">EMAIL</p>
-                <p>email</p>
+                <p>{{userProfile.email}}</p>
                 <hr>
             </div>
             <div class="col-md-3 mb-4">
                 <p class="font-weight-bold">COUNTRY</p>
-                <p>CANADA</p>
+                <p>{{userProfile.countryName}}</p>
                 <hr>
             </div>
             <div class="col-md-3 mb-4">
                 <p class="font-weight-bold">CITY</p>
-                <p>HALIFAX</p>
+                <p>{{userProfile.cityName}}</p>
                 <hr>
             </div>
         </div>
@@ -58,7 +58,7 @@
         <div class="row text-start">
             <div class="col-md-3 mb-4">
                 <p class="font-weight-bold">AUCTIONS PARTICIPATED</p>
-                <p>15</p>
+                <p>{{auctionsParticipated}}</p>
                 <hr>
             </div>
         </div>
@@ -73,7 +73,6 @@
     <div class="container text-start">
         <!-- Chart 1 -->
         <div id="chart1" class="chart-container" [ngClass]="{'hidden': currentChart !== 'chart1'}">
-        <!-- <div id="chart1" class="chart-container"> -->
           <h2>WON BIDS AND LOST BIDS</h2>
           <canvas baseChart
                   [datasets]="barChartData"
@@ -83,7 +82,7 @@
                   [type]="barChartType">
                 </canvas>
         </div>
-      
+
         <!-- Chart 2 -->
         <div id="chart2" class="chart-container" [ngClass]="{'hidden': currentChart !== 'chart2'}">
         <!-- <div id="chart2" class="chart-container"> -->

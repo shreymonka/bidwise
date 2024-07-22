@@ -7,17 +7,23 @@ import { Observable } from 'rxjs';
 })
 export class UserProfileService {
 
-  private endPoint = 'http://localhost:8080/api/v1/user/profile';
+  private endPoint = 'http://localhost:8080/api/v1/profile';
 
   constructor(private http: HttpClient) { }
 
-  // Method to fetch user profile data
-  getUserProfile(): Observable<any> {
-    return this.http.get<any>(`${this.endPoint}`);
+  getUserProfile(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.endPoint}/details?userId=${userId}`);
   }
 
-  // Method to fetch chart data
-  getChartData(): Observable<any> {
-    return this.http.get<any>(`${this.endPoint}`);
+  getAuctionParticipation(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.endPoint}/auctionsParticipated?userId=${userId}`);
+  }
+
+  getBidStats(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.endPoint}/bidStats?userId=${userId}`);
+  }
+
+  getCategoryBidStats(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.endPoint}/categoryBidStats?userId=${userId}`);
   }
 }
