@@ -45,8 +45,10 @@
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
                         <button *ngIf="trade.auctionWon==true" (click)="getInvoice(trade.auctionId)" button class="btn btn-outline-dark">GET INVOICE</button>
-                        <button *ngIf="trade.auctionWon==false" button class="btn btn-outline-dark">AUCTION LOST</button>
-
+                        <!-- <button *ngIf="trade.auctionWon==false" button class="btn btn-outline-dark">AUCTION LOST</button> -->
+                        <div *ngIf="trade.auctionWon==false" class="auction-lost-message">
+                            AUCTION LOST
+                          </div>
                     </div>
                 
                 </div>

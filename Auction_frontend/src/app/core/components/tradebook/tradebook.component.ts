@@ -32,7 +32,6 @@ export class TradebookComponent {
       (response) => {
         this.trades = response;
         console.log(this.trades);
-    
       },
       (error) => {
         console.error('Error fetching items:', error);
@@ -54,20 +53,6 @@ export class TradebookComponent {
     );
   }
 
-  // generatePDF(): void {
-  //   const doc = new jsPDF();
-    
-  //   doc.text('Invoice Details', 10, 10);
-  //   doc.text(`Date of Auction: ${this.invoice.data.dateOfAuction}`, 10, 20);
-  //   doc.text(`Date of Invoice: ${this.invoice.data.dateOfInvoice}`, 10, 30);
-  //   doc.text(`Item Category: ${this.invoice.data.itemCategory}`, 10, 40);
-  //   doc.text(`Item Name: ${this.invoice.data.itemName}`, 10, 50);
-  //   doc.text(`Price Paid: ${this.invoice.data.pricePaid}`, 10, 60);
-  //   doc.text(`Seller Email: ${this.invoice.data.sellerEmail}`, 10, 70);
-  //   doc.text(`Seller Name: ${this.invoice.data.sellerName}`, 10, 80);
-    
-  //   doc.save('Bidwise_invoice.pdf');
-  // }
   generatePDF(): void {
     const doc = new jsPDF('p', 'mm', 'a4');
     const margin = 10;

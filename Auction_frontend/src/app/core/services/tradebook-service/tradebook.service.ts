@@ -7,8 +7,8 @@ import { catchError, Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class TradebookService {
-  getAllTradesEndpoint: string = 'http://localhost:8080/api/v1/user/getTradebook';
-  getInvoiceEndpoint: String = 'http://localhost:8080/api/v1/user/getInvoice';
+  getAllTradesEndpoint: string = 'http://172.17.3.242:8080/api/v1/user/getTradebook';
+  getInvoiceEndpoint: String = 'http://172.17.3.242:8080/api/v1/user/getInvoice';
 
   constructor(private http: HttpClient,public router:Router) { }
 
