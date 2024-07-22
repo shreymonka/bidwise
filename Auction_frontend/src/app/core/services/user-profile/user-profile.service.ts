@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class UserProfileService {
 
-  private endPoint = 'http://localhost:8080/api/v1/profile';
-
+  // private endPoint = 'http://localhost:8080/api/v1/profile';
+  private endPoint = 'http://172.17.3.242:8080/api/v1/profile';
   constructor(private http: HttpClient) { }
 
   getUserProfile(userId: number): Observable<any> {
