@@ -21,9 +21,13 @@ export class LoginPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if(this.loginService.isAuthenticated()){
+      this.router.navigate([this.returnUrl]);
+    }
     this.route.queryParams.subscribe(params => {
       this.returnUrl = params['returnUrl'] || this.returnUrl;
     });
+    this.loginService.logout();
   }
 
   SignupRedirect() {
@@ -48,6 +52,12 @@ export class LoginPageComponent implements OnInit {
       },
       (error) => {
         console.error('Login failed', error);
+        Swal.fire({
+          title: 'Login Failed',
+          text: 'Invalid credentials. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
       }
     );
   }
