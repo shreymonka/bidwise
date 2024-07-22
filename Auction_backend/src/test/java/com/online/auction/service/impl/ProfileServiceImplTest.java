@@ -5,7 +5,6 @@ import com.online.auction.dto.CategoryBidStatsDTO;
 import com.online.auction.dto.UserProfileDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.repository.ProfileRepository;
-import jakarta.persistence.Table;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,8 +16,12 @@ import org.springframework.http.HttpStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ProfileServiceImplTest {
 

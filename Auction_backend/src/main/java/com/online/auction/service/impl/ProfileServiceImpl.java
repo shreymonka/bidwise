@@ -4,7 +4,6 @@ import com.online.auction.dto.BidStatsDTO;
 import com.online.auction.dto.CategoryBidStatsDTO;
 import com.online.auction.dto.UserProfileDTO;
 import com.online.auction.exception.ServiceException;
-import com.online.auction.model.User;
 import com.online.auction.repository.ProfileRepository;
 import com.online.auction.service.ProfileService;
 import lombok.AllArgsConstructor;
@@ -15,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service implementation for handling profile-related operations.
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -22,6 +24,13 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
 
+    /**
+     * Retrieves the user profile for the given user ID.
+     *
+     * @param userId the ID of the user
+     * @return the user profile data transfer object
+     * @throws ServiceException if the user is not found
+     */
     @Override
     public UserProfileDTO getUserProfile(Integer userId) throws ServiceException {
         UserProfileDTO userProfile = profileRepository.findUserProfileByUserId(userId);
@@ -31,6 +40,13 @@ public class ProfileServiceImpl implements ProfileService {
         return userProfile;
     }
 
+    /**
+     * Counts the number of auctions a user has participated in.
+     *
+     * @param userId the ID of the user
+     * @return the number of auctions participated in
+     * @throws ServiceException if no auctions are found for the user
+     */
     @Override
     public long countUserParticipatedAuctions(Integer userId) throws ServiceException {
         long auctionCount = profileRepository.countUserParticipatedAuctions(userId);
@@ -40,6 +56,13 @@ public class ProfileServiceImpl implements ProfileService {
         return auctionCount;
     }
 
+    /**
+     * Retrieves bid statistics for the current year for a given user.
+     *
+     * @param userId the ID of the user
+     * @return a list of bid statistics data transfer objects for each month
+     * @throws ServiceException if an error occurs while retrieving the statistics
+     */
     @Override
     public List<BidStatsDTO> getBidStats(Integer userId) throws ServiceException {
         List<BidStatsDTO> bidStats = profileRepository.findBidStatsByUserIdForCurrentYear(userId);
@@ -52,6 +75,11 @@ public class ProfileServiceImpl implements ProfileService {
         return allMonthsStats;
     }
 
+    /**
+     * Initializes a list of bid statistics for each month with zero values.
+     *
+     * @return a list of bid statistics data transfer objects
+     */
     private List<BidStatsDTO> initializeMonthlyStats() {
         List<BidStatsDTO> stats = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
@@ -60,6 +88,13 @@ public class ProfileServiceImpl implements ProfileService {
         return stats;
     }
 
+    /**
+     * Retrieves category bid statistics for a given user.
+     *
+     * @param userId the ID of the user
+     * @return a list of category bid statistics data transfer objects
+     * @throws ServiceException if no bid statistics are found for the user
+     */
     @Override
     public List<CategoryBidStatsDTO> getCategoryBidStats(Integer userId) throws ServiceException {
         List<CategoryBidStatsDTO> categoryBidStats = profileRepository.findCategoryBidStatsByUserId(userId);
