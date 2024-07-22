@@ -19,6 +19,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.online.auction.constant.AuctionConstants.NO_TRADES_FOUND;
+import static com.online.auction.constant.AuctionConstants.TRADEBOOK_ERROR;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -33,12 +36,12 @@ public class TradebookServiceImpl implements TradebookService {
             bids = tradebookRepository.findAllByUser(user);
         } catch (Exception e) {
             log.error("Error fetching tradebook details for user: {}", user.getEmail(), e);
-            throw new ServiceException(HttpStatus.NOT_FOUND,"Error fetching tradebook details");
+            throw new ServiceException(HttpStatus.NOT_FOUND,TRADEBOOK_ERROR);
         }
 
         if (bids == null || bids.isEmpty()) {
             log.error("No trades found for user: {}", user.getEmail());
-            throw new ServiceException(HttpStatus.NOT_FOUND,"No trades found for user");
+            throw new ServiceException(HttpStatus.NOT_FOUND,NO_TRADES_FOUND);
         }
         return bids.stream()
                 .map(bid -> TradebookDTO.builder()
@@ -54,13 +57,16 @@ public class TradebookServiceImpl implements TradebookService {
 
     @Override
     public InvoiceDTO getInvoiceByAuctionId(int auctionId) throws ServiceException {
+        log.debug("Fetching invoice for Auction id: {}", auctionId);
         AuctionBidDetails bidDetails = tradebookRepository.findByAuctionIdAndIsWonTrue(auctionId)
                 .orElseThrow(() -> new ServiceException(HttpStatus.NOT_FOUND, "No winning bid found for the given auction ID"));
 
+        log.debug("Found winning bids for Auction id: {}", auctionId);
         Auction auction = bidDetails.getAuctionId();
         Item item = bidDetails.getItemId();
         User seller = item.getSellerId();
 
+        log.debug("Returning invoice details for Auction id: {}", auctionId);
         return InvoiceDTO.builder()
                 .itemName(item.getItem_name())
                 .sellerName(seller.getFirstName() + " " + seller.getLastName())
