@@ -1,16 +1,15 @@
 package com.online.auction.controller;
 
 import com.online.auction.dto.BidStatsDTO;
+import com.online.auction.dto.CategoryBidStatsDTO;
 import com.online.auction.dto.SuccessResponse;
 import com.online.auction.dto.UserProfileDTO;
 import com.online.auction.exception.ServiceException;
-import com.online.auction.model.User;
 import com.online.auction.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,6 +49,14 @@ public class ProfileController {
             @RequestParam("userId") Integer userId) throws ServiceException {
         List<BidStatsDTO> bidStats = profileService.getBidStats(userId);
         SuccessResponse<List<BidStatsDTO>> response = new SuccessResponse<>(200, HttpStatus.OK, bidStats);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/categoryBidStats")
+    public ResponseEntity<SuccessResponse<List<CategoryBidStatsDTO>>> getCategoryBidStats(
+            @RequestParam("userId") Integer userId) throws ServiceException {
+        List<CategoryBidStatsDTO> categoryBidStats = profileService.getCategoryBidStats(userId);
+        SuccessResponse<List<CategoryBidStatsDTO>> response = new SuccessResponse<>(200, HttpStatus.OK, categoryBidStats);
         return ResponseEntity.ok(response);
     }
 }

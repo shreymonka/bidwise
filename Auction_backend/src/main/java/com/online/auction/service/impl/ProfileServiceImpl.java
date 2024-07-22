@@ -1,6 +1,7 @@
 package com.online.auction.service.impl;
 
 import com.online.auction.dto.BidStatsDTO;
+import com.online.auction.dto.CategoryBidStatsDTO;
 import com.online.auction.dto.UserProfileDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.User;
@@ -57,5 +58,14 @@ public class ProfileServiceImpl implements ProfileService {
             stats.add(new BidStatsDTO(i, 0, 0));
         }
         return stats;
+    }
+
+    @Override
+    public List<CategoryBidStatsDTO> getCategoryBidStats(Integer userId) throws ServiceException {
+        List<CategoryBidStatsDTO> categoryBidStats = profileRepository.findCategoryBidStatsByUserId(userId);
+        if (categoryBidStats == null || categoryBidStats.isEmpty()) {
+            throw new ServiceException(HttpStatus.NOT_FOUND, "No bid statistics found for user id: " + userId);
+        }
+        return categoryBidStats;
     }
 }
