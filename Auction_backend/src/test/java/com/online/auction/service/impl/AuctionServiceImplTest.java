@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG;
 import static com.online.auction.constant.AuctionConstants.INTEGER_SEVEN;
+import static com.online.auction.constant.TestConstants.AUCTION_RECORD_NOT_FOUND_MSG;
 import static com.online.auction.constant.TestConstants.INTEGER_ONE;
 import static com.online.auction.constant.TestConstants.ITEM_NAME_1;
 import static com.online.auction.constant.TestConstants.PAINTING_ITEM_CATEGORY;
@@ -142,6 +143,6 @@ class AuctionServiceImplTest {
         });
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
-        assertEquals("Record not found to update post Auction state", exception.getErrorMessage());
+        assertEquals(AUCTION_RECORD_NOT_FOUND_MSG, exception.getErrorMessage());
     }
 }
