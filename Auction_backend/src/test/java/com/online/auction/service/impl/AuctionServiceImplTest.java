@@ -135,6 +135,22 @@ class AuctionServiceImplTest {
     }
 
     @Test
+    public void processPostAuctionStateWhenStateAlreadyUpdatedTest() {
+        User user = new User();
+        user.setUserId(INTEGER_ONE);
+        AuctionBidDetails auctionBidDetails = new AuctionBidDetails();
+        auctionBidDetails.setWon(true);
+        auctionBidDetails.setBidderId(user);
+
+        when(auctionBidDetailRepository.findTopByItemIdOrderByBidAmountDesc(INTEGER_ONE)).thenReturn(auctionBidDetails);
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            auctionService.processPostAuctionState(INTEGER_ONE);
+        });
+
+        assertEquals(HttpStatus.OK.value(), exception.getStatusCode());
+    }
+
+    @Test
     public void processPostAuctionStateNoBidDetailsTest() {
         when(auctionBidDetailRepository.findTopByItemIdOrderByBidAmountDesc(INTEGER_ONE)).thenReturn(null);
 
