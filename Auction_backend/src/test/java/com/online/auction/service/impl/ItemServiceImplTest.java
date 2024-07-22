@@ -23,27 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static com.online.auction.constant.TestConstants.END_TIME;
 import static com.online.auction.constant.TestConstants.INTEGER_ONE;
 import static com.online.auction.constant.TestConstants.PASSWORD;
 import static com.online.auction.constant.TestConstants.START_TIME;
 import static com.online.auction.constant.TestConstants.TEST_EMAIL;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -219,6 +209,52 @@ class ItemServiceImplTest {
         verify(itemRepository).findById(1);
         verify(auctionListingRepository, never()).deleteByItems(any(Item.class));
         verify(itemRepository, never()).delete(any(Item.class));
+    }
+
+    @Test
+    void findItemsByItemIdItemsFoundTest() throws ServiceException {
+        Integer itemId = 1;
+        List<Item> items = new ArrayList<>();
+        ItemCategory itemCategory = new ItemCategory();
+        itemCategory.setItemCategoryId(1);
+        itemCategory.setItemCategoryName("Electronics");
+        User seller = new User();
+        seller.setUserId(1);
+        Item item = Item.builder()
+                .itemId(itemId)
+                .item_name("Test Item")
+                .item_maker("Test Maker")
+                .description("Test Description")
+                .min_bid_amount(100.0)
+                .price_paid(150.0)
+                .currency("USD")
+                .item_photo("test_photo.jpg")
+                .item_condition(itemCondition)
+                .itemcategory(itemCategory)
+                .sellerId(seller)
+                .build();
+        items.add(item);
+        when(itemRepository.findByItemId(itemId)).thenReturn(items);
+        when(auctionListingRepository.findByItems(any(Item.class))).thenReturn(Optional.of(new Auction()));
+
+        List<ItemDTO> result = itemService.findItemsByItemId(itemId);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Test Item", result.get(0).getItemName());
+        verify(itemRepository, times(1)).findByItemId(itemId);
+    }
+
+    @Test
+    void findItemsByItemIdNoItemsFoundTest() throws ServiceException {
+        Integer itemId = 1;
+        when(itemRepository.findByItemId(itemId)).thenReturn(new ArrayList<>());
+
+        List<ItemDTO> result = itemService.findItemsByItemId(itemId);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(itemRepository, times(1)).findByItemId(itemId);
     }
 
 }
