@@ -23,8 +23,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "auction_bid_detail")
-@NoArgsConstructor
-@AllArgsConstructor
 public class AuctionBidDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
