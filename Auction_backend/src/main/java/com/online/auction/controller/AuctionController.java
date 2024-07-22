@@ -28,4 +28,11 @@ public class AuctionController {
         return ResponseEntity.ok(successResponse);
     }
 
+    @GetMapping("/postAuction/{itemId}")
+    public ResponseEntity<SuccessResponse<Boolean>> postAuctionUpdate(@PathVariable(value = "itemId") Integer itemId) throws ServiceException {
+        boolean isSuccess = auctionService.processPostAuctionState(itemId);
+        SuccessResponse<Boolean> successResponse = new SuccessResponse<>(200, HttpStatus.OK, isSuccess);
+        return ResponseEntity.ok(successResponse);
+    }
+
 }

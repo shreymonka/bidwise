@@ -22,41 +22,42 @@
 
     <!-- Main body -->
     <div class="container">
+        <form [formGroup]="formdata">
         <div class="card p-3 mb-4" style="border: 2px solid #000;">
             <div class="d-flex flex-column flex-md-row">    
                 <div class="item-image mr-3">
-                    <img src="images/earbuds.jpg" class="img-fluid" alt="Samsung Earbuds">
+                    <img src={{itemDetails?.itemPhoto}} class="img-fluid" alt="Samsung Earbuds">
                 </div>
                 <div class="d-flex flex-column w-100 custom-padding">
                     <div class="auctiondetail">
                         <p>NAME OF ITEM</p>
-                        <h4>SAMSUNG EARBUDS</h4>
+                        <h4>{{itemDetails?.itemName}}</h4>
                         <hr class="my-4" style="border: 1px solid #000;"> 
                     </div>
                     <div class="auctiondetail">
                         <p>MAKER OF THE ITEM</p>
-                        <h4>SAMSUNG</h4>
+                        <h4>{{itemDetails?.itemMaker}}</h4>
                         <hr class="my-4" style="border: 1px solid #000;"> 
                     </div>
                     <div class="d-flex flex-column flex-md-row w-100">
                         <div class="auctiondetail">
                             <p>ORIGINAL PRICE</p>
-                            <h4>$70</h4>
+                            <h4>${{itemDetails?.pricePaid}}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
                         <div class="auctiondetail">
                             <p>CONDITION</p>
-                            <h4>NEW</h4>
+                            <h4>{{itemDetails?.itemCondition}}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
                         <div class="auctiondetail">
                             <p>INITIAL BIDDING PRICE</p>
-                            <h4>$55</h4>
+                            <h4>${{itemDetails?.minBidAmount}}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
                         <div class="auctiondetail">
                             <p>CURRENT BID</p>
-                            <h4>$67</h4>
+                            <h4>${{ formdata.get('currentBid')?.value}}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
                     </div>
@@ -66,10 +67,23 @@
 
             <!-- AUCTION NOT STARTED -->
 
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column" *ngIf="!isAuctionStarted">
                 <div class="auctiondetail">
-                    <p style="font-weight: bold; padding-bottom: 10px;">AUCTION WILL BEGIN AT X DATE AND Y TIME!</p>
+                    <p style="font-weight: bold; padding-bottom: 10px;">AUCTION TIME:  
+                       <span style="font-weight: lighter; padding-bottom: 10px;">
+                        {{startTime?.getDate()}} /
+                        {{startMonth}} /
+                        {{startTime?.getFullYear()}}
+                        {{startTime?.getHours()}}:{{startTime?.getMinutes()}}
+                       </span> 
+                         
+                         <span style="font-weight: bold; padding-bottom: 10px;">{{ countdown }}</span>
+                        </p>
+
                 </div>
+                <!-- <div class="countdown-timer">
+                    
+                  </div> -->
                 <div class="button-container justify-content-start auctiondetail">
                     <button class="btn btn-outline-dark mr-2">ALL AUCTIONS</button>
                 </div>
@@ -77,24 +91,25 @@
 
             <!-- AUCTION STARTED -->
 
-            <!-- <div class="d-flex flex-column">
+            <div class="d-flex flex-column" *ngIf="isAuctionStarted">
                 <div class="auctiondetail">
-                    <p style="font-weight: bold; padding-bottom: 10px;">BIDDING ENDS IN X MINS!</p>
+                    <p style="font-weight: bold; padding-bottom: 10px;">BIDDING ENDS IN {{countdown}} MINS!</p>
                 </div>
                 <div class="auctiondetail">  
                     <p>ACCOUNT BALANCE</p>
-                    <h4>$120</h4>
+                    <h4>${{funds}}</h4>
                 </div>
                 <div class="d-flex flex-md-row auctiondetail">
                     <label for="initialBidPrice">ENTER YOUR BID AMOUNT</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control auctiondetail" id="initialBidPrice" placeholder="$55">
+                        <input type="text" class="form-control auctiondetail" formControlName = "bid"  id="initialBidPrice">
                     </div>
                 </div>
                 <div class="button-container justify-content-start auctiondetail">
-                    <button class="btn btn-outline-dark mr-2">PLACE YOUR BID</button>
+                    <button class="btn btn-outline-dark mr-2" (click)="subscribe()">Participate Now</button>
+                    <button class="btn btn-outline-dark mr-2" (click)="bid()">PLACE YOUR BID</button>
                 </div>
-            </div> -->
+            </div>
 
             <!-- AFTER FIRST BID -->
 
@@ -113,6 +128,7 @@
             </div> -->
 
         </div>
+    </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

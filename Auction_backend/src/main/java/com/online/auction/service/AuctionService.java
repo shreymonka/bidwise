@@ -5,4 +5,6 @@ import com.online.auction.exception.ServiceException;
 
 public interface AuctionService {
     AuctionDTO getAuctionDetails(int itemId) throws ServiceException;
+
+    boolean processPostAuctionState(int itemId) throws ServiceException;
 }

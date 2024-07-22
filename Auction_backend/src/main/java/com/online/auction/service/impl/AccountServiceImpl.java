@@ -28,7 +28,7 @@ public class AccountServiceImpl implements AccountService {
      * @throws ServiceException if the account is not found for the given user ID
      */
     @Override
-    public float getAccountBalance(Integer userId) throws ServiceException {
+    public double getAccountBalance(Integer userId) throws ServiceException {
         Account account = accountRepository.findByUserId(userId);
         if (account == null) {
             throw new ServiceException(HttpStatus.NOT_FOUND, "Account not found for user id: " + userId);
