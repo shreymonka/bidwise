@@ -26,7 +26,7 @@ import static com.online.auction.constant.AuctionConstants.USER;
 
 @RestController
 //@CrossOrigin(origins = "http://172.17.3.242:4200")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(API_VERSION_V1 + USER)
 @RequiredArgsConstructor
 public class TradebookController {
