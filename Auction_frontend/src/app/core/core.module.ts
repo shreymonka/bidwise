@@ -16,6 +16,8 @@ import { ItemCategoryListingComponent } from './components/item-category-listing
 import { SellerPortalComponent } from './components/seller-portal/seller-portal.component';
 import { ItemListingComponent } from './components/item-listing/item-listing.component';
 import { AuctionComponent } from './components/auction/auction.component';
+import { AddFundsComponent } from './components/add-funds/add-funds.component';
+import { TradebookComponent } from './components/tradebook/tradebook.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,7 @@ import { AuctionComponent } from './components/auction/auction.component';
     SellerPortalComponent,
     ItemListingComponent,
     AuctionComponent,
-    TradebookComponent],
+    TradebookComponent,
     AuctionComponent,
     AddFundsComponent],
   exports : [
