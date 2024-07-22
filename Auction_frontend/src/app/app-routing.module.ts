@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LandingPageComponent } from './core/components/landing-page/landing-page.component';
 import { LoginPageComponent } from './core/components/login-page/login-page.component';
 import { SignupPageComponent } from './core/components/signup-page/signup-page.component';
-import { AboutUsComponent } from './core/components/about-us/about-us.component'; 
+import { AboutUsComponent } from './core/components/about-us/about-us.component';
 import { PostLoginLandingPageComponent } from './core/components/post-login-landing-page/post-login-landing-page.component';
 import { LoginServiceService } from './core/services/login-service/login-service.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -15,10 +15,11 @@ import { SellerPortalComponent } from './core/components/seller-portal/seller-po
 import { ItemListingComponent } from './core/components/item-listing/item-listing.component';
 import { AuctionComponent } from './core/components/auction/auction.component';
 import { AddFundsComponent } from './core/components/add-funds/add-funds.component';
+import { TradebookComponent } from './core/components/tradebook/tradebook.component';
 
 const routes: Routes = [
   // {
-  //   path:'account', 
+  //   path:'account',
   //   loadChildren:()=>
   //     import('./modules/account.module').then((m)=>m.AccountModule),
   // },
@@ -35,7 +36,9 @@ const routes: Routes = [
   {path: 'sellerPortal', component: SellerPortalComponent},
   {path: 'itemListing', component: ItemListingComponent},
   {path: 'auction', component:AuctionComponent},
-  {path: 'addFunds', component:AddFundsComponent}
+  {path: 'addFunds', component:AddFundsComponent},
+  {path: 'auction', component:AuctionComponent},
+  {path: 'tradebook',component:TradebookComponent}
 ];
 
 @NgModule({

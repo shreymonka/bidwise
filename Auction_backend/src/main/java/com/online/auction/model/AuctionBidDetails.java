@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "auction_bid_detail")
 @NoArgsConstructor

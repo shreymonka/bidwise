@@ -109,7 +109,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDTO> getAllItemsByUser(User user) {
         log.debug("Fetching items for user: {}", user.getEmail());
-
         List<Item> items = itemRepository.findBySellerId(user);
         List<ItemDTO> itemDTOs = items.stream().map(this::convertToItemDTO).collect(Collectors.toList());
 
