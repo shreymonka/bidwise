@@ -11,6 +11,7 @@ import com.online.auction.repository.AuctionBidDetailRepository;
 import com.online.auction.repository.AuctionListingRepository;
 import com.online.auction.repository.ItemRepository;
 import com.online.auction.service.AuctionService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,7 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
+    @Transactional
     public boolean processPostAuctionState(int itemId) throws ServiceException {
         log.info("Started the auction Postprocessing");
         AuctionBidDetails auctionBidDetails = auctionBidDetailRepository.findTopByItemIdOrderByBidAmountDesc(itemId);
@@ -67,6 +69,7 @@ public class AuctionServiceImpl implements AuctionService {
             log.info("Updating the selling amount for the item: {}", itemOptional.get());
             Item item = itemOptional.get();
             item.setSelling_amount(auctionBidDetails.getBid_amount());
+            item.setBuyerId(auctionBidDetails.getBidderId());
             itemRepository.save(item);
             log.info("Successfully updated the selling amount for the item: {}", item);
         }
