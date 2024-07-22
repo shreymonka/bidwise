@@ -60,6 +60,7 @@ public class AuctionServiceImpl implements AuctionService {
             throw new ServiceException(HttpStatus.BAD_REQUEST, "Record not found to update post Auction state");
         }
         if (auctionBidDetails.isWon()) {
+            log.info("The Auction state is already updated");
             throw new ServiceException(HttpStatus.OK, "Record Already updated");
         }
         log.info("The winning bid information is : {}", auctionBidDetails);
