@@ -3,12 +3,16 @@ package com.online.auction.service.impl;
 
 import com.online.auction.dto.AuctionDTO;
 import com.online.auction.exception.ServiceException;
+import com.online.auction.model.Account;
 import com.online.auction.model.Auction;
 import com.online.auction.model.AuctionBidDetails;
 import com.online.auction.model.Item;
+import com.online.auction.model.ItemCategory;
 import com.online.auction.model.User;
+import com.online.auction.repository.AccountRepository;
 import com.online.auction.repository.AuctionBidDetailRepository;
 import com.online.auction.repository.AuctionListingRepository;
+import com.online.auction.repository.ItemRepository;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,10 +24,14 @@ import org.springframework.http.HttpStatus;
 import java.util.Optional;
 
 import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG;
+import static com.online.auction.constant.AuctionConstants.INTEGER_SEVEN;
 import static com.online.auction.constant.TestConstants.INTEGER_ONE;
+import static com.online.auction.constant.TestConstants.ITEM_NAME_1;
+import static com.online.auction.constant.TestConstants.PAINTING_ITEM_CATEGORY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,6 +42,12 @@ class AuctionServiceImplTest {
 
     @Mock
     private AuctionBidDetailRepository auctionBidDetailRepository;
+
+    @Mock
+    private AccountRepository accountRepository;
+
+    @Mock
+    private ItemRepository itemRepository;
 
     @InjectMocks
     private AuctionServiceImpl auctionService;
@@ -82,14 +96,34 @@ class AuctionServiceImplTest {
     @Test
     @SneakyThrows
     public void processPostAuctionStateSuccessTest() {
+        User user = new User();
+        user.setUserId(INTEGER_ONE);
         AuctionBidDetails auctionBidDetails = new AuctionBidDetails();
         auctionBidDetails.setWon(false);
+        auctionBidDetails.setBidderId(user);
 
         when(auctionBidDetailRepository.findTopByItemIdOrderByBidAmountDesc(INTEGER_ONE)).thenReturn(auctionBidDetails);
 
         Auction auction = new Auction();
         auction.setOpen(true);
         when(auctionListingRepository.findByItems_ItemId(INTEGER_ONE)).thenReturn(Optional.of(auction));
+
+        ItemCategory itemCategory = new ItemCategory();
+        itemCategory.setItemCategoryName(PAINTING_ITEM_CATEGORY);
+
+        Item item1 = Item.builder()
+                .itemId(INTEGER_ONE)
+                .item_name(ITEM_NAME_1)
+                .sellerId(user)
+                .itemcategory(itemCategory)
+                .build();
+
+        when(itemRepository.findById(INTEGER_ONE)).thenReturn(Optional.of(item1));
+
+        Account account = new Account();
+        account.setUserId(INTEGER_ONE);
+        account.setFunds(INTEGER_SEVEN);
+        when(accountRepository.findByUserId(anyInt())).thenReturn(account);
 
         boolean result = auctionService.processPostAuctionState(INTEGER_ONE);
 

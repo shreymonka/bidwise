@@ -62,5 +62,9 @@ public class TestConstants {
 
     public static final String BID_AMOUNT_ONE_HUNDRED = "100";
 
+    public static final String PAINTING_ITEM_CATEGORY = "Paintings";
+
+    public static final String ITEM_NAME_1 = "Item 1";
+
 
 }
