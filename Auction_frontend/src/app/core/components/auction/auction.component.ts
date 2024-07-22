@@ -78,11 +78,17 @@ export class AuctionComponent implements OnInit, OnDestroy {
     console.log('The current Bid is:'+this.formdata.get('currentBid')?.value);
 
     if(((Number(this.formdata.get('bid')?.value) < Number(this.itemDetails.minBidAmount)))
-        || (Number((this.formdata.get('bid')?.value) < Number(this.formdata.get('currentBid')?.value)))){
+        ){
       this.toastr.error(
         'Please enter amount higher than the minimum Bid'
       );
-    }else if(Number(this.formdata.get('bid')?.value) > this.funds){
+    }
+    else if((Number((this.formdata.get('bid')?.value) <= Number(this.formdata.get('currentBid')?.value)))){
+      this.toastr.error(
+        'Please enter amount higher than the current Bid'
+      );
+    }
+    else if(Number(this.formdata.get('bid')?.value) > this.funds){
       this.toastr.error(
         'Not enough funds in the account'
       );
