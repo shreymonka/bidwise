@@ -8,12 +8,17 @@ import { catchError, Observable, throwError } from 'rxjs';
 })
 export class TradebookService {
   getAllTradesEndpoint: string = 'http://localhost:8080/api/v1/user/getTradebook';
+  getInvoiceEndpoint: String = 'http://localhost:8080/api/v1/user/getInvoice';
 
   constructor(private http: HttpClient,public router:Router) { }
 
   getAllTrades():Observable<any>{
     let api = `${this.getAllTradesEndpoint}`;
     return this.http.get(api).pipe(catchError(this.handleError));
+  }
+
+  getInvoice(auctionId: number): Observable<any> {
+    return this.http.get(`${this.getInvoiceEndpoint}`, { params: { auctionId: auctionId.toString() } }).pipe(catchError(this.handleError));
   }
   private handleError(error: any): Observable<never> {
     let errorMessage = '';
