@@ -13,20 +13,19 @@
 </head>
 <body>
   <div class="container">
-    <div class="upcoming-auctions">
-      <h2>Upcoming Auctions</h2>
-      <div class="container d-inline-flex">
-          <div *ngFor="let auction of auctions" class="container">
-              <div class="card" style="width: 18rem;">
-                <img src="assets\images\avacado.jpeg" class="card-img-top" alt="...">
-                <p style="margin-bottom: 0px; font-weight:500; font-size: larger">{{ auction.title }}</p>
-                <p style="margin-bottom: 0px; font-size: 0.85rem;">{{ auction.date | date: 'dd MMM yyyy' }} | {{ auction.date | date: 'h:mm a' }}</p>
-                <button class="btn btn-outline-dark" style="margin-top: 8px; padding-top: 3px; padding-bottom: 3px;" (click)="bidNow(auction)">BID NOW</button>
-              </div>
-          </div>
-      </div>
-  </div>
-      
+  <div class="upcoming-auctions">
+    <h2>Upcoming Auctions</h2>
+    <div class="container d-inline-flex">
+        <div *ngFor="let auction of auctions" class="container">
+            <div class="card" style="width: 18rem;">
+              <img src="assets\images\avacado.jpeg" class="card-img-top" alt="...">
+              <p style="margin-bottom: 0px; font-weight:500; font-size: larger">{{ auction.title }}</p>
+              <p style="margin-bottom: 0px; font-size: 0.85rem;">{{ auction.date | date: 'dd MMM yyyy' }} | {{ auction.date | date: 'h:mm a' }}</p>
+              <button class="btn btn-outline-dark" style="margin-top: 8px; padding-top: 3px; padding-bottom: 3px;" (click)="bidNow(auction)">BID NOW</button>
+            </div>
+    </div>
+</div>
+
     <div class="how-it-works">
         <h2>How It Works</h2>
         <div class="steps">
@@ -45,7 +44,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="features">
         <h2>Features</h2>
         <div class="feature-list">
@@ -57,7 +56,7 @@
               <p>Facilitating worldwide transactions with flexible currency options.</p>
             </div>
           </div>
-          
+
           <div class="feature">
             <img src="assets/images/dashboard.png" alt="Dashboard">
             <div class="feature-text">
@@ -81,7 +80,7 @@
           </div>
         </div>
       </div>
-      
+
       <div  id="pricing-section" class="pricing">
         <h2>Pricing</h2>
         <div class="pricing-tiers">
@@ -91,7 +90,7 @@
             <p class="price">
               <span class="price-amount">$0</span>
               <span class="price-duration">/mo</span>
-            </p>           
+            </p>
             <ul>
               <li>Feature 1</li>
               <li>Feature 2</li>
@@ -105,7 +104,7 @@
             <p class="price">
               <span class="price-amount">$10</span>
               <span class="price-duration">/mo</span>
-            </p>            
+            </p>
             <ul>
               <li>Feature 1</li>
               <li>Feature 2</li>
@@ -115,12 +114,13 @@
             <button class="btn" (click)="choosePlan()">Choose Plan</button>
           </div>
         </div>
-      </div>  
-    
+      </div>
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </div>
   </div>
 </body>
 </html>

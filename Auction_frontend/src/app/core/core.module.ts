@@ -4,19 +4,42 @@ import { LoginPageComponent } from './components/login-page/login-page.component
 import { SignupPageComponent } from './components/signup-page/signup-page.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { SharedModule } from '../shared/shared.module';
-import { ServicesComponent } from './services/services.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { RouterModule } from '@angular/router';
 import { PostLoginLandingPageComponent } from './components/post-login-landing-page/post-login-landing-page.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { PricingComponent } from './components/pricing/pricing.component';
+import { ItemCategoryListingComponent } from './components/item-category-listing/item-category-listing.component';
+import { SellerPortalComponent } from './components/seller-portal/seller-portal.component';
+import { ItemListingComponent } from './components/item-listing/item-listing.component';
+import { AuctionComponent } from './components/auction/auction.component';
+import { AddFundsComponent } from './components/add-funds/add-funds.component';
+import { TradebookComponent } from './components/tradebook/tradebook.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
-    LoginPageComponent, 
+    LoginPageComponent,
     SignupPageComponent,
     LandingPageComponent,
-    ServicesComponent,
     AboutUsComponent,
-    PostLoginLandingPageComponent],
+    PostLoginLandingPageComponent,
+    ForgetPasswordComponent,
+    ResetPasswordComponent,
+    PricingComponent,
+    PostLoginLandingPageComponent,
+    ItemCategoryListingComponent,
+    SellerPortalComponent,
+    ItemListingComponent,
+    AuctionComponent,
+    TradebookComponent,
+    AuctionComponent,
+    AddFundsComponent,
+    UserProfileComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent
@@ -25,6 +48,10 @@ import { PostLoginLandingPageComponent } from './components/post-login-landing-p
     CommonModule,
     SharedModule,
     RouterModule,
-  ]
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    NgChartsModule
+  ],
 })
 export class CoreModule { }

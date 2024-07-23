@@ -15,7 +15,7 @@ public class Account {
     @Id
     private int userId;
 
-    private float funds;
+    private double funds;
 
     @OneToOne
     @JoinColumn(name = "user_id")
