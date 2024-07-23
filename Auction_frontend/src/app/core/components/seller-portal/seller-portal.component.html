@@ -20,7 +20,7 @@
     </div>
 
 <!-- Main Body -->
-    <div class="container" *ngIf="items.data.length > 0">
+    <div class="container" *ngIf="items.data != ''">
         <div class="card p-3 mb-4" *ngFor="let item of items.data" style="border: 2px solid #000;">
             <!-- <hr class="my-4" style="border: 1px solid #000;">  -->
             <div class="d-flex flex-column flex-md-row">    
@@ -71,9 +71,9 @@
     </div>
 
     <!-- <ng-template #noItems> -->
-        <div *ngIf="items.data.length == 0" class="container" style="margin-bottom: 16px;">
+        <div *ngIf="items.data == ''" class="container" style="margin-bottom: 16px;">
             <div class="main-content text-center">
-                <h1>THERE'S NOTHING HERE TO SEE {{items.data.length}}</h1>
+                <h1>THERE'S NOTHING HERE TO SEE</h1>
                 <h3>Post a new item to get started</h3>
                 <h6>Check the <a href="#">DEMO AUCTION</a> if you are new here</h6>
             </div>
