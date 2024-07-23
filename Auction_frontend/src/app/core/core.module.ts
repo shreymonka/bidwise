@@ -42,7 +42,7 @@ import { NgChartsModule } from 'ng2-charts';
     PreLoginUpcomingAllAuctionsComponent,
     TradebookComponent,
     UserProfileComponent,
-    AddFundsComponent]
+    AddFundsComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent
