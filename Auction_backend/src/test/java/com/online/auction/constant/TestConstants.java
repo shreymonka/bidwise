@@ -68,5 +68,7 @@ public class TestConstants {
 
     public static final String AUCTION_RECORD_NOT_FOUND_MSG = "Record not found to update post Auction state";
 
+    public static final String USA = "USA";
+
 
 }
