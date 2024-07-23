@@ -27,5 +27,5 @@ public class AuctionItemsDTO {
     private ItemCondition item_condition;
     private ItemCategory itemcategory;
     private LocalDateTime auctionEndTime;
-
+    private String cityName;
 }

@@ -47,10 +47,10 @@ public class AuctionController {
     }
 
     //for user who is logged-in and has listed  item
-    @GetMapping("/items/existing-user")
+    @GetMapping("/getAuction")
     public ResponseEntity<List<AuctionItemsDTO>> getItemsForExistingUser(@AuthenticationPrincipal User user
     ) throws ServiceException {
-        List<AuctionItemsDTO> items = auctionService.getItemsForExistingUser(user.getUserId());
+        List<AuctionItemsDTO> items = auctionService.getAuctionsForExistingUser(user.getUserId());
         return ResponseEntity.ok(items);
     }
 

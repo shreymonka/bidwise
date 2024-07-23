@@ -70,5 +70,18 @@ public class TestConstants {
 
     public static final String USA = "USA";
 
+    public static final String TEST_AUCTION = "Test Auction";
+    public static final String AUCTION_PHOTO_URL = "Photo Url";
+
+    public static final String AUCTION_ITEM_MAKER = "Item Maker";
+    public static final String AUCTION_ITEM_DESCRIPTION = "Item DESCRIPTION";
+    public static final String AUCTION_PRICE_PAID = "200";
+    public static final String AUCTION_USD_CURRENCY = "USD";
+
+    public static final String AUCTION_CITY_NAME = "HALIFAX";
+
+
+
+
 
 }

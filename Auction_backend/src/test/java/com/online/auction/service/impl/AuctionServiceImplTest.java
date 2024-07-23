@@ -7,6 +7,7 @@ import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Account;
 import com.online.auction.model.Auction;
 import com.online.auction.model.AuctionBidDetails;
+import com.online.auction.model.City;
 import com.online.auction.model.Item;
 import com.online.auction.model.ItemCategory;
 import com.online.auction.model.ItemCondition;
@@ -30,9 +31,20 @@ import java.util.Optional;
 
 import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG;
 import static com.online.auction.constant.AuctionConstants.INTEGER_SEVEN;
+import static com.online.auction.constant.TestConstants.AUCTION_CITY_NAME;
+import static com.online.auction.constant.TestConstants.AUCTION_USD_CURRENCY;
+import static com.online.auction.constant.TestConstants.AUCTION_ITEM_DESCRIPTION;
+import static com.online.auction.constant.TestConstants.AUCTION_ITEM_MAKER;
+import static com.online.auction.constant.TestConstants.AUCTION_PHOTO_URL;
+import static com.online.auction.constant.TestConstants.AUCTION_PRICE_PAID;
+import static com.online.auction.constant.TestConstants.AUCTION_RECORD_NOT_FOUND_MSG;
+import static com.online.auction.constant.TestConstants.BID_AMOUNT_ONE_HUNDRED;
 import static com.online.auction.constant.TestConstants.END_TIME;
 import static com.online.auction.constant.TestConstants.INTEGER_ONE;
+import static com.online.auction.constant.TestConstants.ITEM_NAME_1;
+import static com.online.auction.constant.TestConstants.PAINTING_ITEM_CATEGORY;
 import static com.online.auction.constant.TestConstants.START_TIME;
+import static com.online.auction.constant.TestConstants.TEST_AUCTION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -172,26 +184,34 @@ class AuctionServiceImplTest {
 
     @Test
     void getUpcomingAuctionsTest() {
-
-
         List<Auction> auctions = new ArrayList<>();
         Item item = new Item();
         item.setItemId(INTEGER_ONE);
-        item.setItem_name("Test Item");
-        item.setItem_photo("photo_url");
-        item.setItem_maker("Maker");
-        item.setDescription("Description");
+        item.setItem_name(ITEM_NAME_1);
+        item.setItem_photo(AUCTION_PHOTO_URL);
+        item.setItem_maker(AUCTION_ITEM_MAKER);
+        item.setDescription(AUCTION_ITEM_DESCRIPTION);
         item.setMin_bid_amount(100);
         item.setPrice_paid(200);
-        item.setCurrency("USD");
+        item.setCurrency(AUCTION_USD_CURRENCY);
         item.setItem_condition(ItemCondition.NEW);
 
         ItemCategory itemCategory = new ItemCategory();
-        itemCategory.setItemCategoryName("Electronics");
+        itemCategory.setItemCategoryName(PAINTING_ITEM_CATEGORY);
+
+        User user = new User();
+        user.setUserId(INTEGER_ONE);
+
+
+        City city = new City();
+        city.setCityName(AUCTION_CITY_NAME);
+
+        user.setCity(city);
 
         Auction auction = new Auction();
         auction.setAuctionId(INTEGER_ONE);
         auction.setItems(item);
+        auction.setSellerId(user);
         auction.setStartTime(START_TIME);
         auction.setEndTime(END_TIME);
         auctions.add(auction);
@@ -201,7 +221,7 @@ class AuctionServiceImplTest {
         List<AuctionItemsDTO> result = auctionService.getUpcomingAuctions();
 
         assertEquals(1, result.size());
-        assertEquals("Test Item", result.get(0).getItemName());
+        assertEquals(ITEM_NAME_1, result.get(0).getItemName());
     }
 
     @Test
@@ -211,34 +231,42 @@ class AuctionServiceImplTest {
 
         Item item = new Item();
         item.setItemId(INTEGER_ONE);
-        item.setItem_name("Test Item");
-        item.setItem_photo("photo_url");
-        item.setItem_maker("Maker");
-        item.setDescription("Description");
-        item.setMin_bid_amount(100);
-        item.setPrice_paid(200);
-        item.setCurrency("USD");
+        item.setItem_name(TEST_AUCTION);
+        item.setItem_photo(AUCTION_PHOTO_URL);
+        item.setItem_maker(AUCTION_ITEM_MAKER);
+        item.setDescription(AUCTION_ITEM_DESCRIPTION);
+        item.setMin_bid_amount(Double.parseDouble(BID_AMOUNT_ONE_HUNDRED));
+        item.setPrice_paid(Double.parseDouble(AUCTION_PRICE_PAID));
+        item.setCurrency(AUCTION_USD_CURRENCY);
         item.setItem_condition(ItemCondition.NEW);
 
         ItemCategory itemCategory = new ItemCategory();
-        itemCategory.setItemCategoryName("Electronics");
+        itemCategory.setItemCategoryName(PAINTING_ITEM_CATEGORY);
 
         List<Item> items = new ArrayList<>();
         items.add(item);
 
+        User auctionUser = new User();
+        auctionUser.setUserId(INTEGER_ONE);
+
+        City city = new City();
+        city.setCityName(AUCTION_CITY_NAME);
+        auctionUser.setCity(city);
+
         Auction auction = new Auction();
         auction.setAuctionId(INTEGER_ONE);
         auction.setItems(item);
+        auction.setSellerId(auctionUser);
         auction.setStartTime(START_TIME);
         auction.setEndTime(END_TIME);
 
         when(itemRepository.findUpcomingAndCurrentItemsExcludingUserItems(any(LocalDateTime.class), eq(user))).thenReturn(items);
         when(auctionListingRepository.findByItems_ItemId(item.getItemId())).thenReturn(Optional.of(auction));
 
-        List<AuctionItemsDTO> result = auctionService.getItemsForExistingUser(INTEGER_ONE);
+        List<AuctionItemsDTO> result = auctionService.getAuctionsForExistingUser(INTEGER_ONE);
 
         assertEquals(1, result.size());
-        assertEquals("Test Item", result.get(0).getItemName());
+        assertEquals(TEST_AUCTION, result.get(0).getItemName());
     }
 
     @Test
@@ -256,13 +284,12 @@ class AuctionServiceImplTest {
         when(auctionListingRepository.findByItems_ItemId(item.getItemId())).thenReturn(Optional.empty());
 
         ServiceException exception = assertThrows(ServiceException.class, () -> {
-            auctionService.getItemsForExistingUser(INTEGER_ONE);
+            auctionService.getAuctionsForExistingUser(INTEGER_ONE);
         });
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
         assertEquals(AUCTION_NOT_FOUND_MSG, exception.getErrorMessage());
     }
-
 
 
 }

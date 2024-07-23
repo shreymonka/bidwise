@@ -11,6 +11,6 @@ public interface AuctionService {
     boolean processPostAuctionState(int itemId) throws ServiceException;
 
     List<AuctionItemsDTO> getUpcomingAuctions();
-    List<AuctionItemsDTO> getItemsForExistingUser(int sellerId) throws ServiceException;
+    List<AuctionItemsDTO> getAuctionsForExistingUser(int sellerId) throws ServiceException;
 
 }

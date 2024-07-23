@@ -105,6 +105,18 @@ public class AuctionServiceImpl implements AuctionService {
         return true;
     }
 
+    /**
+     * Retrieves a list of upcoming auctions and maps them to AuctionItemsDTO.
+     *
+     * This method fetches the list of upcoming and current auctions from the
+     * repository using the current time as the reference. It then maps each
+     * Auction entity to an AuctionItemsDTO, which includes details about the item
+     * and auction, such as item ID, name, photo, maker, description, minimum bid
+     * amount, price paid, currency, item condition, item category, auction start
+     * and end times, and the seller's city name.
+     *
+     * @return List of AuctionItemsDTO representing upcoming auctions.
+     */
     @Override
     public List<AuctionItemsDTO> getUpcomingAuctions() {
 
@@ -124,12 +136,30 @@ public class AuctionServiceImpl implements AuctionService {
                         .item_condition(auction.getItems().getItem_condition())
                         .itemcategory(auction.getItems().getItemcategory())
                         .auctionEndTime(auction.getEndTime())
+                        .cityName(auction.getSellerId().getCity().getCityName())
                         .build())
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves a list of auctions for items not owned by the specified user
+     * and maps them to AuctionItemsDTO.
+     *
+     * This method fetches the list of upcoming and current items that are not
+     * owned by the specified user from the item repository. For each item, it
+     * fetches the associated auction details from the auction listing repository
+     * and maps them to AuctionItemsDTO. If an auction is not found for an item,
+     * it throws a ServiceException. The AuctionItemsDTO includes details about
+     * the item and auction, such as item ID, name, photo, maker, description,
+     * minimum bid amount, price paid, currency, item condition, item category,
+     * auction start and end times, and the seller's city name.
+     *
+     * @param sellerId ID of the seller for whom the auctions are to be retrieved.
+     * @return List of AuctionItemsDTO representing auctions for items not owned by the specified user.
+     * @throws ServiceException if an auction is not found for an item.
+     */
     @Override
-    public List<AuctionItemsDTO> getItemsForExistingUser(int sellerId) throws ServiceException {
+    public List<AuctionItemsDTO> getAuctionsForExistingUser(int sellerId) throws ServiceException {
         User seller = new User();
         seller.setUserId(sellerId);
 
@@ -154,6 +184,7 @@ public class AuctionServiceImpl implements AuctionService {
                     .item_condition(item.getItem_condition())
                     .itemcategory(item.getItemcategory())
                     .auctionEndTime(auctionDb.getEndTime())
+                    .cityName(auctionDb.getSellerId().getCity().getCityName())
                     .build();
 
             auctionItemsDTOList.add(auctionItemsDTO);
