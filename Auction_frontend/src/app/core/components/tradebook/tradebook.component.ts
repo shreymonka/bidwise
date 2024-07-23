@@ -34,6 +34,7 @@ export class TradebookComponent {
         console.log(this.trades);
       },
       (error) => {
+        this.trades.data = '';
         console.error('Error fetching items:', error);
       }
     );
