@@ -37,6 +37,13 @@ public class AuctionConstants {
     public static final String ITEM_NOT_FOUND_MSG = "Item not found";
 
     public static final String ACCOUNT = "/account";
-    public static final String TRADEBOOK_ERROR= "Error fetching tradebook details";
-    public static final String NO_TRADES_FOUND ="No trades found for user";
+    public static final String TRADEBOOK_ERROR = "Error fetching tradebook details";
+    public static final String NO_TRADES_FOUND = "No trades found for user";
+
+    public static final String LOCALE = "/locale";
+
+    public static final String COUNTRIES = "/countries";
+    public static final String CITIES = "/cities";
+
+    public static final String CITY_NOT_FOUND_ERROR_MSG = "No city found for given the country";
 }
