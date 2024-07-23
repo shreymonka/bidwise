@@ -46,4 +46,5 @@ public class AuctionConstants {
     public static final String CITIES = "/cities";
 
     public static final String CITY_NOT_FOUND_ERROR_MSG = "No city found for given the country";
+    public static final String PROFILE = "/profile";
 }

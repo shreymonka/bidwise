@@ -18,14 +18,14 @@ build_frontend:
     - cd Auction_frontend/
   script:
     - echo "build frontEnd"
-    - npm install
+    - npm install --legacy-peer-deps
     - npm install -g @angular/cli
     - ng build
   artifacts:
     paths:
       - Auction_frontend/dist/auction-frontend/
   tags:
-    - auctionrunner
+    - dalfcs_docker_kvm
     
 build_backend:
   stage: build
@@ -39,7 +39,7 @@ build_backend:
     paths:
       - Auction_backend/target/
   tags:
-    - auctionrunner
+    - dalfcs_docker_kvm
 
 test_backend:
   stage: test
@@ -52,7 +52,7 @@ test_backend:
     - echo "Running Tests"
     - mvn test
   tags:
-    - auctionrunner
+    - dalfcs_docker_kvm
 
 publish_backend:
   stage: publish

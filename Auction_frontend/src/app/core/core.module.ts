@@ -18,6 +18,8 @@ import { ItemListingComponent } from './components/item-listing/item-listing.com
 import { AuctionComponent } from './components/auction/auction.component';
 import { AddFundsComponent } from './components/add-funds/add-funds.component';
 import { TradebookComponent } from './components/tradebook/tradebook.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { TradebookComponent } from './components/tradebook/tradebook.component';
     AuctionComponent,
     TradebookComponent,
     AuctionComponent,
-    AddFundsComponent],
+    AddFundsComponent,
+    UserProfileComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent
@@ -47,7 +50,8 @@ import { TradebookComponent } from './components/tradebook/tradebook.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgChartsModule
   ],
 })
 export class CoreModule { }

@@ -27,6 +27,9 @@ import java.util.stream.Collectors;
 
 import static com.online.auction.constant.AuctionConstants.*;
 
+/**
+ * Service implementation for handling item-related operations.
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -149,7 +152,13 @@ public class ItemServiceImpl implements ItemService {
         log.info("Deleted item with ID: {} for user: {}", itemId, user.getEmail());
     }
 
-
+    /**
+     * Retrieves items by item ID.
+     *
+     * @param itemId the item ID to search for
+     * @return a list of item data transfer objects
+     * @throws ServiceException if an error occurs while retrieving the items
+     */
     @Override
     public List<ItemDTO> findItemsByItemId(Integer itemId) throws ServiceException {
         log.debug("Fetching items by itemId");
