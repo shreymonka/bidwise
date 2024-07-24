@@ -4,10 +4,8 @@ import com.online.auction.dto.AuthenticationRequestDTO;
 import com.online.auction.dto.AuthenticationResponseDTO;
 import com.online.auction.dto.UserDTO;
 import com.online.auction.exception.ServiceException;
-import com.online.auction.model.City;
-import com.online.auction.model.Token;
-import com.online.auction.model.TokenType;
-import com.online.auction.model.User;
+import com.online.auction.model.*;
+import com.online.auction.repository.AccountRepository;
 import com.online.auction.repository.CityRepository;
 import com.online.auction.repository.TokenRepository;
 import com.online.auction.repository.UserRepository;
@@ -39,6 +37,7 @@ import static com.online.auction.constant.AuctionConstants.*;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
+    private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
@@ -83,7 +82,24 @@ public class UserServiceImpl implements UserService {
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(userDb, jwtToken);
         emailUtils.sendEmail(userDto.getEmail(),EMAIL_SUBJECT,EMAIL_BODY_REGISTER);
+
+        // Create an initial account with zero balance for the new user
+        createInitialAccount(userDb);
+
         return "User Registered Successfully";
+    }
+
+    /**
+     * Creates an initial account with zero balance for a new user.
+     *
+     * @param user the user for whom the account is to be created
+     */
+    private void createInitialAccount(User user) {
+        Account account = new Account();
+        account.setUser(user);
+        account.setFunds(0);
+        accountRepository.save(account);
+        log.info("Created initial account for user id: {} with initial funds: 0", user.getUserId());
     }
 
     /**
