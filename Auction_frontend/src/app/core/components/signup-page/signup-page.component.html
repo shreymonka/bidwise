@@ -58,7 +58,7 @@
                 <label for="country">Country</label>
                 <select class="form-control" id="country" formControlName="country" required>
                     <option value="">Select a country</option>
-                    <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+                    <option *ngFor="let country of countries.data" [ngValue]="country">{{ country }}</option>
                 </select>
                 <div *ngIf="signupForm.controls['country'].invalid && signupForm.controls['country'].touched" class="text-danger">
                     Country selection is required.
@@ -69,7 +69,7 @@
                 <label for="city">City</label>
                 <select class="form-control" id="city" formControlName="city" required>
                     <option value="">Select a city</option>
-                    <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+                    <option *ngFor="let city of cities.data" [value]="city">{{ city }}</option>
                 </select>
                 <div *ngIf="signupForm.controls['city'].invalid && signupForm.controls['city'].touched" class="text-danger">
                     City selection is required.
