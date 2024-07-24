@@ -88,13 +88,13 @@
             </div>
     
             <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="terms" formControlName="terms" required>
+                <input type="checkbox" class="form-check-input custom-radio-checkbox" id="terms" formControlName="terms" required>
                 <label class="form-check-label" for="terms">I have read and agree to the Privacy Policy, Terms and Conditions, and Terms of Service.</label>
                 <div *ngIf="signupForm.controls['terms'].invalid && signupForm.controls['terms'].touched" class="text-danger">
                     You must agree to the terms.
                 </div>
             </div>
-            <button type="submit" [disabled]="signupForm.invalid" (click)="postLoginRedirect()" class="btn btn-primary btn-block">Sign Up</button>
+            <button type="submit" [disabled]="signupForm.invalid" (click)="postLoginRedirect()" class="btn btn-outline-dark btn-block mr-2">Sign Up</button>
             <p class="text-center mt-3" style="margin-bottom: 16px;">Already Have An Account? <a (click)="LoginRedirect()" class="text-primary">Log In</a></p>
         </form>
     </div>  
