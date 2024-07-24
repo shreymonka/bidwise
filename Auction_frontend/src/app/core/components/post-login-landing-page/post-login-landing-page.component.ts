@@ -29,9 +29,8 @@ export class PostLoginLandingPageComponent {
         this.upcomingAuctions = data;
 
         // Get the first three items
-        this.firstThreeUpcomingAuctions = data.slice(0, 3); 
+        this.firstThreeUpcomingAuctions = data.slice(0, 3);
 
-        console.log('Upcoming Auctions:',this.fetchUpcomingAuctions);
       },
       error: (error) => {
         console.error('Error fetching upcoming auctions', error);
@@ -40,21 +39,17 @@ export class PostLoginLandingPageComponent {
   }
 
   bidNow(auction: any): void {
-    this.auctionSharedService.changeAuction(auction); 
+    this.auctionSharedService.changeAuction(auction);
 
-    this.router.navigate(['/auction'], {
-      queryParams: { 
-        itemId: auction.itemId 
-      }
-    });   
+    this.router.navigate(['/auction',auction.itemId]  );
       console.log(`Bid now on item ID: ${auction.itemId}`);
   }
   choosePlan(): void {
-    this.router.navigate(['/login']); 
+    this.router.navigate(['/login']);
   }
 
 // Navigate to the all auctions page
   navigateToAllAuctions(): void {
-    this.router.navigate(['/upcoming-all-auctions']); 
+    this.router.navigate(['/upcoming-all-auctions']);
   }
 }
