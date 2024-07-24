@@ -97,13 +97,13 @@
                 </div>
             </div>
             <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="terms" formControlName="terms" required>
+                <input type="checkbox" class="form-check-input custom-radio-checkbox" id="terms" formControlName="terms" required>
                 <label class="form-check-label" for="terms">I have read and agree to the Privacy Policy, Terms and Conditions, and Terms of Service.</label>
                 <div *ngIf="addFundsForm.controls['terms'].invalid && addFundsForm.controls['terms'].touched" class="text-danger">
                     Selecting terms is required.
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-block" style="margin-bottom: 16px;" [disabled]="addFundsForm.invalid">ADD FUNDS</button>
+            <button type="submit" class="btn btn-outline-dark btn-block mr-2" style="margin-bottom: 16px;" [disabled]="addFundsForm.invalid">ADD FUNDS</button>
         </form>
     </div> 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
