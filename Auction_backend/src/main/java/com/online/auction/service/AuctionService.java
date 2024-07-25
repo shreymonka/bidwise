@@ -7,6 +7,9 @@ import com.online.auction.exception.ServiceException;
 import com.online.auction.model.User;
 
 import java.util.List;
+import com.online.auction.model.User;
+
+import java.util.List;
 
 /**
  * Service interface for managing auction-related operations.
