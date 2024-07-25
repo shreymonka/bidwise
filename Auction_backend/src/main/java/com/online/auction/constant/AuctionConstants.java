@@ -47,4 +47,6 @@ public class AuctionConstants {
 
     public static final String CITY_NOT_FOUND_ERROR_MSG = "No city found for given the country";
     public static final String PROFILE = "/profile";
+
+    public static final String AMERICAN_TIME_ZONE = "America/Halifax";
 }
