@@ -1,4 +1,5 @@
-<app-pre-login-header></app-pre-login-header>
+<app-pre-login-header *ngIf="!isAuth"></app-pre-login-header>
+<app-post-login-header *ngIf="isAuth"></app-post-login-header>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,20 +12,75 @@
 </head>
 <body>
     <div class="container">
-        <header class="hero-section d-flex justify-content-start align-items-center">
-            <div class="hero-background"></div> <!-- New Background Container -->
-        </header>
         <div class="about-us" >
-            <h1>About Us</h1>
-            <p>Welcome to BidWise, where we're redefining the online auction landscape with a platform that prioritizes user control, transparency, and scalability. At BidWise, we believe that participating in auctions should be an empowering experience for everyone, from individual users to major corporations.
-                Our platform offers unparalleled user control, allowing you to navigate auctions with ease and confidence. With intuitive features and a user-friendly interface, you'll have complete control over your bidding experience, ensuring a seamless and enjoyable process from start to finish.
-                We understand the importance of transparency in online auctions, which is why we've built BidWise with fairness and honesty at its core. Our transparent bidding processes and secure transactions give you peace of mind, knowing that your bids are handled with integrity and that you're competing on a level playing field.
-            </p><p> BidWise also offers a comprehensive dashboard that provides you with real-time insights and analytics, allowing you to track your bids, monitor auctions, and make informed decisions. With our adaptive scaling capabilities, BidWise can accommodate businesses of all sizes, providing tailored solutions to meet your unique needs and requirements.
-            </p><p> BidWise supports multiple currencies, making it easy for users from around the world to participate in auctions and make transactions in their preferred currency. Whether you're bidding on a rare collectible or a high-value item, BidWise ensures a seamless and secure payment process every time.</p> 
-                <p>Join us at BidWise and experience the future of online auctions. With our commitment to user control, transparency, and adaptive scaling, we're revolutionizing the way people buy and sell online.</p>
-            <!-- Add more content here -->
+            <!-- Body Header -->
+            <div class="container mt-5">
+                <div class="text-start mb-4">
+                    <h1 class="p-4">ABOUT US</h1>
+                </div>
+            </div>
+
+            <main>
+                <div class="container">
+                  <!-- START THE FEATURETTES -->
+
+                  <hr class="featurette-divider">
+
+                  <div class="row featurette">
+                    <div class="col-md-7">
+                      <h2 class="featurette-heading">Welcome to BidWise. <span class="text-muted">A cool and simple bidding app.</span></h2>
+                      <p class="lead">We are redefining the online auction landscape with a platform that prioritizes user control.  At BidWise, we believe that participating in auctions should be an empowering experience for everyone.</p>
+                    </div>
+                    <div class="col-md-5" style="align-items: center;">
+                      <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="350" href="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <image class="img-fluid" href="assets/images/auction1.jpeg" width="100%" height="100%"/>
+                       </svg>
+                    </div>
+                  </div>
+
+                  <hr class="featurette-divider">
+
+                  <div class="row featurette">
+                    <div class="col-md-7 order-md-2">
+                      <h2 class="featurette-heading">Oh yeah, it’s that good. <span class="text-muted">Experience it by yourself.</span></h2>
+                      <p class="lead">You'll have complete control over your bidding experience, ensuring a seamless and enjoyable process from start to finish.
+                        Comprehensive dashboard that provides you with real-time insights and analytics, allowing you to track your bids, monitor auctions, and much more.
+                      </p>
+                    </div>
+                    <div class="col-md-5 order-md-1">
+                      <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <image class="img-fluid" href="assets/images/auction2.jpeg" width="100%" height="100%"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <hr class="featurette-divider">
+                  <div class="row featurette">
+                    <div class="col-md-7">
+                      <h2 class="featurette-heading">And lastly, <span class="text-muted"> our Commitment.</span></h2>
+                      <p class="lead"> With our commitment to user control, transparency, and adaptive scaling, we're revolutionizing the way people buy and sell online. So what are you waiting for come join us at BidWise and experience the future of online auctions.</p>
+                    </div>
+                    <div class="col-md-5">
+                      <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <image class="img-fluid" href="assets/images/auction3.jpeg" width="100%" height="100%"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <hr class="featurette-divider">
+
+                  <!-- /END THE FEATURETTES -->
+
+                </div><!-- /.container -->
+
+              </main>
+
         </div>
     </div>
+    <!-- Footer -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 
