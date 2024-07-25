@@ -30,13 +30,8 @@ export class UpcomingAllAuctionsComponent {
   }
 
   bidNow(auction: any): void {
-    this.auctionSharedService.changeAuction(auction); 
-
-    this.router.navigate(['/auction'], {
-      queryParams: { 
-        itemId: auction.itemId 
-      }
-    });   
+    this.auctionSharedService.changeAuction(auction);  
+      this.router.navigate(['/auction',auction.itemId]  );
       console.log(`Bid now on item ID: ${auction.itemId}`);
   }
 
