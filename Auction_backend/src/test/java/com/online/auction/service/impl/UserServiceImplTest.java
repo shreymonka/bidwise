@@ -8,6 +8,7 @@ import com.online.auction.model.City;
 import com.online.auction.model.Token;
 import com.online.auction.model.TokenType;
 import com.online.auction.model.User;
+import com.online.auction.repository.AccountRepository;
 import com.online.auction.repository.CityRepository;
 import com.online.auction.repository.TokenRepository;
 import com.online.auction.repository.UserRepository;
@@ -63,6 +64,9 @@ class UserServiceImplTest {
 
     @Mock
     private CityRepository cityRepository;
+
+    @Mock
+    private AccountRepository accountRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
