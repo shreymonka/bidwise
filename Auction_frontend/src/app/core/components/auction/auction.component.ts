@@ -53,7 +53,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
     // Temporary taking item Id as 1
     // this.itemId=this.route.snapshot.params['itemId'];
     console.log('The current time is:' + this.currentTime);
-    this.itemId = 29;
+    this.itemId = this.route.snapshot.params['id'];
     console.log('The item Id is:' + this.itemId);
     // this.formdata.patchValue({
     //   itemId: 5
