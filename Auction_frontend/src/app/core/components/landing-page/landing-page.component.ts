@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuctionItemsServiceService } from '../../services/landing-page-service/auction-items-service.service';
 import { AuctionSharedServiceService } from '../../services/auction-shared-service/auction-shared-service.service';
+import { LoginServiceService } from '../../services/login-service/login-service.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -18,10 +19,12 @@ export class LandingPageComponent implements OnInit{
     private auctionService: AuctionItemsServiceService ,
     private router: Router,
     private auctionSharedService: AuctionSharedServiceService, 
+    private loginService : LoginServiceService
   ) { }
 
   ngOnInit(): void { 
     this.fetchUpcomingAuctions();
+    this.loginService.logout();
   }
   fetchUpcomingAuctions(): void {
   
