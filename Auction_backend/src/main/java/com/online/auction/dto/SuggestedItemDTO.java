@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SuggestedItemDTO {
+    private int itemId;
     private String auctionId;
     private String itemId;
     private String itemName;
