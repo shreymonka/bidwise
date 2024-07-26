@@ -171,7 +171,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
     console.log('The endTimeMillis is:'+endTimeMillis);
     if(!this.isPremium){
       console.log('The user is not a Premium User!');
-      endTimeMillis=endTimeMillis - 10000;
+      endTimeMillis=endTimeMillis - 45000;                                    //Update here if need to increase time for Premium User
       console.log('The new endTimeMillis is:'+endTimeMillis);
     }else{
       console.log('The user is a Premium User!');
@@ -208,7 +208,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
                 console.log(error);
               }
             );
-          }, 11000);
+          }, 46000);                                                //Update here for Time syncing the Post Auction API. Put 1 sec extra of what set above for premium user
         }else{
           console.log('The user is premium. Resolving the Post Auction')
           this.auctionService.closeAuction(this.itemId).subscribe(
