@@ -266,10 +266,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Boolean isPremium(User user) throws ServiceException {
+        log.info("Checking if the user is Premium for : {}", user);
         Optional<User> userDbOptional = userRepository.findByEmail(user.getEmail());
         if (userDbOptional.isEmpty()) {
+            log.error("User not Found for the given details: {}", user);
             throw new ServiceException(HttpStatus.BAD_REQUEST, USER_NOT_PRESENT_MSG);
         }
+        log.info("The user premium status is:{}", userDbOptional.get().isPremium());
         return userDbOptional.get().isPremium();
     }
 }
