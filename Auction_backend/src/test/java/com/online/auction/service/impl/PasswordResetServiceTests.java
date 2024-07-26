@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class PasswordResetServiceTests {
 
     private static final String EXPECTED_SUBJECT = "Password Reset Request";
-    private static final String EXPECTED_BODY = "To reset your password, click the link below:\nhttp://172.17.3.242:4200/reset-password?token=";
+    private static final String EXPECTED_BODY = "To reset your password, click the link below:\nhttp://172.17.3.242/reset-password?token=";
 
 
     @Mock
