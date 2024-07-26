@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType, ChartOptions, ChartDataset, Color } from 'chart.js';
 import { UserProfileService } from '../../services/user-profile/user-profile.service';
+import { AccountServiceService } from '../../services/account-service/account-service.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -9,6 +10,7 @@ import { UserProfileService } from '../../services/user-profile/user-profile.ser
 })
 export class UserProfileComponent implements OnInit {
   currentChart: string = 'chart1';
+  funds: number = 0;  // To store the fetched funds
 
   // User data
   userProfile: any = {};
@@ -37,7 +39,9 @@ export class UserProfileComponent implements OnInit {
     { data: [] }
   ];
 
-  constructor(private userProfileService: UserProfileService) {}
+  constructor(private userProfileService: UserProfileService,
+              private accountService: AccountServiceService
+  ) {}
 
   ngOnInit(): void {
     const userId = 1; // Replace with the actual user ID
@@ -80,6 +84,11 @@ export class UserProfileComponent implements OnInit {
 
       this.pieChartLabels = labels;
       this.pieChartData[0].data = counts;
+    });
+
+    // Fetch account balance
+    this.accountService.getAccountFunds().subscribe((response: any) => {
+      this.funds = response.data;
     });
   }
 
