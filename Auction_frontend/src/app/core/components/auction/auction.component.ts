@@ -32,6 +32,8 @@ export class AuctionComponent implements OnInit, OnDestroy {
   isAuctionClosed = false;
   accountDetails:any;
   funds:any;
+  premiumDetails:any;
+  isPremium = false;
 
   constructor(
     private auctionService: AuctionServiceService,
@@ -63,6 +65,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
       this.loadItemData(this.itemId);
       this.loadAuctionData(this.itemId);
       this.loadAccountFundsData();
+      this.loadUserPremiumData();
     }
     //this.subscribe();
   }
@@ -125,6 +128,8 @@ export class AuctionComponent implements OnInit, OnDestroy {
         this.startMonth= this.startTime.getMonth()+1;
         this.endTime = new Date(this.auctionDetails.data.endTime);
         console.log('The startTime for the auction is:' + this.startTime);
+
+        console.log('The endTime for the auction is:' + this.endTime);
         this.startCountdown(this.startTime, this.endTime);
       },
       error => {
@@ -146,10 +151,33 @@ export class AuctionComponent implements OnInit, OnDestroy {
     )
   }
 
+  loadUserPremiumData(){
+    this.auctionService.getUserPremiumStatus().subscribe(
+      (premiumStatusData) => {
+        console.log('The data fetched for the User Premium details is:'+premiumStatusData);
+        this.premiumDetails = premiumStatusData;
+        this.isPremium = this.premiumDetails.data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
   startCountdown(startTime: Date, endTime: Date): void {
     const startTimeMillis = startTime.getTime();
-    const endTimeMillis = endTime.getTime();
-    console.log('The startTime is:' + this.startTime);
+    console.log('The startTimeMillis is:'+startTimeMillis);
+    let endTimeMillis = endTime.getTime();
+    console.log('The endTimeMillis is:'+endTimeMillis);
+    if(!this.isPremium){
+      console.log('The user is not a Premium User!');
+      endTimeMillis=endTimeMillis - 10000;
+      console.log('The new endTimeMillis is:'+endTimeMillis);
+    }else{
+      console.log('The user is a Premium User!');
+    }
+    console.log('The Final endTimeMillis is:'+endTimeMillis);
+    //console.log('The startTime is:' + this.startTime);
     
     this.timerSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();

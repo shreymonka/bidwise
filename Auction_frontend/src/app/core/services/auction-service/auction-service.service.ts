@@ -67,4 +67,8 @@ export class AuctionServiceService {
   closeAuction(itemId: any){
     return this.http.get(this.baseUrl+"/auction/postAuction/"+itemId);
   }
+
+  getUserPremiumStatus(){
+    return this.http.get(this.baseUrl+"/user/checkPremium")
+  }
 }
