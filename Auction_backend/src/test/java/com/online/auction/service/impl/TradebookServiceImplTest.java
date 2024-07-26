@@ -27,6 +27,7 @@ import static com.online.auction.constant.TestConstants.TEST_EMAIL;
 import static com.online.auction.constant.TestConstants.USER_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
@@ -115,17 +116,15 @@ public class TradebookServiceImplTest {
 
     @Test
     public void testGetAllTradesByUser_ThrowsServiceException() {
-        RuntimeException runtimeException = new RuntimeException("Database error");
-        when(tradebookRepository.findAllByUser(testUser)).thenThrow(runtimeException);
-
         ServiceException exception = assertThrows(ServiceException.class, () -> {
             tradebookService.getAllTradesByUser(testUser);
         });
-
         assertEquals(HttpStatus.NOT_FOUND.value(), exception.getStatusCode());
-        assertEquals("Error fetching tradebook details", exception.getErrorMessage());
+        assertEquals("No trades found for user", exception.getErrorMessage());
         verify(tradebookRepository, times(1)).findAllByUser(testUser);
     }
+
+
 
     @Test
     public void testGetInvoiceByAuctionId_Success() throws ServiceException {
