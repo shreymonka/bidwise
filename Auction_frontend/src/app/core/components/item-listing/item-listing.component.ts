@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ItemListingServiceService } from '../../services/item-listing-service/item-listing-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { dateRangeValidator } from './dateRangeValidator';
 
 import Swal from 'sweetalert2';
 @Component({
@@ -37,7 +38,9 @@ export class ItemListingComponent implements OnInit {
       endDate: ['', Validators.required],
       endTime: ['', Validators.required],
       categoryName: ''
-    });
+    },
+    { validators: dateRangeValidator() }
+  );
   }
 
   ngOnInit(): void {
