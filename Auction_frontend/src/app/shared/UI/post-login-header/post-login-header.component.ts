@@ -18,6 +18,15 @@ export class PostLoginHeaderComponent {
     private logout: LoginServiceService
   ){}
 
+  isAuth(){
+    // alert("Called" + this.logout.isAuthenticated())
+    if(this.logout.isAuthenticated()){
+      this.router.navigate(['/postLogin']);
+    } else {
+      this.router.navigate(['/landingpage']);
+    }
+  }
+
   signout(){
     console.log("logged out");
       this.logout.logout();

@@ -24,10 +24,10 @@ export class LoginPageComponent implements OnInit {
     if(this.loginService.isAuthenticated()){
       this.router.navigate([this.returnUrl]);
     }
-    this.route.queryParams.subscribe(params => {
-      this.returnUrl = params['returnUrl'] || this.returnUrl;
-    });
-    this.loginService.logout();
+    // this.route.queryParams.subscribe(params => {
+    //   this.returnUrl = params['returnUrl'] || this.returnUrl;
+    // });
+    // this.loginService.logout();
   }
 
   SignupRedirect() {
