@@ -29,8 +29,8 @@ import static com.online.auction.constant.AuctionConstants.ITEM;
 @RequestMapping(API_VERSION_V1 + ITEM)
 @RequiredArgsConstructor
 public class ItemController {
-    @Autowired
-    private ItemService itemService;
+
+    private final ItemService itemService;
 
     /**
      * Adds a new item to the auction.
