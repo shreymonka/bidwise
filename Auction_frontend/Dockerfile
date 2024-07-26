@@ -1,11 +1,7 @@
-FROM node:20
+FROM nginx:latest
 
-WORKDIR /usr/src/app
+COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY . /usr/src/app
+COPY /dist/auction-frontend/browser /usr/share/nginx/html
 
-RUN npm install -g @angular/cli
-
-RUN npm install --legacy-peer-deps
-
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+EXPOSE 80
