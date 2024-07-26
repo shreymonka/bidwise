@@ -29,4 +29,7 @@ public class ItemDTO {
     private String categoryName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private Double soldPrice;
+    private boolean isAuctionEnded; // New field for auction status
+
 }

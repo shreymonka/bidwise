@@ -50,7 +50,7 @@
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
                         <div class="detail">
-                            <p>DATE OF LISTING</p>
+                            <p>DATE OF AUCTION</p>
                             <h4>{{ item.startTime | date:'MM/dd/yyyy' }}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
@@ -61,8 +61,9 @@
                         </div>
                     </div>
                     <div class="button-container justify-content-start">
-                        <button class="btn btn-outline-dark mr-2" >REVIEW</button>
-                        <button class="btn btn-outline-dark" (click)="deleteItem(item.itemId)">DELETE</button>
+                        <button *ngIf="item.auctionEnded && item.soldPrice != null" class="btn btn-outline-dark mr-2" >SOLD</button>
+                        <button *ngIf="item.auctionEnded && item.soldPrice == null" class="btn btn-outline-dark mr-2" >UNSOLD</button>
+                        <button *ngIf="!item.auctionEnded" class="btn btn-outline-dark" (click)="deleteItem(item.itemId)">DELETE</button>
                     </div>
                 </div>
             </div>

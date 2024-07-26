@@ -125,6 +125,9 @@
         </div>
       <!-- </div> -->
     </div>
+    <div *ngIf="itemForm.hasError('invalidDateRange')" class="text-danger">
+      The start date and time must be before the end date and time.
+    </div>
     
     <h3>PHOTOS</h3>
 <div class="form-group">
