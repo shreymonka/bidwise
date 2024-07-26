@@ -18,9 +18,7 @@ build_frontend:
     - cd Auction_frontend/
   script:
     - echo "build frontEnd"
-    - npm install --legacy-peer-deps
-    - npm install -g @angular/cli
-    - ng build
+    - npm run build
   artifacts:
     paths:
       - Auction_frontend/dist/auction-frontend/
@@ -123,7 +121,7 @@ deploy_build:
     - ssh $SSH_USER@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
     - ssh $SSH_USER@$VM_IPADDRESS "docker container rm -f auctionfrontend || true"
     - ssh $SSH_USER@$VM_IPADDRESS "docker container rm -f auctionbackend || true"
-    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p4200:4200 --name auctionfrontend  $DOCKER_USERNAME/auctionfrontend"
+    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p80:80 --name auctionfrontend  $DOCKER_USERNAME/auctionfrontend"
     - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p8080:8080 --name auctionbackend $DOCKER_USERNAME/auctionbackend"
   when: manual
   tags:
