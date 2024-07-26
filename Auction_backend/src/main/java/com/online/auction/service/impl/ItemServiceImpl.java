@@ -40,6 +40,15 @@ public class ItemServiceImpl implements ItemService {
     private final AuctionListingRepository auctionListingRepository;
     private final Cloudinary cloudinary;
 
+    /**
+     * Adds a new item to the auction.
+     *
+     * @param itemDto The item details to add.
+     * @param file    The image file associated with the item.
+     * @param user    The authenticated user adding the item.
+     * @return A success message indicating the item was listed successfully.
+     * @throws ServiceException If there is an error during the addition of the item.
+     */
     @Override
     public String addItem(ItemDTO itemDto,MultipartFile file, User user) throws ServiceException {
         log.debug("Attempting to add a new item: {}", itemDto);
@@ -99,6 +108,13 @@ public class ItemServiceImpl implements ItemService {
         return successMessage;
     }
 
+    /**
+     * Uploads an image file to Cloudinary and returns its URL.
+     *
+     * @param file The image file to upload.
+     * @return The URL of the uploaded image.
+     * @throws ServiceException If there is an error during the upload process.
+     */
     private String uploadImageToCloudinary(MultipartFile file) throws ServiceException {
         try {
             Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
@@ -109,6 +125,12 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    /**
+     * Retrieves all items listed by the authenticated user.
+     *
+     * @param user The authenticated user whose items are to be retrieved.
+     * @return A list of item data transfer objects representing the user's items.
+     */
     @Override
     public List<ItemDTO> getAllItemsByUser(User user) {
         log.debug("Fetching items for user: {}", user.getEmail());
@@ -119,6 +141,13 @@ public class ItemServiceImpl implements ItemService {
 
         return itemDTOs;
     }
+
+    /**
+     * Converts an Item entity to an ItemDTO object.
+     *
+     * @param item The item entity to convert.
+     * @return The corresponding item data transfer object.
+     */
     private ItemDTO convertToItemDTO(Item item) {
         Auction auction = auctionListingRepository.findByItems(item).orElse(null);
         return ItemDTO.builder()
@@ -137,6 +166,13 @@ public class ItemServiceImpl implements ItemService {
                 .build();
     }
 
+    /**
+     * Deletes an item listed by the authenticated user.
+     *
+     * @param itemId The ID of the item to be deleted.
+     * @param user   The authenticated user requesting the deletion.
+     * @throws ServiceException If the item is not found or if the user is not authorized to delete the item.
+     */
     public void deleteItem(int itemId, User user) throws ServiceException {
         log.debug("Deleting item with ID: {} for user: {}", itemId, user.getEmail());
         Item item = itemRepository.findById(itemId)

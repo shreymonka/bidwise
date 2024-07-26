@@ -28,6 +28,13 @@ import static com.online.auction.constant.AuctionConstants.TRADEBOOK_ERROR;
 public class TradebookServiceImpl implements TradebookService {
     private final TradebookRepository tradebookRepository;
 
+    /**
+     * Retrieves all trades associated with the given user.
+     *
+     * @param user The user whose trades are to be fetched.
+     * @return A list of TradebookDTOs representing the user's trades.
+     * @throws ServiceException If there is an error retrieving the trades or if no trades are found.
+     */
     @Override
     public List<TradebookDTO> getAllTradesByUser(User user) throws ServiceException {
         log.debug("Fetching items for user: {}", user.getEmail());
