@@ -4,7 +4,11 @@ import com.online.auction.dto.AuthenticationRequestDTO;
 import com.online.auction.dto.AuthenticationResponseDTO;
 import com.online.auction.dto.UserDTO;
 import com.online.auction.exception.ServiceException;
-import com.online.auction.model.*;
+import com.online.auction.model.Account;
+import com.online.auction.model.City;
+import com.online.auction.model.Token;
+import com.online.auction.model.TokenType;
+import com.online.auction.model.User;
 import com.online.auction.repository.AccountRepository;
 import com.online.auction.repository.CityRepository;
 import com.online.auction.repository.TokenRepository;
@@ -29,7 +33,16 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.online.auction.constant.AuctionConstants.*;
+import static com.online.auction.constant.AuctionConstants.BEARER;
+import static com.online.auction.constant.AuctionConstants.EMAIL_BODY_REGISTER;
+import static com.online.auction.constant.AuctionConstants.EMAIL_SUBJECT;
+import static com.online.auction.constant.AuctionConstants.INTEGER_SEVEN;
+import static com.online.auction.constant.AuctionConstants.INVALID_CREDENTIALS_MSG;
+import static com.online.auction.constant.AuctionConstants.PASSWORD_RESET_LINK;
+import static com.online.auction.constant.AuctionConstants.PASSWORD_RESET_LINK_BODY;
+import static com.online.auction.constant.AuctionConstants.PASSWORD_RESET_REQUEST;
+import static com.online.auction.constant.AuctionConstants.USER_ALREADY_PRESENT_MSG;
+import static com.online.auction.constant.AuctionConstants.USER_NOT_PRESENT_MSG;
 
 @Service
 @AllArgsConstructor
@@ -253,6 +266,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Boolean isPremium(User user) throws ServiceException {
-        return null;
+        Optional<User> userDbOptional = userRepository.findByEmail(user.getEmail());
+        if (userDbOptional.isEmpty()) {
+            throw new ServiceException(HttpStatus.BAD_REQUEST, USER_NOT_PRESENT_MSG);
+        }
+        return userDbOptional.get().isPremium();
     }
 }
