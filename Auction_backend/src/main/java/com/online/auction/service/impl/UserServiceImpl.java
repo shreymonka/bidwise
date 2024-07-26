@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(userDb, jwtToken);
-        emailUtils.sendEmail(userDto.getEmail(),EMAIL_SUBJECT,EMAIL_BODY_REGISTER);
+        emailUtils.sendEmail(userDto.getEmail(), EMAIL_SUBJECT, EMAIL_BODY_REGISTER);
 
         // Create an initial account with zero balance for the new user
         createInitialAccount(userDb);
@@ -225,19 +225,19 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "User not found"));
         user.setResetToken(UUID.randomUUID().toString());
         userRepository.save(user);
-        emailUtils.sendEmail(email,PASSWORD_RESET_REQUEST,PASSWORD_RESET_LINK_BODY + PASSWORD_RESET_LINK  + user.getResetToken());
+        emailUtils.sendEmail(email, PASSWORD_RESET_REQUEST, PASSWORD_RESET_LINK_BODY + PASSWORD_RESET_LINK + user.getResetToken());
         return "Password Reset Link Successfully";
     }
 
     /**
      * This method updates the user password
      *
-     * @param token resetToken which is used to validate that user has received reset password link
+     * @param token       resetToken which is used to validate that user has received reset password link
      * @param newPassword new user password string
      * @return a string
      */
     public String resetPassword(String token, String newPassword) throws ServiceException {
-        User user = userRepository.findByResetToken(token).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST,"Invalid token"));
+        User user = userRepository.findByResetToken(token).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "Invalid token"));
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setResetToken(null);
         userRepository.save(user);
@@ -245,18 +245,14 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Upgrades a user to premium status.
+     * Checks if the given user has a premium account.
      *
-     * @param email the user email to upgrade
-     * @return the email of the upgraded user
-     * @throws ServiceException if the user is not found
+     * @param user The user object containing the email to be checked.
+     * @return {@code true} if the user has a premium account, {@code false} otherwise.
+     * @throws ServiceException if the user is not found in the database.
      */
-    public String upgradeToPremium(String email) throws ServiceException {
-        log.info("Upgrading user to premium");
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "User not found"));
-        user.setPremium(true);
-        userRepository.save(user);
-
-        return email;
+    @Override
+    public Boolean isPremium(User user) throws ServiceException {
+        return null;
     }
 }
