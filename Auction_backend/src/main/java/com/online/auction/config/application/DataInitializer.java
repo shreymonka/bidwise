@@ -2,28 +2,41 @@ package com.online.auction.config.application;
 
 import com.online.auction.model.City;
 import com.online.auction.model.Country;
+import com.online.auction.model.ItemCategory;
 import com.online.auction.repository.CityRepository;
 import com.online.auction.repository.CountryRepository;
-import lombok.AllArgsConstructor;
+import com.online.auction.repository.ItemCategoryRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class DataInitializer implements CommandLineRunner {
 
     private final LocaleConfig localeConfig;
-    private CountryRepository countryRepository;
-    private CityRepository cityRepository;
+    private final CountryRepository countryRepository;
+    private final CityRepository cityRepository;
+    private final ItemCategoryRepository itemCategoryRepository;
+
+    @Value("${app.itemCategories}")
+    private String categories;
 
     @Override
     public void run(String... args) throws Exception {
+        loadLocaleData();
+        loadItemCategoriesData();
+    }
+
+    private void loadLocaleData() {
         log.info("Initializing the initial Locale Data");
 
         //Fetching the Locale details from configuration
@@ -73,6 +86,21 @@ public class DataInitializer implements CommandLineRunner {
                         log.info("The data is already present for city : {}", cityOptional.get());
                     }
                 }
+            }
+        }
+    }
+
+    private void loadItemCategoriesData() {
+        log.info("Initializing the Item Categories Data");
+        List<String> itemCategories = Arrays.stream(categories.split(",")).toList();
+        for (String itemCategoryName : itemCategories) {
+            Optional<ItemCategory> itemCategoryDb = itemCategoryRepository.findByItemCategoryName(itemCategoryName);
+            if (itemCategoryDb.isEmpty()) {
+                log.info("Inserting the Item Category with the name: {}", itemCategoryName);
+                ItemCategory itemCategory = itemCategoryRepository.save(ItemCategory.builder().itemCategoryName(itemCategoryName).build());
+                log.info("Successfully inserted the Item Category: {}", itemCategory);
+            } else {
+                log.info("The Item Category is already present: {}", itemCategoryDb);
             }
         }
     }
