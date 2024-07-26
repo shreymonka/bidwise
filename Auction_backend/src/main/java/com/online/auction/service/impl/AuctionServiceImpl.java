@@ -90,9 +90,12 @@ public class AuctionServiceImpl implements AuctionService {
         if (Objects.nonNull(account)) {
             log.info("Debiting the fund for the user: {}", account.getUserId());
             double currentFunds = account.getFunds();
-            account.setFunds(currentFunds - auctionBidDetails.getBid_amount());
-            accountRepository.save(account);
-            log.info("Successfully debited the funds from the winner's account : {}", account);
+            double updatedFunds = currentFunds - auctionBidDetails.getBid_amount();
+            if (updatedFunds >= 0) {
+                account.setFunds(updatedFunds);
+                accountRepository.save(account);
+                log.info("Successfully debited the funds from the winner's account : {}", account);
+            }
         }
 
         Optional<Auction> auctionOptional = auctionListingRepository.findByItems_ItemId(itemId);
