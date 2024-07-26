@@ -71,9 +71,9 @@ publish_backend:
     #- echo $DOCKER_PASSWORD |docker login -u $DOCKER_USERNAME --password-stdin
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - echo "Building the Docker image for the Backend"
-    - docker build -t docker.io/$DOCKER_USERNAME/auctionbackend .
+    - docker build -t docker.io/$DOCKER_USERNAME/auctionbackend:$CI_COMMIT_SHORT_SHA .
     - echo "Successfully build the docker image for the backend"
-    - docker push docker.io/$DOCKER_USERNAME/auctionbackend
+    - docker push docker.io/$DOCKER_USERNAME/auctionbackend:$CI_COMMIT_SHORT_SHA
   after_script:
     - echo "Docker Image pushed successfully"
     - docker logout
@@ -98,9 +98,9 @@ publish_frontend:
     #- echo $DOCKER_PASSWORD |docker login -u $DOCKER_USERNAME --password-stdin
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - echo "Building the Docker image"
-    - docker build -t docker.io/$DOCKER_USERNAME/auctionfrontend .
+    - docker build -t docker.io/$DOCKER_USERNAME/auctionfrontend:$CI_COMMIT_SHORT_SHA .
     - echo "Successfully build the docker image"
-    - docker push docker.io/$DOCKER_USERNAME/auctionfrontend
+    - docker push docker.io/$DOCKER_USERNAME/auctionfrontend:$CI_COMMIT_SHORT_SHA
   after_script:
     - echo "Docker Image pushed successfully"
     - docker logout
@@ -123,8 +123,8 @@ deploy_build:
     - ssh $SSH_USER@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
     - ssh $SSH_USER@$VM_IPADDRESS "docker container rm -f auctionfrontend || true"
     - ssh $SSH_USER@$VM_IPADDRESS "docker container rm -f auctionbackend || true"
-    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p80:80 --name auctionfrontend  $DOCKER_USERNAME/auctionfrontend"
-    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p8080:8080 --name auctionbackend $DOCKER_USERNAME/auctionbackend"
+    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p80:80 --name auctionfrontend  $DOCKER_USERNAME/auctionfrontend:$CI_COMMIT_SHORT_SHA"
+    - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p8080:8080 --name auctionbackend $DOCKER_USERNAME/auctionbackend:$CI_COMMIT_SHORT_SHA"
   when: manual
   tags:
     - dalfcs_docker_kvm
