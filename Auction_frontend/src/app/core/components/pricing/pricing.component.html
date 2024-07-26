@@ -1,3 +1,5 @@
+<app-logo-header></app-logo-header>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,30 +10,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="pricing-container">
-    <h2>Upgrade to Premium</h2>
-    <form [formGroup]="pricingForm" (ngSubmit)="submitPayment()">
-      <div>
+  <div class="container d-flex justify-content-center align-items-center">
+    <form [formGroup]="pricingForm" (ngSubmit)="submitPayment()" class="signup-form">
+      <h2 class="text-center mb-4">Upgrade to Premium</h2>
+      <div class="form-group">
         <label for="cardNumber">Card Number</label>
-        <input id="cardNumber" formControlName="cardNumber" placeholder="Card Number" />
+        <input id="cardNumber" class="form-control" formControlName="cardNumber" placeholder="Card Number" />
       </div>
-      <div>
-        <label for="expiryDate">Expiry Date</label>
-        <input id="expiryDate" formControlName="expiryDate" placeholder="MM/YY" />
+      <div class="form-row">
+        <div class="col-md-6 mb-2">
+          <label for="expiryDate">Expiry Date</label>
+          <input id="expiryDate" class="form-control" formControlName="expiryDate" placeholder="MM/YY" />
+        </div>
+        <div class="col-md-6 mb-2">
+          <label for="cvv">CVC</label>
+          <input id="cvc" class="form-control" formControlName="cvc" placeholder="CVC" />
+        </div>
       </div>
-      <div>
-        <label for="cvv">CVV</label>
-        <input id="cvv" formControlName="cvv" placeholder="CVV" />
-      </div>
-      <div>
+      <div class="form-group">
         <label for="cardHolderName">Card Holder Name</label>
-        <input id="cardHolderName" formControlName="cardHolderName" placeholder="Card Holder Name" />
+        <input id="cardHolderName" class="form-control" formControlName="cardHolderName" placeholder="Card Holder Name" />
       </div>
-      <div>
+      <div class="form-group">
         <label for="email">Email</label>
-        <input id="email" formControlName="email" placeholder="Email" />
+        <input id="email" class="form-control" formControlName="email" placeholder="Email" />
       </div>
-      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input custom-radio-checkbox" id="terms" formControlName="terms" required>
+        <label class="form-check-label" for="terms">I have read and agree to the Privacy Policy, Terms and Conditions, and Terms of Service.</label>
+      </div>
+
+      <button type="submit" class="btn btn-outline-dark btn-block mr-2" style="margin-bottom: 16px;">Submit</button>
     </form>
   </div>
   
