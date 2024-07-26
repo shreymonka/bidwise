@@ -231,6 +231,7 @@ public class AuctionServiceImpl implements AuctionService {
                     .auctionEndTime(auctionDb.getEndTime())
                     .cityName(auctionDb.getSellerId().getCity().getCityName())
                     .build();
+
             auctionItemsDTOList.add(auctionItemsDTO);
         }
         log.info("The Final auction list is: {}", auctionItemsDTOList);
