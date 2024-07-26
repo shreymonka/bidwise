@@ -197,14 +197,30 @@ export class AuctionComponent implements OnInit, OnDestroy {
         // Auction has ended
         this.isAuctionStarted = false;
         this.countdown = 'Auction has ended.';
-        this.auctionService.closeAuction(this.itemId).subscribe(
-          (data) =>{
-            console.log(data);
-          },
-          error => {
-            console.log(error);
-          }
-        );
+        if(!this.isPremium){
+          console.log('The use is not premium so syncing the post Auction');
+          setTimeout(() => {
+            this.auctionService.closeAuction(this.itemId).subscribe(
+              (data) => {
+                console.log(data);
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+          }, 11000);
+        }else{
+          console.log('The user is premium. Resolving the Post Auction')
+          this.auctionService.closeAuction(this.itemId).subscribe(
+            (data) =>{
+              console.log(data);
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        }
+
         if (this.timerSubscription) {
           this.timerSubscription.unsubscribe();
         }
