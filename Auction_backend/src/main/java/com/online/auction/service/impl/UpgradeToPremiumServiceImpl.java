@@ -3,6 +3,7 @@ package com.online.auction.service.impl;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.User;
 import com.online.auction.repository.UserRepository;
+import com.online.auction.service.AccountService;
 import com.online.auction.service.UpgradeToPremiumService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UpgradeToPremiumServiceImpl implements UpgradeToPremiumService {
     private final UserRepository userRepository;
+    private final AccountService accountService;
 
     /**
      * Upgrades a user to premium status.
@@ -27,6 +29,8 @@ public class UpgradeToPremiumServiceImpl implements UpgradeToPremiumService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "User not found"));
         user.setPremium(true);
         userRepository.save(user);
+
+        accountService.addFunds(user.getUserId(), 100);
 
         return email;
     }
