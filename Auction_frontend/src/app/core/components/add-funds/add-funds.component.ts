@@ -12,8 +12,6 @@ import Swal from 'sweetalert2';
 export class AddFundsComponent {
 
   addFundsForm: FormGroup;
-  // successMessage: string = '';
-  // errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -37,14 +35,11 @@ export class AddFundsComponent {
 
   onSubmit(): void {
     if (this.addFundsForm.valid) {
-      const userId = 1; // Replace with the actual userId from your auth logic or a hidden field in the form
+      const userId = 1;
       const amount = this.addFundsForm.get('amount')?.value;
 
       this.addFundService.addFunds(userId, amount).subscribe(
         response => {
-          // this.successMessage = 'Funds added successfully';
-          // this.errorMessage = '';
-          // this.addFundsForm.reset();
           Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -54,8 +49,6 @@ export class AddFundsComponent {
           this.router.navigate(['/postLogin'])
         },
         error => {
-          // this.errorMessage = 'Error adding funds: ' + error;
-          // this.successMessage = '';
           Swal.fire({
             icon: 'error',
             title: 'Error',

@@ -22,8 +22,8 @@ import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 @RequestMapping(API_VERSION_V1 + ACCOUNT)
 @RequiredArgsConstructor
 public class AccountController {
-    @Autowired
-    private AccountService accountService;
+
+    private final AccountService accountService;
 
     @GetMapping("/balance")
     public ResponseEntity<SuccessResponse<Double>> getAccountBalance(

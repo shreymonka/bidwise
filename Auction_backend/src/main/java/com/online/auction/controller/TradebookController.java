@@ -28,8 +28,7 @@ import static com.online.auction.constant.AuctionConstants.USER;
 @RequiredArgsConstructor
 public class TradebookController {
 
-    @Autowired
-    private TradebookService tradebookService;
+    private final TradebookService tradebookService;
 
     /**
      * Get auction participated or won for user.

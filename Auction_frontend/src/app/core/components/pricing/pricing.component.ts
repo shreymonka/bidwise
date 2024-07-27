@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -18,11 +19,12 @@ export class PricingComponent {
     private router: Router
   ) {
     this.pricingForm = this.fb.group({
-      cardNumber: [''],
-      expiryDate: [''],
-      cvv: [''],
-      cardHolderName: [''],
-      email: ['']
+      cardNumber: ['', Validators.required],
+      expiry: ['', Validators.required],
+      cvc: ['', Validators.required],
+      cardHolderName: ['', Validators.required],
+      email: ['',[Validators.required, Validators.email]],
+      terms: [false, [Validators.requiredTrue]]
     });
   }
 

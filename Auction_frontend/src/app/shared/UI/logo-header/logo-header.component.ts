@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { LoginServiceService } from '../../../core/services/login-service/login-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-logo-header',
@@ -7,4 +9,16 @@ import { Component } from '@angular/core';
 })
 export class LogoHeaderComponent {
 
+  constructor(
+    private loginService: LoginServiceService,
+    private router: Router
+  ) {}
+
+  isAuth(){
+    if(this.loginService.isAuthenticated()){
+      this.router.navigate(['/postLogin']);
+    } else {
+      this.router.navigate(['/landingpage']);
+    }
+  }
 }
