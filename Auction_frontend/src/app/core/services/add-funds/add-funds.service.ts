@@ -19,7 +19,6 @@ export class AddFundsService {
 
   addFunds(userId: number, amount: number): Observable<any> {
     const url = `${this.endpoint}`;
-    alert(url);
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
     });

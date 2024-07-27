@@ -13,7 +13,6 @@ export class LoginServiceService {
   constructor(private http: HttpClient) { }
 
   login(credentials: { email: string, password: string }): Observable<any> {
-    alert("hi" + this.loginUrl);
     return this.http.post(this.loginUrl, credentials).pipe(
       map((response: any) => response),
       catchError(this.handleError)
