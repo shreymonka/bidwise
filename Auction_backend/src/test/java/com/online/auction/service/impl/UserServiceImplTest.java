@@ -24,6 +24,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,6 +43,7 @@ import static com.online.auction.constant.TestConstants.NEW_ACCESS_TOKEN;
 import static com.online.auction.constant.TestConstants.PASSWORD;
 import static com.online.auction.constant.TestConstants.REFRESH_TOKEN;
 import static com.online.auction.constant.TestConstants.TEST_EMAIL;
+import static com.online.auction.constant.TestConstants.USER_NOT_FOUND;
 import static com.online.auction.constant.TestConstants.USER_REGISTRATION_SUCCESS_MSG;
 import static com.online.auction.constant.TestConstants.VALID_REFRESH_TOKEN;
 import static org.junit.jupiter.api.Assertions.*;
@@ -220,6 +222,30 @@ class UserServiceImplTest {
 
         AuthenticationResponseDTO result = userService.refreshToken(request, response);
         assertNull(result);
+    }
+
+    @Test
+    public void isPremiumWhenUserIsNotPremiumTest() throws ServiceException {
+        user.setPremium(false);
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+
+        Boolean isPremium = userService.isPremium(user);
+
+        assertFalse(isPremium);
+        verify(userRepository, times(1)).findByEmail(anyString());
+    }
+
+    @Test
+    public void isPremiumWhenUserNotFoundTest() {
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            userService.isPremium(user);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
+        assertEquals(USER_NOT_FOUND, exception.getErrorMessage());
+        verify(userRepository, times(1)).findByEmail(anyString());
     }
 
     private City getCity() {

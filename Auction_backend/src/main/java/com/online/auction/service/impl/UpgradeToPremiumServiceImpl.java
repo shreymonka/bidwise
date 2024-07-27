@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import static com.online.auction.constant.AuctionConstants.USER_NOT_PRESENT_MSG;
 
 @Service
 @AllArgsConstructor
@@ -26,7 +27,7 @@ public class UpgradeToPremiumServiceImpl implements UpgradeToPremiumService {
      */
     public String upgradeToPremium(String email) throws ServiceException {
         log.info("Upgrading user to premium");
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "User not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, USER_NOT_PRESENT_MSG));
         user.setPremium(true);
         userRepository.save(user);
 
