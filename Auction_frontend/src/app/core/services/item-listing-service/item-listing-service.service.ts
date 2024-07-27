@@ -3,19 +3,21 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs';
 import { Route, Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ItemListingServiceService {
-  addItemEndPoint: string = 'http://172.17.3.242:8080/api/v1/item/additem';
-  getAllItemsEndPoint: string = 'http://172.17.3.242:8080/api/v1/item/getitems';
-  deleteItemEndPoint: String = 'http://172.17.3.242:8080/api/v1/item/deleteItemListed';
-  private baseUrl = "http://172.17.3.242:8080/api/v1";
+  private baseUrl = environment.apiUrl;
+
+  addItemEndPoint: string = this.baseUrl+ '/item/additem';
+  getAllItemsEndPoint: string = this.baseUrl+'/item/getitems';
+  deleteItemEndPoint: String = this.baseUrl+ '/item/deleteItemListed';
 
   constructor(private http: HttpClient,public router:Router) { }
   addItemForAuction(itemDetails:any): Observable<any>{
     let api = `${this.addItemEndPoint}`;
-    console.log("Test payload"+api);
     return this.http.post(api,itemDetails).pipe(catchError(this.handleError));
   }
 

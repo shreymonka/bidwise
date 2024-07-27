@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
+
 import {
   HttpClient,
   HttpHeaders,
@@ -13,9 +15,9 @@ import { Router } from '@angular/router';
 })
 
 export class SignUpServiceService {
-  endpoint: string = 'http://172.17.3.242:8080/api/v1/user/register';
-  locationEndpoint : string = 'http://172.17.3.242:8080/api/v1/locale/countries';
-  cityEndpoint : String = 'http://172.17.3.242:8080/api/v1/locale/cities';
+  endpoint: string = environment.apiUrl+ '/user/register';
+  locationEndpoint : string = environment.apiUrl+ '/locale/countries';
+  cityEndpoint : String = environment.apiUrl+ '/locale/cities';
   // headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient, public router: Router) { }
 

@@ -2,16 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class LoginServiceService {
-  private loginUrl = 'http://172.17.3.242:8080/api/v1/user/authenticate';
+  private loginUrl = environment.apiUrl + '/user/authenticate';
   private tokenKey = 'authToken';
-
+  
   constructor(private http: HttpClient) { }
 
   login(credentials: { email: string, password: string }): Observable<any> {
+    alert("hi" + this.loginUrl);
     return this.http.post(this.loginUrl, credentials).pipe(
       map((response: any) => response),
       catchError(this.handleError)
