@@ -110,6 +110,9 @@ publish_frontend:
 
 deploy_build:
   image: alpine:latest
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
   stage: deploy
   before_script:
     - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
