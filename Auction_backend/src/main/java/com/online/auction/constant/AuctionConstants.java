@@ -38,8 +38,6 @@ public class AuctionConstants {
     public static final String ACCOUNT = "/account";
     public static final String NO_TRADES_FOUND = "No trades found for user";
     public static final String LOCALE = "/locale";
-    public static final String COUNTRIES = "/countries";
-    public static final String CITIES = "/cities";
     public static final String CITY_NOT_FOUND_ERROR_MSG = "No city found for given the country";
     public static final String PROFILE = "/profile";
     public static final String AMERICAN_TIME_ZONE = "America/Halifax";
