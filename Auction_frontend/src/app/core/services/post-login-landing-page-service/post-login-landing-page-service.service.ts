@@ -14,5 +14,7 @@ export class PostLoginLandingPageServiceService {
   getUpcomingAuctions(): Observable<any> {
     return this.http.get<any[]>(`${this.apiUrl}/auction/getAuction`);
   }
-
+  getSuggestedAuctions(): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}/auction/suggested`);
+  }
 }
