@@ -14,7 +14,6 @@ import com.online.auction.repository.ItemRepository;
 import com.online.auction.service.ItemService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +50,7 @@ public class ItemServiceImpl implements ItemService {
      * @throws ServiceException If there is an error during the addition of the item.
      */
     @Override
-    public String addItem(ItemDTO itemDto,MultipartFile file, User user) throws ServiceException {
+    public String addItem(ItemDTO itemDto, MultipartFile file, User user) throws ServiceException {
         log.debug("Attempting to add a new item: {}", itemDto);
 
         Optional<ItemCategory> itemCategory = itemCategoryRepository.findByItemCategoryName(itemDto.getCategoryName());
@@ -122,7 +121,7 @@ public class ItemServiceImpl implements ItemService {
             return uploadResult.get("url").toString();
         } catch (IOException e) {
             log.error("Failed to upload image to Cloudinary", e);
-            throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR,IMAGE_UPLOAD_FAILED);
+            throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR, IMAGE_UPLOAD_FAILED);
         }
     }
 
