@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Service implementation for handling Access token related operations.
+ */
 @Service
 public class JwtServiceImpl implements JwtService {
 

@@ -106,8 +106,8 @@
                     </div>
                 </div>
                 <div class="button-container justify-content-start auctiondetail">
-                    <button class="btn btn-outline-dark mr-2" (click)="subscribe()">Participate Now</button>
-                    <button class="btn btn-outline-dark mr-2" (click)="bid()">PLACE YOUR BID</button>
+                    <button class="btn btn-outline-dark mr-2" *ngIf="!isSubscribed" (click)="subscribe()">Participate Now</button>
+                    <button class="btn btn-outline-dark mr-2" *ngIf="isSubscribed" (click)="bid()">PLACE YOUR BID</button>
                 </div>
             </div>
 

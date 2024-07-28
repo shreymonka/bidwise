@@ -17,6 +17,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Component for initializing data into the application at startup.
+ * <p>
+ * This class implements {@link CommandLineRunner} and is executed after the application context is loaded.
+ * It loads locale data (countries and cities) and item categories from the configuration into the database.
+ * </p>
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -30,12 +37,29 @@ public class DataInitializer implements CommandLineRunner {
     @Value("${app.itemCategories}")
     private String categories;
 
+    /**
+     * Executes the data initialization process after the application context is loaded.
+     * <p>
+     * This method invokes {@link #loadLocaleData()} and {@link #loadItemCategoriesData()} to populate the
+     * database with initial data.
+     * </p>
+     *
+     * @param args Command line arguments passed to the application (not used).
+     * @throws Exception If an error occurs during data initialization.
+     */
     @Override
     public void run(String... args) throws Exception {
         loadLocaleData();
         loadItemCategoriesData();
     }
 
+    /**
+     * Loads and initializes the locale data (countries and cities) into the database.
+     * <p>
+     * Fetches locale details from the {@link LocaleConfig} configuration and inserts new country and city
+     * records into the database if they do not already exist.
+     * </p>
+     */
     private void loadLocaleData() {
         log.info("Initializing the initial Locale Data");
 
@@ -90,6 +114,13 @@ public class DataInitializer implements CommandLineRunner {
         }
     }
 
+    /**
+     * Loads and initializes the item categories data into the database.
+     * <p>
+     * Retrieves item categories from the {@code app.itemCategories} configuration property and inserts
+     * them into the database if they do not already exist.
+     * </p>
+     */
     private void loadItemCategoriesData() {
         log.info("Initializing the Item Categories Data");
         List<String> itemCategories = Arrays.stream(categories.split(",")).toList();

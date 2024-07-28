@@ -17,24 +17,40 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
-import static com.online.auction.constant.AuctionConstants.CITIES;
-import static com.online.auction.constant.AuctionConstants.COUNTRIES;
 import static com.online.auction.constant.AuctionConstants.LOCALE;
 
+/**
+ * Controller for managing locale-related data, such as countries and cities.
+ * Provides endpoints to retrieve lists of countries and cities.
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping(API_VERSION_V1 + LOCALE)
 public class LocaleController {
     private final LocaleService localeService;
 
-    @GetMapping(COUNTRIES)
+    /**
+     * Retrieves a list of all countries.
+     *
+     * @return A {@link ResponseEntity} containing a {@link SuccessResponse} with a list of country names.
+     * @throws ServiceException If there is an error during the retrieval of countries.
+     */
+    @GetMapping("/countries")
     public ResponseEntity<SuccessResponse<List<String>>> getAllCities() throws ServiceException {
         List<Country> countries = localeService.getAllCountries();
         SuccessResponse<List<String>> successResponse = new SuccessResponse<>(200, HttpStatus.OK, countries.stream().map(Country::getCountryName).collect(Collectors.toList()));
         return ResponseEntity.ok(successResponse);
     }
 
-    @GetMapping(CITIES)
+
+    /**
+     * Retrieves a list of cities for a given country.
+     *
+     * @param countryName The name of the country for which to retrieve cities.
+     * @return A {@link ResponseEntity} containing a {@link SuccessResponse} with a list of city names.
+     * @throws ServiceException If there is an error during the retrieval of cities or if the country is not found.
+     */
+    @GetMapping("/cities")
     public ResponseEntity<SuccessResponse<List<String>>> getCitiesByCountry(
             @RequestParam("countryName") String countryName) throws ServiceException {
         List<City> cities = localeService.getCitiesForCountry(countryName);

@@ -54,7 +54,7 @@ export class PricingComponent {
     const token = localStorage.getItem('token');  // Assuming you store JWT in localStorage after login
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.post('http://172.17.3.242:8080/api/v1/user/upgrade-to-premium', paymentDetails, { headers }).subscribe(
+    this.http.post('http://172.17.3.242:8080/api/v1/membership/upgrade-to-premium', paymentDetails, { headers }).subscribe(
       (response: any) => {
         Swal.fire({
           title: 'Success!',
@@ -79,7 +79,7 @@ export class PricingComponent {
 
   cancelSubscription(): void {
     // Call the backend API to cancel the subscription
-    this.http.post('http://172.17.3.242:8080/api/v1/user/cancelPremium', {}).subscribe(
+    this.http.post('http://172.17.3.242:8080/api/v1/membership/cancelPremium', {}).subscribe(
       (response: any) => {
         Swal.fire({
           title: 'Success!',

@@ -18,8 +18,22 @@ import static com.online.auction.constant.AuctionConstants.HTTP_CODE;
 import static com.online.auction.constant.AuctionConstants.HTTP_STATUS;
 import static com.online.auction.constant.AuctionConstants.TIMESTAMP;
 
+/**
+ * GlobalControllerAdvice handles exceptions thrown by controllers in the application.
+ * This class provides a centralized way to manage exception handling and format
+ * error responses uniformly across the application.
+ */
 @ControllerAdvice
 public class GlobalControllerAdvice {
+
+    /**
+     * Handles {@link UsernameNotFoundException} exceptions.
+     * Provides a response entity with details about the error.
+     *
+     * @param ex      The exception thrown.
+     * @param request The web request.
+     * @return A ResponseEntity containing error details and a HTTP status of NOT_FOUND (404).
+     */
     @ExceptionHandler(UsernameNotFoundException.class)
     protected ResponseEntity<Map<String, Object>> userNameNotFound(
             UsernameNotFoundException ex, WebRequest request) {
@@ -31,6 +45,14 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<Map<String, Object>>(errorInfo, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Handles {@link AccessDeniedException} exceptions.
+     * Provides a response entity with details about the error.
+     *
+     * @param ex      The exception thrown.
+     * @param request The web request.
+     * @return A ResponseEntity containing error details and a HTTP status of FORBIDDEN (403).
+     */
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<Map<String, Object>> accessDeniedException(
             UsernameNotFoundException ex, WebRequest request) {
@@ -42,6 +64,14 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<Map<String, Object>>(errorInfo, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Handles {@link ServiceException} exceptions.
+     * Provides a response entity with details about the error.
+     *
+     * @param ex      The exception thrown.
+     * @param request The web request.
+     * @return A ResponseEntity containing error details and an HTTP status based on the exception's status code.
+     */
     @ExceptionHandler(ServiceException.class)
     protected ResponseEntity<Map<String, Object>> serviceException(
             ServiceException ex, WebRequest request) {

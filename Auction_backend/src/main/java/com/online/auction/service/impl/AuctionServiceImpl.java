@@ -30,6 +30,10 @@ import java.util.stream.Collectors;
 import static com.online.auction.constant.AuctionConstants.AMERICAN_TIME_ZONE;
 import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG;
 
+/**
+ * Service implementation for handling auction-related operations.
+ * This service provides methods to retrieve auction details,process post-auction states and Fetch auctions based on the User's current Login state.
+ */
 @AllArgsConstructor
 @Service
 @Slf4j
@@ -40,6 +44,13 @@ public class AuctionServiceImpl implements AuctionService {
     private AccountRepository accountRepository;
     private ItemRepository itemRepository;
 
+    /**
+     * Retrieves the details of an auction based on the given item ID.
+     *
+     * @param itemId the ID of the item whose auction details are to be retrieved
+     * @return an {@code AuctionDTO} containing the details of the auction
+     * @throws ServiceException if the auction is not found
+     */
     @Override
     public AuctionDTO getAuctionDetails(int itemId) throws ServiceException {
         log.info("Fetching the Auction Details for the itemId: {}", itemId);
@@ -59,6 +70,15 @@ public class AuctionServiceImpl implements AuctionService {
                 .build();
     }
 
+    /**
+     * Processes the post-auction state for the specified item.
+     * This method identifies the winning bid, updates the bid details, debits the winner's account,
+     * credits the seller's account, and closes the auction.
+     *
+     * @param itemId the ID of the item whose post-auction state is to be processed
+     * @return {@code true} if the post-auction state was processed successfully
+     * @throws ServiceException if the auction bid details are not found or already updated
+     */
     @Override
     @Transactional
     public boolean processPostAuctionState(int itemId) throws ServiceException {
