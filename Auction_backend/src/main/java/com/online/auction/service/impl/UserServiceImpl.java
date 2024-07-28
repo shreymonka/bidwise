@@ -44,6 +44,10 @@ import static com.online.auction.constant.AuctionConstants.PASSWORD_RESET_REQUES
 import static com.online.auction.constant.AuctionConstants.USER_ALREADY_PRESENT_MSG;
 import static com.online.auction.constant.AuctionConstants.USER_NOT_PRESENT_MSG;
 
+/**
+ * Service implementation for handling user-related operations.
+ * This service provides methods for user registration, authentication, and password management.
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -245,7 +249,7 @@ public class UserServiceImpl implements UserService {
     /**
      * This method updates the user password
      *
-     * @param token resetToken which is used to validate that user has received reset password link
+     * @param token       resetToken which is used to validate that user has received reset password link
      * @param newPassword new user password string
      * @return a string
      */
