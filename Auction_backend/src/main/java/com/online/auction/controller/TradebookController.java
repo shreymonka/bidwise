@@ -20,6 +20,9 @@ import java.util.List;
 import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 import static com.online.auction.constant.AuctionConstants.USER;
 
+/**
+ * Controller for managing tradebook-related operations, including fetching trades and retrieving invoices.
+ */
 @RestController
 @RequestMapping(API_VERSION_V1 + USER)
 @RequiredArgsConstructor
