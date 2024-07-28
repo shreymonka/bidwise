@@ -2,16 +2,10 @@ package com.online.auction.service.impl;
 
 import com.online.auction.dto.AuctionDTO;
 import com.online.auction.dto.AuctionItemsDTO;
+import com.online.auction.dto.CategoryAuctionDTO;
 import com.online.auction.exception.ServiceException;
-import com.online.auction.model.Account;
-import com.online.auction.model.Auction;
-import com.online.auction.model.AuctionBidDetails;
-import com.online.auction.model.Item;
-import com.online.auction.repository.AccountRepository;
-import com.online.auction.repository.AuctionBidDetailRepository;
-import com.online.auction.model.User;
-import com.online.auction.repository.AuctionListingRepository;
-import com.online.auction.repository.ItemRepository;
+import com.online.auction.model.*;
+import com.online.auction.repository.*;
 import com.online.auction.service.AuctionService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -43,6 +37,7 @@ public class AuctionServiceImpl implements AuctionService {
     private AuctionBidDetailRepository auctionBidDetailRepository;
     private AccountRepository accountRepository;
     private ItemRepository itemRepository;
+    private final ItemCategoryRepository itemCategoryRepository;
 
     /**
      * Retrieves the details of an auction based on the given item ID.
@@ -236,4 +231,57 @@ public class AuctionServiceImpl implements AuctionService {
         log.info("Completed the getAuctionsForExistingUser method");
         return auctionItemsDTOList;
     }
+
+    /**
+     * Retrieves a list of auctions grouped by item categories.
+     * <p>
+     * This method fetches all item categories from the repository and iterates through each category to find items
+     * associated with that category. For each item, it fetches the related auction details. Only auctions that have
+     * not yet ended are included in the response. The auctions are then grouped into categories, and the resulting
+     * list is returned.
+     * </p>
+     *
+     * @return A list of {@link CategoryAuctionDTO} objects representing categorized auctions. Each {@link CategoryAuctionDTO}
+     * contains the category name and a list of auctions related to that category.
+     */
+    @Override
+    public List<CategoryAuctionDTO> getAuctionsByCategory() {
+        log.info("Fetching auctions categorized by item category");
+
+        List<ItemCategory> categories = itemCategoryRepository.findAll();
+        List<CategoryAuctionDTO> categorizedAuctions = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now(); // Get the current date and time
+
+        for (ItemCategory category : categories) {
+            List<Item> items = itemRepository.findByItemcategory(category);
+            List<CategoryAuctionDTO.AuctionItemDetailsDTO> auctionItems = new ArrayList<>();
+
+            for (Item item : items) {
+                Auction auction = auctionListingRepository.findByItems(item).orElse(null);
+                if (auction != null && auction.getEndTime().isAfter(now)) { // Check if auction is upcoming
+                    CategoryAuctionDTO.AuctionItemDetailsDTO auctionItemDTO = CategoryAuctionDTO.AuctionItemDetailsDTO.builder()
+                            .itemId(String.valueOf(item.getItemId()))
+                            .itemName(item.getItem_name())
+                            .itemPhoto(item.getItem_photo())
+                            .startTime(auction.getStartTime())
+                            .endTime(auction.getEndTime())
+                            .cityName(auction.getSellerId().getCity().getCityName())
+                            .build();
+                    auctionItems.add(auctionItemDTO);
+                }
+            }
+
+            if (!auctionItems.isEmpty()) {
+                CategoryAuctionDTO categoryDTO = CategoryAuctionDTO.builder()
+                        .categoryName(category.getItemCategoryName())
+                        .items(auctionItems)
+                        .build();
+                categorizedAuctions.add(categoryDTO);
+            }
+        }
+
+        log.info("Successfully fetched and categorized auctions");
+        return categorizedAuctions;
+    }
+
 }

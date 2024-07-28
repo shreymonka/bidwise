@@ -1,6 +1,7 @@
 package com.online.auction.controller;
 
 import com.online.auction.dto.AuctionDTO;
+import com.online.auction.dto.CategoryAuctionDTO;
 import com.online.auction.dto.SuccessResponse;
 import com.online.auction.dto.AuctionItemsDTO;
 import com.online.auction.exception.ServiceException;
@@ -84,4 +85,23 @@ public class AuctionController {
         return ResponseEntity.ok(items);
     }
 
+    /**
+     * Handles HTTP GET requests to retrieve auctions grouped by item categories.
+     * <p>
+     * This method invokes the auction service to fetch a list of auctions categorized by their item types. Each category
+     * includes a list of items that are currently or will be available for auction. Only auctions that have not yet ended
+     * are included in the response. The resulting data is wrapped in a {@link SuccessResponse} object for standardized
+     * API responses.
+     * </p>
+     *
+     * @return A {@link ResponseEntity} containing a {@link SuccessResponse} with a list of {@link CategoryAuctionDTO} objects.
+     * Each {@link CategoryAuctionDTO} contains the category name and a list of auctions related to that category.
+     * @throws ServiceException If an error occurs while fetching the categorized auctions.
+     */
+    @GetMapping("/categories")
+    public ResponseEntity<SuccessResponse<List<CategoryAuctionDTO>>> getAuctionsByCategory() throws ServiceException {
+        List<CategoryAuctionDTO> auctionsByCategory = auctionService.getAuctionsByCategory();
+        SuccessResponse<List<CategoryAuctionDTO>> successResponse = new SuccessResponse<>(200, HttpStatus.OK, auctionsByCategory);
+        return ResponseEntity.ok(successResponse);
+    }
 }

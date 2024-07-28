@@ -2,6 +2,7 @@ package com.online.auction.service;
 
 import com.online.auction.dto.AuctionDTO;
 import com.online.auction.dto.AuctionItemsDTO;
+import com.online.auction.dto.CategoryAuctionDTO;
 import com.online.auction.exception.ServiceException;
 
 import java.util.List;
@@ -60,5 +61,17 @@ public interface AuctionService {
      * @throws ServiceException If an error occurs while retrieving the auctions for the seller.
      */
     List<AuctionItemsDTO> getAuctionsForExistingUser(int sellerId) throws ServiceException;
+
+    /**
+     * Retrieves a list of auctions grouped by item categories.
+     * <p>
+     * This method fetches a list of auctions and categorizes them based on the item categories.
+     * Only upcoming auctions (i.e., auctions that have not yet ended) are included in the list.
+     * </p>
+     *
+     * @return A list of {@link CategoryAuctionDTO} objects representing categorized auctions.
+     * @throws ServiceException If an error occurs while retrieving the categorized auctions.
+     */
+    List<CategoryAuctionDTO> getAuctionsByCategory() throws ServiceException;
 
 }

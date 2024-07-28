@@ -1,6 +1,7 @@
 package com.online.auction.repository;
 
 import com.online.auction.model.Item;
+import com.online.auction.model.ItemCategory;
 import com.online.auction.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -63,4 +64,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
      * @return A list of {@link Item} entities with the specified item ID.
      */
     List<Item> findByItemId(Integer itemId);
+
+    List<Item> findByItemcategory(ItemCategory category);
 }

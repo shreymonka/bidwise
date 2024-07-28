@@ -3,6 +3,7 @@ package com.online.auction.service.impl;
 
 import com.online.auction.dto.AuctionDTO;
 import com.online.auction.dto.AuctionItemsDTO;
+import com.online.auction.dto.CategoryAuctionDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Account;
 import com.online.auction.model.Auction;
@@ -12,10 +13,7 @@ import com.online.auction.model.Item;
 import com.online.auction.model.ItemCategory;
 import com.online.auction.model.ItemCondition;
 import com.online.auction.model.User;
-import com.online.auction.repository.AccountRepository;
-import com.online.auction.repository.AuctionBidDetailRepository;
-import com.online.auction.repository.AuctionListingRepository;
-import com.online.auction.repository.ItemRepository;
+import com.online.auction.repository.*;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,6 +68,9 @@ class AuctionServiceImplTest {
 
     @Mock
     private ItemRepository itemRepository;
+
+    @Mock
+    private ItemCategoryRepository itemCategoryRepository;
 
     @InjectMocks
     private AuctionServiceImpl auctionService;
@@ -310,5 +311,79 @@ class AuctionServiceImplTest {
         assertEquals(AUCTION_NOT_FOUND_MSG, exception.getErrorMessage());
     }
 
+    @Test
+    void getAuctionsByCategoryReturnsCategorizedAuctionsTest() {
+        ItemCategory category = new ItemCategory();
+        category.setItemCategoryName(PAINTING_ITEM_CATEGORY);
+        List<ItemCategory> categories = List.of(category);
 
+        City city = new City();
+        city.setCityName("TestCity");
+
+        User seller = new User();
+        seller.setUserId(INTEGER_ONE);
+        seller.setCity(city);
+
+        Item item = new Item();
+        item.setItemId(INTEGER_ONE);
+        item.setItem_name(ITEM_NAME_1);
+        item.setItemcategory(category);
+
+        Auction auction = new Auction();
+        auction.setItems(item);
+        auction.setSellerId(seller);  // Set the seller
+        auction.setStartTime(LocalDateTime.now().minusDays(1));
+        auction.setEndTime(LocalDateTime.now().plusDays(1));  // Upcoming auction
+
+        when(itemCategoryRepository.findAll()).thenReturn(categories);
+        when(itemRepository.findByItemcategory(category)).thenReturn(List.of(item));
+        when(auctionListingRepository.findByItems(item)).thenReturn(Optional.of(auction));
+
+        List<CategoryAuctionDTO> result = auctionService.getAuctionsByCategory();
+
+        assertEquals(1, result.size());
+        assertEquals(PAINTING_ITEM_CATEGORY, result.get(0).getCategoryName());
+        assertEquals(1, result.get(0).getItems().size());
+        assertEquals(ITEM_NAME_1, result.get(0).getItems().get(0).getItemName());
+        assertEquals("TestCity", result.get(0).getItems().get(0).getCityName());
+    }
+
+    @Test
+    void getAuctionsByCategoryExcludesEndedAuctionsTest() {
+        ItemCategory category = new ItemCategory();
+        category.setItemCategoryName(PAINTING_ITEM_CATEGORY);
+        List<ItemCategory> categories = List.of(category);
+
+        Item item = new Item();
+        item.setItemId(INTEGER_ONE);
+        item.setItem_name(ITEM_NAME_1);
+        item.setItemcategory(category);
+
+        Auction auction = new Auction();
+        auction.setItems(item);
+        auction.setStartTime(LocalDateTime.now().minusDays(2));
+        auction.setEndTime(LocalDateTime.now().minusDays(1));  // Ended auction
+
+        when(itemCategoryRepository.findAll()).thenReturn(categories);
+        when(itemRepository.findByItemcategory(category)).thenReturn(List.of(item));
+        when(auctionListingRepository.findByItems(item)).thenReturn(Optional.of(auction));
+
+        List<CategoryAuctionDTO> result = auctionService.getAuctionsByCategory();
+
+        assertEquals(0, result.size());  // No categories with valid auctions
+    }
+
+    @Test
+    void getAuctionsByCategoryNoAuctionsAvailableTest() {
+        ItemCategory category = new ItemCategory();
+        category.setItemCategoryName(PAINTING_ITEM_CATEGORY);
+        List<ItemCategory> categories = List.of(category);
+
+        when(itemCategoryRepository.findAll()).thenReturn(categories);
+        when(itemRepository.findByItemcategory(category)).thenReturn(new ArrayList<>());
+
+        List<CategoryAuctionDTO> result = auctionService.getAuctionsByCategory();
+
+        assertEquals(0, result.size());
+    }
 }
