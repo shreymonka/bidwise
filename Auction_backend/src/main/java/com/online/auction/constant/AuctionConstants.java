@@ -17,6 +17,7 @@ public class AuctionConstants {
     public static final String INVALID_CREDENTIALS_MSG = "Invalid Credentials";
     public static final String API_VERSION_V1 = "/api/v1";
     public static final String USER = "/user";
+    public static final String MEMBERSHIP = "/membership";
     public static final String AUCTION_MAPPING = "/auction";
     public static final String EMAIL_SUBJECT = "Welcome to Bidwise!";
     public static final String EMAIL_BODY_REGISTER = "You have successfully registered in our system!\nTake control and enjoy bidding";
@@ -30,23 +31,16 @@ public class AuctionConstants {
     public static final String PASSWORD_RESET_LINK = "http://172.17.3.242/reset-password?token=";
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String USER_NOT_AUTHORIZED = "User is not authorized";
-
     public static final String NATIVE_HEADERS = "nativeHeaders";
     public static final int INTEGER_ZERO = 0;
     public static final String AUCTION_NOT_FOUND_MSG = "Auction not found";
     public static final String ITEM_NOT_FOUND_MSG = "Item not found";
-
     public static final String ACCOUNT = "/account";
-    public static final String TRADEBOOK_ERROR = "Error fetching tradebook details";
     public static final String NO_TRADES_FOUND = "No trades found for user";
-
     public static final String LOCALE = "/locale";
-
     public static final String COUNTRIES = "/countries";
     public static final String CITIES = "/cities";
-
     public static final String CITY_NOT_FOUND_ERROR_MSG = "No city found for given the country";
     public static final String PROFILE = "/profile";
-
     public static final String AMERICAN_TIME_ZONE = "America/Halifax";
 }
