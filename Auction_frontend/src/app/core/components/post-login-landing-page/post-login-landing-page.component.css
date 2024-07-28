@@ -275,3 +275,25 @@ h2::after {
     background-color: #000000;
     border-color: #000000;
 }
+
+/*Suggested for you*/
+ 
+.suggested-for-you{
+  margin-bottom: 50px;
+}
+ 
+.auctions-categories{
+  margin-bottom: 50px;
+}
+.auctions-list {
+  display: flex;
+  justify-content: space-around;
+}
+ 
+.auction-item {
+  text-align: center;
+}
+ 
+.auction-item img {
+  max-width: 100%;
+}
