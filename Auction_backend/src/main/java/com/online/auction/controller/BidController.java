@@ -20,6 +20,10 @@ import static com.online.auction.constant.AuctionConstants.INTEGER_ZERO;
 import static com.online.auction.constant.AuctionConstants.NATIVE_HEADERS;
 import static com.online.auction.constant.AuctionConstants.USER_NOT_PRESENT_MSG;
 
+/**
+ * Controller for handling bid-related WebSocket messaging.
+ * Processes bids sent via WebSocket and communicates updates to clients.
+ */
 @RestController
 @AllArgsConstructor
 public class BidController {
@@ -28,6 +32,15 @@ public class BidController {
     private JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Handles bid messages sent to the specified WebSocket topic.
+     * Processes the bid message, validates the JWT token, and sends the message to the WebSocket topic.
+     *
+     * @param msg     The bid message to be processed.
+     * @param topicId The WebSocket topic ID to which the message is sent.
+     * @param header  The headers of the WebSocket message, used to extract the JWT token.
+     * @throws Exception If there is an error processing the bid message or validating the token.
+     */
     @MessageMapping("/bid/{topicId}")
     public void processBid(String msg, @DestinationVariable String topicId, @Headers Map<String, ?> header) throws Exception {
         LinkedMultiValueMap<String, String> authHeader = (LinkedMultiValueMap<String, String>) header.get(NATIVE_HEADERS);
