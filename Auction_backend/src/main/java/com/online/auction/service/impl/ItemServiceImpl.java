@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -151,7 +152,7 @@ public class ItemServiceImpl implements ItemService {
     private ItemDTO convertToItemDTO(Item item) {
         Auction auction = auctionListingRepository.findByItems(item).orElse(null);
         LocalDateTime endTime = auction != null ? auction.getEndTime() : null;
-        boolean isAuctionEnded = endTime != null && endTime.isBefore(LocalDateTime.now()); // Check if auction has ended
+        boolean isAuctionEnded = endTime != null && endTime.isBefore(LocalDateTime.now().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of(AMERICAN_TIME_ZONE)).toLocalDateTime()); // Check if auction has ended
         return ItemDTO.builder()
                 .itemId(item.getItemId())
                 .itemName(item.getItem_name())
