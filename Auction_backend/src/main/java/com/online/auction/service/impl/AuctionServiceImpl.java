@@ -2,6 +2,7 @@ package com.online.auction.service.impl;
 
 import com.online.auction.dto.AuctionDTO;
 import com.online.auction.dto.AuctionItemsDTO;
+import com.online.auction.dto.SuggestedItemDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Account;
 import com.online.auction.model.Auction;
@@ -236,4 +237,63 @@ public class AuctionServiceImpl implements AuctionService {
         log.info("Completed the getAuctionsForExistingUser method");
         return auctionItemsDTOList;
     }
+
+    /**
+     * Retrieves a list of suggested items for the user based on their bidding history.
+     *
+     * <p>This method first identifies the categories of items the user has bid on. It then finds other
+     * items in those categories that the user has not bid on, excluding items listed by the user. For
+     * each suggested item, it fetches related auction details, ensuring that only ongoing or future
+     * auctions are considered. If an auction has already ended, it is excluded from the suggestions.
+     *
+     * @param user the user for whom the suggestions are being generated
+     * @return a list of {@link SuggestedItemDTO} representing the suggested items for the user
+     */
+    @Override
+    public List<SuggestedItemDTO> getSuggestedItems(User user) {
+        log.info("Fetching suggested items for userId: {}", user.getUserId());
+
+        // Find all unique item categories the user has bid on
+        List<Integer> categoryIds = auctionListingRepository.findDistinctCategoryIdsByUserId(user.getUserId());
+        if (categoryIds.isEmpty()) {
+            log.warn("No categories found for user with id: {}", user.getUserId());
+            return new ArrayList<>(); // Return an empty list if no categories are found
+        }
+
+        // Find items in the same categories that the user hasn't bid on
+        List<Item> suggestedItems = itemRepository.findItemsNotBidByUserInCategories(user.getUserId(), categoryIds);
+
+        LocalDateTime now = LocalDateTime.now(); // Get the current date and time
+
+        // Fetch related auction details for the items and exclude items listed by the user
+        return suggestedItems.stream()
+                .filter(item -> item.getSellerId().getUserId() != user.getUserId()) // Exclude user's own listings
+                .map(item -> {
+                    try {
+                        Auction auction = auctionListingRepository.findByItems(item)
+                                .orElseThrow(() -> new RuntimeException("Auction not found for item: " + item.getItemId()));
+
+                        // Exclude auctions that have already ended
+                        if (auction.getEndTime().isBefore(now)) {
+                            return null;
+                        }
+
+                        return SuggestedItemDTO.builder()
+                                .auctionId(String.valueOf(auction.getAuctionId()))
+                                .itemId(String.valueOf(item.getItemId()))  // Add this line
+                                .itemName(item.getItem_name())
+                                .itemPhoto(item.getItem_photo())
+                                .startTime(auction.getStartTime())
+                                .endTime(auction.getEndTime())
+                                .cityName(auction.getSellerId().getCity().getCityName()) // Add this line
+                                .build();
+                    } catch (RuntimeException e) {
+                        log.error("Error fetching auction for item: {}", item.getItemId(), e);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
 }
