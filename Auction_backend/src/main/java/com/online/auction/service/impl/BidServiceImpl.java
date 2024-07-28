@@ -10,14 +10,19 @@ import com.online.auction.repository.AuctionListingRepository;
 import com.online.auction.repository.ItemRepository;
 import com.online.auction.repository.UserRepository;
 import com.online.auction.service.BidService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Objects;
 import java.util.Optional;
 
+import static com.online.auction.constant.AuctionConstants.AMERICAN_TIME_ZONE;
+import static com.online.auction.constant.AuctionConstants.AUCTION_BID_LESS_THAN_HIGHEST_BID_ERROR_MSG;
 import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG;
 import static com.online.auction.constant.AuctionConstants.ITEM_NOT_FOUND_MSG;
 import static com.online.auction.constant.AuctionConstants.USER_NOT_PRESENT_MSG;
@@ -45,8 +50,20 @@ public class BidServiceImpl implements BidService {
      * @throws ServiceException if the auction, item, or user is not found
      */
     @Override
+    @Transactional
     public void processBid(String bidAmount, String itemId, String userEmail) throws ServiceException {
         log.info("Started the processBid method");
+        //Checking the highest bid current
+        AuctionBidDetails auctionBidDetailsDb = auctionBidDetailRepository.findTopByItemIdOrderByBidAmountDesc(Integer.parseInt(itemId));
+        if (Objects.nonNull(auctionBidDetailsDb)) {
+            log.info("The auction has ongoing bids");
+            double currentHighestBid = auctionBidDetailsDb.getBid_amount();
+            log.info("The current Highest bid is: {}", currentHighestBid);
+            if (Double.parseDouble(bidAmount) <= currentHighestBid) {
+                log.error("Cannot bid amount: {} as the bid amount is less than maxBid: {}", bidAmount, currentHighestBid);
+                throw new ServiceException(HttpStatus.BAD_REQUEST, AUCTION_BID_LESS_THAN_HIGHEST_BID_ERROR_MSG);
+            }
+        }
         Optional<Auction> auction = auctionListingRepository.findByItems_ItemId(Integer.parseInt(itemId));
         log.info("The auction details are:{}", auction);
         Optional<Item> item = itemRepository.findById(Integer.parseInt(itemId));
@@ -67,7 +84,7 @@ public class BidServiceImpl implements BidService {
         }
         AuctionBidDetails auctionBidDetails = AuctionBidDetails.builder()
                 .auctionId(auction.get())
-                .bidTime(LocalDateTime.now())
+                .bidTime(LocalDateTime.now().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of(AMERICAN_TIME_ZONE)).toLocalDateTime())
                 .bid_amount(Double.parseDouble(bidAmount))
                 .itemId(item.get())
                 .bidderId(user.get())

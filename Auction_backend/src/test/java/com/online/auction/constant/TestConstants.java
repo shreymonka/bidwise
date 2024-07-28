@@ -19,6 +19,8 @@ public class TestConstants {
 
     public static final int INTEGER_ONE = 1;
 
+    public static final int INTEGER_TWO_HUNDRED = 200;
+
     public static final String BEARER = "Bearer ";
 
     public static final String BAD_CREDENTIALS = "Bad credentials";
@@ -61,6 +63,8 @@ public class TestConstants {
     public static final String USER_NOT_FOUND = "User Not Found";
 
     public static final String BID_AMOUNT_ONE_HUNDRED = "100";
+
+    public static final String AUCTION_BID_LESS_THAN_HIGHEST_BID_ERROR_MSG = "Please enter a Bid higher than highest bid";
 
     public static final String PAINTING_ITEM_CATEGORY = "Paintings";
 
