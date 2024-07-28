@@ -3,6 +3,7 @@ package com.online.auction.controller;
 import com.online.auction.dto.AuctionDTO;
 import com.online.auction.dto.SuccessResponse;
 import com.online.auction.dto.AuctionItemsDTO;
+import com.online.auction.dto.SuggestedItemDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.User;
 import com.online.auction.service.AuctionService;
@@ -82,6 +83,14 @@ public class AuctionController {
     ) throws ServiceException {
         List<AuctionItemsDTO> items = auctionService.getAuctionsForExistingUser(user.getUserId());
         return ResponseEntity.ok(items);
+    }
+
+    @GetMapping("/suggested")
+    public ResponseEntity<SuccessResponse<List<SuggestedItemDTO>>> getSuggestedItems(@AuthenticationPrincipal
+                                                                                     User user) throws ServiceException {
+        List<SuggestedItemDTO> suggestedItems = auctionService.getSuggestedItems(user);
+        SuccessResponse<List<SuggestedItemDTO>> successResponse = new SuccessResponse<>(200, HttpStatus.OK, suggestedItems);
+        return ResponseEntity.ok(successResponse);
     }
 
 }
