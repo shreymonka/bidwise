@@ -4,7 +4,6 @@ import com.online.auction.dto.AuthenticationRequestDTO;
 import com.online.auction.dto.AuthenticationResponseDTO;
 import com.online.auction.dto.UserDTO;
 import com.online.auction.exception.ServiceException;
-import com.online.auction.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -20,9 +19,5 @@ public interface UserService {
     String sendPasswordResetLink(String email) throws ServiceException;
 
     String resetPassword(String token, String newPassword) throws ServiceException;
-
-    Boolean isPremium(User user) throws ServiceException;
-
-    void cancelPremium(String email) throws ServiceException;
 
 }
