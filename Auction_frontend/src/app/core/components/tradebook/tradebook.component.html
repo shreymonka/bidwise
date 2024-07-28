@@ -29,7 +29,12 @@
                             <h4>{{trade.nameOfItem}}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
                         </div>
-                        <div class="detail">
+                        <div *ngIf = "trade.soldPrice == null" class="detail">
+                            <p>SOLD PRICE</p>
+                            <h4>UNSOLD</h4>
+                            <hr class="my-4" style="border: 1px solid #000;"> 
+                        </div>
+                        <div *ngIf = "trade.soldPrice != null" class="detail">
                             <p>SOLD PRICE</p>
                             <h4>{{trade.soldPrice}}</h4>
                             <hr class="my-4" style="border: 1px solid #000;"> 
