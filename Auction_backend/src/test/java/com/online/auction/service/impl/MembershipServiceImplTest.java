@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UpgradeToPremiumServiceImplTest {
+public class MembershipServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
@@ -33,7 +33,7 @@ public class UpgradeToPremiumServiceImplTest {
     private AccountService accountService;
 
     @InjectMocks
-    private UpgradeToPremiumServiceImpl upgradeToPremiumService;
+    private MembershipServiceImpl membershipServiceImpl;
 
     private User user;
 
@@ -49,7 +49,7 @@ public class UpgradeToPremiumServiceImplTest {
         when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
 
-        String result = upgradeToPremiumService.upgradeToPremium(TEST_EMAIL);
+        String result = membershipServiceImpl.upgradeToPremium(TEST_EMAIL);
 
         assertEquals(TEST_EMAIL, result);
         assertEquals(true, user.isPremium());
@@ -63,7 +63,7 @@ public class UpgradeToPremiumServiceImplTest {
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
 
         ServiceException exception = assertThrows(ServiceException.class, () -> {
-            upgradeToPremiumService.upgradeToPremium(TEST_EMAIL);
+            membershipServiceImpl.upgradeToPremium(TEST_EMAIL);
         });
 
         assertEquals(USER_NOT_FOUND, exception.getErrorMessage());
