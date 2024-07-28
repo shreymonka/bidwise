@@ -34,6 +34,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
   funds:any;
   premiumDetails:any;
   isPremium = false;
+  isSubscribed = false;
 
   constructor(
     private auctionService: AuctionServiceService,
@@ -72,6 +73,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
 
   subscribe() {
     console.log('Typed');
+    this.isSubscribed=true;
     this.auctionService.getBidResponse(this.formdata);
   }
 
