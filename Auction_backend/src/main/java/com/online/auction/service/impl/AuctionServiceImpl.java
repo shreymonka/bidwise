@@ -98,6 +98,16 @@ public class AuctionServiceImpl implements AuctionService {
             }
         }
 
+        // Crediting funds to the seller's account
+        Account sellerAccount = accountRepository.findByUserId(auctionBidDetails.getItemId().getSellerId().getUserId());
+        if (Objects.nonNull(sellerAccount)) {
+            log.info("Crediting the fund to the seller: {}", sellerAccount.getUserId());
+            double sellerCurrentFunds = sellerAccount.getFunds();
+            sellerAccount.setFunds(sellerCurrentFunds + auctionBidDetails.getBid_amount());
+            accountRepository.save(sellerAccount);
+            log.info("Successfully credited the funds to the seller's account : {}", sellerAccount);
+        }
+
         Optional<Auction> auctionOptional = auctionListingRepository.findByItems_ItemId(itemId);
         if (!auctionOptional.isEmpty()) {
             Auction auction = auctionOptional.get();

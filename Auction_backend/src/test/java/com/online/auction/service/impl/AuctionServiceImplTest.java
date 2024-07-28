@@ -45,6 +45,7 @@ import static com.online.auction.constant.TestConstants.ITEM_NAME_1;
 import static com.online.auction.constant.TestConstants.PAINTING_ITEM_CATEGORY;
 import static com.online.auction.constant.TestConstants.START_TIME;
 import static com.online.auction.constant.TestConstants.TEST_AUCTION;
+import static org.apache.commons.lang3.math.NumberUtils.INTEGER_TWO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -117,42 +118,60 @@ class AuctionServiceImplTest {
     @Test
     @SneakyThrows
     public void processPostAuctionStateSuccessTest() {
-        User user = new User();
-        user.setUserId(INTEGER_ONE);
+        // Setup test data
+        User bidder = new User();
+        bidder.setUserId(INTEGER_ONE);
+
+        User seller = new User();
+        seller.setUserId(INTEGER_TWO);
+
+        Item item = new Item();
+        item.setItemId(INTEGER_ONE);
+        item.setSellerId(seller);
+
         AuctionBidDetails auctionBidDetails = new AuctionBidDetails();
         auctionBidDetails.setWon(false);
-        auctionBidDetails.setBidderId(user);
-
-        when(auctionBidDetailRepository.findTopByItemIdOrderByBidAmountDesc(INTEGER_ONE)).thenReturn(auctionBidDetails);
+        auctionBidDetails.setBidderId(bidder);
+        auctionBidDetails.setBid_amount(100.0);
+        auctionBidDetails.setItemId(item);
 
         Auction auction = new Auction();
         auction.setOpen(true);
+        auction.setItems(item);
+
+        Account bidderAccount = new Account();
+        bidderAccount.setUserId(INTEGER_ONE);
+        bidderAccount.setFunds(200.0);
+
+        Account sellerAccount = new Account();
+        sellerAccount.setUserId(INTEGER_TWO);
+        sellerAccount.setFunds(50.0);
+
+        // Mocking repository calls
+        when(auctionBidDetailRepository.findTopByItemIdOrderByBidAmountDesc(INTEGER_ONE)).thenReturn(auctionBidDetails);
+        when(itemRepository.findById(INTEGER_ONE)).thenReturn(Optional.of(item));
+        when(accountRepository.findByUserId(INTEGER_ONE)).thenReturn(bidderAccount);
+        when(accountRepository.findByUserId(INTEGER_TWO)).thenReturn(sellerAccount);
         when(auctionListingRepository.findByItems_ItemId(INTEGER_ONE)).thenReturn(Optional.of(auction));
 
-        ItemCategory itemCategory = new ItemCategory();
-        itemCategory.setItemCategoryName(PAINTING_ITEM_CATEGORY);
-
-        Item item1 = Item.builder()
-                .itemId(INTEGER_ONE)
-                .item_name(ITEM_NAME_1)
-                .sellerId(user)
-                .itemcategory(itemCategory)
-                .build();
-
-        when(itemRepository.findById(INTEGER_ONE)).thenReturn(Optional.of(item1));
-
-        Account account = new Account();
-        account.setUserId(INTEGER_ONE);
-        account.setFunds(INTEGER_SEVEN);
-        when(accountRepository.findByUserId(anyInt())).thenReturn(account);
-
+        // Method under test
         boolean result = auctionService.processPostAuctionState(INTEGER_ONE);
 
+        // Assertions
         assertTrue(result);
         assertTrue(auctionBidDetails.isWon());
-        verify(auctionBidDetailRepository, times(INTEGER_ONE)).save(auctionBidDetails);
-        verify(auctionListingRepository, times(INTEGER_ONE)).save(auction);
+        verify(auctionBidDetailRepository, times(1)).save(auctionBidDetails);
+        verify(itemRepository, times(1)).save(item);
+        verify(accountRepository, times(1)).save(bidderAccount);
+        verify(accountRepository, times(1)).save(sellerAccount);
+        verify(auctionListingRepository, times(1)).save(auction);
+        assertEquals(100.0, item.getSelling_amount(), 0.01);
+        assertEquals(bidder, item.getBuyerId());
+        assertEquals(150.0, sellerAccount.getFunds(), 0.01);  // Updated amount after adding the bid amount
+        assertEquals(100.0, bidderAccount.getFunds(), 0.01);  // Updated amount after deducting the bid amount
     }
+
+
 
     @Test
     public void processPostAuctionStateWhenStateAlreadyUpdatedTest() {
