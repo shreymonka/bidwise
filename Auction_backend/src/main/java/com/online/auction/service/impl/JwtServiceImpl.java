@@ -24,7 +24,7 @@ public class JwtServiceImpl implements JwtService {
     private String secretKey;
 
     // JWT expiration time in milliseconds, injected from application properties
-    @Value("${applicatio n.security.jwt.expiration:86400000}")
+    @Value("${application.security.jwt.expiration:86400000}")
     private long jwtExpiration;
 
     // Refresh token expiration time in milliseconds, injected from application properties

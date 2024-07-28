@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from "@angular/router"; 
 import { AddFundsService } from '../../services/add-funds/add-funds.service';
 import Swal from 'sweetalert2';
 
@@ -11,12 +12,11 @@ import Swal from 'sweetalert2';
 export class AddFundsComponent {
 
   addFundsForm: FormGroup;
-  successMessage: string = '';
-  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
-    private addFundService: AddFundsService
+    private addFundService: AddFundsService,
+    private router: Router
   ){ 
     this.addFundsForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -32,21 +32,28 @@ export class AddFundsComponent {
       terms: [false, Validators.requiredTrue]
     });
   }
-  
+
   onSubmit(): void {
     if (this.addFundsForm.valid) {
-      const userId = 1; // Replace with the actual userId from your auth logic or a hidden field in the form
+      const userId = 1;
       const amount = this.addFundsForm.get('amount')?.value;
 
       this.addFundService.addFunds(userId, amount).subscribe(
         response => {
-          this.successMessage = 'Funds added successfully';
-          this.errorMessage = '';
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Funds added successfully!',
+          })
           this.addFundsForm.reset();
+          this.router.navigate(['/postLogin'])
         },
         error => {
-          this.errorMessage = 'Error adding funds: ' + error;
-          this.successMessage = '';
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error adding funds: ' + error.message,
+          })
         }
       );
     }

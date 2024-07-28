@@ -23,6 +23,10 @@ export class SellerPortalComponent implements OnInit  {
 
   }
 
+  getCurrentDateTime(): Date {
+    return new Date(); // returns the current date and time
+  }
+
   ngOnInit(): void {
     this.itemService.getAllItems().subscribe(
       (response) => {

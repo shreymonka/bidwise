@@ -27,7 +27,7 @@ public class AuctionConstants {
     public static final String IMAGE_UPLOAD_FAILED = "Failed to upload image";
     public static final String PASSWORD_RESET_REQUEST = "Password Reset Request";
     public static final String PASSWORD_RESET_LINK_BODY = "To reset your password, click the link below:\n";
-    public static final String PASSWORD_RESET_LINK = "http://172.17.3.242:4200/reset-password?token=";
+    public static final String PASSWORD_RESET_LINK = "http://172.17.3.242/reset-password?token=";
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String USER_NOT_AUTHORIZED = "User is not authorized";
 
@@ -47,4 +47,6 @@ public class AuctionConstants {
 
     public static final String CITY_NOT_FOUND_ERROR_MSG = "No city found for given the country";
     public static final String PROFILE = "/profile";
+
+    public static final String AMERICAN_TIME_ZONE = "America/Halifax";
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
+
 import {
   HttpClient,
   HttpHeaders,
@@ -13,15 +15,14 @@ import { Router } from '@angular/router';
 })
 
 export class SignUpServiceService {
-  endpoint: string = 'http://172.17.3.242:8080/api/v1/user/register';
-  locationEndpoint : string = 'http://172.17.3.242:8080/api/v1/location/country';
-  cityEndpoint : String = 'http://172.17.3.242:8080/api/v1/location/cities/';
+  endpoint: string = environment.apiUrl+ '/user/register';
+  locationEndpoint : string = environment.apiUrl+ '/locale/countries';
+  cityEndpoint : String = environment.apiUrl+ '/locale/cities';
   // headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient, public router: Router) { }
 
   signUpUser(userDetails:any): Observable<any>{
     let api = `${this.endpoint}`;
-    console.log("Test payload"+api);
     return this.http.post(api,userDetails).pipe(catchError(this.handleError));
   }
 
@@ -30,8 +31,8 @@ export class SignUpServiceService {
     return this.http.get(api).pipe(catchError(this.handleError))
   }
 
-  fetchAllCities(countryId: String){
-    return this.http.get<any>(`${this.cityEndpoint}`+countryId).pipe(catchError(this.handleError))
+  fetchAllCities(country: String):Observable<any>{
+    return this.http.get(`${this.cityEndpoint}`, { params: { countryName: country.toString() } }).pipe(catchError(this.handleError));
   }
 
   handleError(error: HttpErrorResponse) {

@@ -29,9 +29,18 @@ import static com.online.auction.constant.AuctionConstants.ITEM;
 @RequestMapping(API_VERSION_V1 + ITEM)
 @RequiredArgsConstructor
 public class ItemController {
-    @Autowired
-    private ItemService itemService;
 
+    private final ItemService itemService;
+
+    /**
+     * Adds a new item to the auction.
+     *
+     * @param itemDTO The item details to add.
+     * @param files   The image files associated with the item.
+     * @param user    The authenticated user adding the item.
+     * @return A ResponseEntity containing a success response with the result of the add operation.
+     * @throws ServiceException If there is an error during the addition of the item.
+     */
     @PostMapping("/additem")
     public ResponseEntity<SuccessResponse<String>> addItem(
             @RequestPart("itemDTO") ItemDTO itemDTO,
@@ -43,6 +52,13 @@ public class ItemController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Retrieves all items listed by the authenticated user.
+     *
+     * @param user The authenticated user whose items are to be retrieved.
+     * @return A ResponseEntity containing a success response with the list of items.
+     * @throws ServiceException If there is an error during retrieval of items.
+     */
     @GetMapping("/getitems")
     public ResponseEntity<SuccessResponse<List<ItemDTO>>> getAllItems(@AuthenticationPrincipal User user) throws ServiceException {
         List<ItemDTO> items = itemService.getAllItemsByUser(user);
@@ -50,6 +66,14 @@ public class ItemController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Deletes an item listed by the authenticated user.
+     *
+     * @param itemId The ID of the item to be deleted.
+     * @param user   The authenticated user requesting the deletion.
+     * @return A ResponseEntity containing a success response indicating the deletion status.
+     * @throws ServiceException If there is an error during deletion of the item.
+     */
     @DeleteMapping("/deleteItemListed")
     public ResponseEntity<SuccessResponse<String>> deleteItem(
             @RequestParam("itemId") int itemId,
@@ -60,6 +84,13 @@ public class ItemController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Retrieves items by their item ID.
+     *
+     * @param itemId The ID of the item to retrieve.
+     * @return A ResponseEntity containing a success response with the list of items matching the ID.
+     * @throws ServiceException If there is an error during retrieval of the items.
+     */
     @GetMapping("/itemsById")
     public ResponseEntity<SuccessResponse<List<ItemDTO>>> getItemsByItemId(
             @RequestParam("itemId") Integer itemId

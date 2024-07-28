@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class PasswordResetServiceTests {
 
     private static final String EXPECTED_SUBJECT = "Password Reset Request";
-    private static final String EXPECTED_BODY = "To reset your password, click the link below:\nhttp://172.17.3.242:4200/reset-password?token=";
+    private static final String EXPECTED_BODY = "To reset your password, click the link below:\nhttp://172.17.3.242/reset-password?token=";
 
 
     @Mock
@@ -43,7 +43,6 @@ public class PasswordResetServiceTests {
     }
 
     @Test
-    @Tag("Test 1: send password link")
     void sendPasswordResetLink_ShouldSendMail() throws ServiceException {
         String email = "test@example.com";
         User user = new User();
@@ -59,7 +58,6 @@ public class PasswordResetServiceTests {
     }
 
     @Test
-    @Tag("Test 2: user not found")
     void sendPasswordResetLink_UserNotFound_ShouldThrowException() {
         String email = "test@example.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
@@ -71,7 +69,6 @@ public class PasswordResetServiceTests {
 
 
     @Test
-    @Tag("Test 3: reset password")
     void resetPassword_ShouldUpdatePassword() throws ServiceException {
         String token = "resetToken";
         String newPassword = "newPassword";
@@ -87,7 +84,6 @@ public class PasswordResetServiceTests {
     }
 
     @Test
-    @Tag("Test 4: reset password invalid token")
     void resetPassword_InvalidToken_ShouldThrowException() {
         String token = "invalidToken";
         when(userRepository.findByResetToken(token)).thenReturn(Optional.empty());

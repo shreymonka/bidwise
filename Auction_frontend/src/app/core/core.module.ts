@@ -16,6 +16,8 @@ import { ItemCategoryListingComponent } from './components/item-category-listing
 import { SellerPortalComponent } from './components/seller-portal/seller-portal.component';
 import { ItemListingComponent } from './components/item-listing/item-listing.component';
 import { AuctionComponent } from './components/auction/auction.component';
+import { UpcomingAllAuctionsComponent } from './components/upcoming-all-auctions/upcoming-all-auctions.component';
+import { PreLoginUpcomingAllAuctionsComponent } from './components/pre-login-upcoming-all-auctions/pre-login-upcoming-all-auctions.component';
 import { AddFundsComponent } from './components/add-funds/add-funds.component';
 import { TradebookComponent } from './components/tradebook/tradebook.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
@@ -36,10 +38,11 @@ import { NgChartsModule } from 'ng2-charts';
     SellerPortalComponent,
     ItemListingComponent,
     AuctionComponent,
+    UpcomingAllAuctionsComponent,
+    PreLoginUpcomingAllAuctionsComponent,
     TradebookComponent,
-    AuctionComponent,
-    AddFundsComponent,
-    UserProfileComponent],
+    UserProfileComponent,
+    AddFundsComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent

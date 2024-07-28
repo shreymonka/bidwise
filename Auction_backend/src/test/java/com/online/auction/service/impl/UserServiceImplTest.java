@@ -8,6 +8,7 @@ import com.online.auction.model.City;
 import com.online.auction.model.Token;
 import com.online.auction.model.TokenType;
 import com.online.auction.model.User;
+import com.online.auction.repository.AccountRepository;
 import com.online.auction.repository.CityRepository;
 import com.online.auction.repository.TokenRepository;
 import com.online.auction.repository.UserRepository;
@@ -23,6 +24,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,6 +43,7 @@ import static com.online.auction.constant.TestConstants.NEW_ACCESS_TOKEN;
 import static com.online.auction.constant.TestConstants.PASSWORD;
 import static com.online.auction.constant.TestConstants.REFRESH_TOKEN;
 import static com.online.auction.constant.TestConstants.TEST_EMAIL;
+import static com.online.auction.constant.TestConstants.USER_NOT_FOUND;
 import static com.online.auction.constant.TestConstants.USER_REGISTRATION_SUCCESS_MSG;
 import static com.online.auction.constant.TestConstants.VALID_REFRESH_TOKEN;
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,6 +66,9 @@ class UserServiceImplTest {
 
     @Mock
     private CityRepository cityRepository;
+
+    @Mock
+    private AccountRepository accountRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -216,6 +222,64 @@ class UserServiceImplTest {
 
         AuthenticationResponseDTO result = userService.refreshToken(request, response);
         assertNull(result);
+    }
+
+    @Test
+    public void isPremiumWhenUserIsNotPremiumTest() throws ServiceException {
+        user.setPremium(false);
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+
+        Boolean isPremium = userService.isPremium(user);
+
+        assertFalse(isPremium);
+        verify(userRepository, times(1)).findByEmail(anyString());
+    }
+
+    @Test
+    public void isPremiumWhenUserNotFoundTest() {
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            userService.isPremium(user);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
+        assertEquals(USER_NOT_FOUND, exception.getErrorMessage());
+        verify(userRepository, times(1)).findByEmail(anyString());
+    }
+
+    @Test
+    void cancelPremiumSuccessTest() throws ServiceException {
+        // Arrange
+        String email = "user@example.com";
+        User user = new User();
+        user.setEmail(email);
+        user.setPremium(true);
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+
+        // Act
+        userService.cancelPremium(email);
+
+        // Assert
+        assertFalse(user.isPremium());
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    void cancelPremiumUserNotFoundTest() {
+        // Arrange
+        String email = "nonexistent@example.com";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            userService.cancelPremium(email);
+        });
+
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(userRepository, never()).save(any(User.class));
     }
 
     private City getCity() {

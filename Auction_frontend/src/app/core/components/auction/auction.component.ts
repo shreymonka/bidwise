@@ -32,6 +32,8 @@ export class AuctionComponent implements OnInit, OnDestroy {
   isAuctionClosed = false;
   accountDetails:any;
   funds:any;
+  premiumDetails:any;
+  isPremium = false;
 
   constructor(
     private auctionService: AuctionServiceService,
@@ -53,7 +55,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
     // Temporary taking item Id as 1
     // this.itemId=this.route.snapshot.params['itemId'];
     console.log('The current time is:' + this.currentTime);
-    this.itemId = 29;
+    this.itemId = this.route.snapshot.params['id'];
     console.log('The item Id is:' + this.itemId);
     // this.formdata.patchValue({
     //   itemId: 5
@@ -63,6 +65,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
       this.loadItemData(this.itemId);
       this.loadAuctionData(this.itemId);
       this.loadAccountFundsData();
+      this.loadUserPremiumData();
     }
     //this.subscribe();
   }
@@ -125,6 +128,8 @@ export class AuctionComponent implements OnInit, OnDestroy {
         this.startMonth= this.startTime.getMonth()+1;
         this.endTime = new Date(this.auctionDetails.data.endTime);
         console.log('The startTime for the auction is:' + this.startTime);
+
+        console.log('The endTime for the auction is:' + this.endTime);
         this.startCountdown(this.startTime, this.endTime);
       },
       error => {
@@ -146,10 +151,33 @@ export class AuctionComponent implements OnInit, OnDestroy {
     )
   }
 
+  loadUserPremiumData(){
+    this.auctionService.getUserPremiumStatus().subscribe(
+      (premiumStatusData) => {
+        console.log('The data fetched for the User Premium details is:'+premiumStatusData);
+        this.premiumDetails = premiumStatusData;
+        this.isPremium = this.premiumDetails.data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
   startCountdown(startTime: Date, endTime: Date): void {
     const startTimeMillis = startTime.getTime();
-    const endTimeMillis = endTime.getTime();
-    console.log('The startTime is:' + this.startTime);
+    console.log('The startTimeMillis is:'+startTimeMillis);
+    let endTimeMillis = endTime.getTime();
+    console.log('The endTimeMillis is:'+endTimeMillis);
+    if(!this.isPremium){
+      console.log('The user is not a Premium User!');
+      endTimeMillis=endTimeMillis - 45000;                                    //Update here if need to increase time for Premium User
+      console.log('The new endTimeMillis is:'+endTimeMillis);
+    }else{
+      console.log('The user is a Premium User!');
+    }
+    console.log('The Final endTimeMillis is:'+endTimeMillis);
+    //console.log('The startTime is:' + this.startTime);
     
     this.timerSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
@@ -169,14 +197,30 @@ export class AuctionComponent implements OnInit, OnDestroy {
         // Auction has ended
         this.isAuctionStarted = false;
         this.countdown = 'Auction has ended.';
-        this.auctionService.closeAuction(this.itemId).subscribe(
-          (data) =>{
-            console.log(data);
-          },
-          error => {
-            console.log(error);
-          }
-        );
+        if(!this.isPremium){
+          console.log('The use is not premium so syncing the post Auction');
+          setTimeout(() => {
+            this.auctionService.closeAuction(this.itemId).subscribe(
+              (data) => {
+                console.log(data);
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+          }, 46000);                                                //Update here for Time syncing the Post Auction API. Put 1 sec extra of what set above for premium user
+        }else{
+          console.log('The user is premium. Resolving the Post Auction')
+          this.auctionService.closeAuction(this.itemId).subscribe(
+            (data) =>{
+              console.log(data);
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        }
+
         if (this.timerSubscription) {
           this.timerSubscription.unsubscribe();
         }

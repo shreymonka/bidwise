@@ -4,10 +4,12 @@ import com.online.auction.dto.AuthenticationRequestDTO;
 import com.online.auction.dto.AuthenticationResponseDTO;
 import com.online.auction.dto.UserDTO;
 import com.online.auction.exception.ServiceException;
+import com.online.auction.model.Account;
 import com.online.auction.model.City;
 import com.online.auction.model.Token;
 import com.online.auction.model.TokenType;
 import com.online.auction.model.User;
+import com.online.auction.repository.AccountRepository;
 import com.online.auction.repository.CityRepository;
 import com.online.auction.repository.TokenRepository;
 import com.online.auction.repository.UserRepository;
@@ -31,7 +33,16 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.online.auction.constant.AuctionConstants.*;
+import static com.online.auction.constant.AuctionConstants.BEARER;
+import static com.online.auction.constant.AuctionConstants.EMAIL_BODY_REGISTER;
+import static com.online.auction.constant.AuctionConstants.EMAIL_SUBJECT;
+import static com.online.auction.constant.AuctionConstants.INTEGER_SEVEN;
+import static com.online.auction.constant.AuctionConstants.INVALID_CREDENTIALS_MSG;
+import static com.online.auction.constant.AuctionConstants.PASSWORD_RESET_LINK;
+import static com.online.auction.constant.AuctionConstants.PASSWORD_RESET_LINK_BODY;
+import static com.online.auction.constant.AuctionConstants.PASSWORD_RESET_REQUEST;
+import static com.online.auction.constant.AuctionConstants.USER_ALREADY_PRESENT_MSG;
+import static com.online.auction.constant.AuctionConstants.USER_NOT_PRESENT_MSG;
 
 @Service
 @AllArgsConstructor
@@ -39,6 +50,7 @@ import static com.online.auction.constant.AuctionConstants.*;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
+    private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
@@ -82,8 +94,25 @@ public class UserServiceImpl implements UserService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(userDb, jwtToken);
-        emailUtils.sendEmail(userDto.getEmail(),EMAIL_SUBJECT,EMAIL_BODY_REGISTER);
+        emailUtils.sendEmail(userDto.getEmail(), EMAIL_SUBJECT, EMAIL_BODY_REGISTER);
+
+        // Create an initial account with zero balance for the new user
+        createInitialAccount(userDb);
+
         return "User Registered Successfully";
+    }
+
+    /**
+     * Creates an initial account with zero balance for a new user.
+     *
+     * @param user the user for whom the account is to be created
+     */
+    private void createInitialAccount(User user) {
+        Account account = new Account();
+        account.setUser(user);
+        account.setFunds(0);
+        accountRepository.save(account);
+        log.info("Created initial account for user id: {} with initial funds: 0", user.getUserId());
     }
 
     /**
@@ -209,7 +238,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "User not found"));
         user.setResetToken(UUID.randomUUID().toString());
         userRepository.save(user);
-        emailUtils.sendEmail(email,PASSWORD_RESET_REQUEST,PASSWORD_RESET_LINK_BODY + PASSWORD_RESET_LINK  + user.getResetToken());
+        emailUtils.sendEmail(email, PASSWORD_RESET_REQUEST, PASSWORD_RESET_LINK_BODY + PASSWORD_RESET_LINK + user.getResetToken());
         return "Password Reset Link Successfully";
     }
 
@@ -221,7 +250,7 @@ public class UserServiceImpl implements UserService {
      * @return a string
      */
     public String resetPassword(String token, String newPassword) throws ServiceException {
-        User user = userRepository.findByResetToken(token).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST,"Invalid token"));
+        User user = userRepository.findByResetToken(token).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "Invalid token"));
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setResetToken(null);
         userRepository.save(user);
@@ -229,18 +258,29 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Upgrades a user to premium status.
+     * Checks if the given user has a premium account.
      *
-     * @param email the user email to upgrade
-     * @return the email of the upgraded user
-     * @throws ServiceException if the user is not found
+     * @param user The user object containing the email to be checked.
+     * @return {@code true} if the user has a premium account, {@code false} otherwise.
+     * @throws ServiceException if the user is not found in the database.
      */
-    public String upgradeToPremium(String email) throws ServiceException {
-        log.info("Upgrading user to premium");
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "User not found"));
-        user.setPremium(true);
-        userRepository.save(user);
+    @Override
+    public Boolean isPremium(User user) throws ServiceException {
+        log.info("Checking if the user is Premium for : {}", user);
+        Optional<User> userDbOptional = userRepository.findByEmail(user.getEmail());
+        if (userDbOptional.isEmpty()) {
+            log.error("User not Found for the given details: {}", user);
+            throw new ServiceException(HttpStatus.BAD_REQUEST, USER_NOT_PRESENT_MSG);
+        }
+        log.info("The user premium status is:{}", userDbOptional.get().isPremium());
+        return userDbOptional.get().isPremium();
+    }
 
-        return email;
+    public void cancelPremium(String email) throws ServiceException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "User not found"));
+
+        user.setPremium(false);
+        userRepository.save(user);
     }
 }

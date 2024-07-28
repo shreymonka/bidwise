@@ -58,7 +58,7 @@ public class TestConstants {
 
     public static final LocalDateTime END_TIME = LocalDateTime.parse("2016-12-01T00:00:00");
 
-    public static final String USER_NOT_FOUND = "User not found";
+    public static final String USER_NOT_FOUND = "User Not Found";
 
     public static final String BID_AMOUNT_ONE_HUNDRED = "100";
 
@@ -69,6 +69,19 @@ public class TestConstants {
     public static final String AUCTION_RECORD_NOT_FOUND_MSG = "Record not found to update post Auction state";
 
     public static final String USA = "USA";
+
+    public static final String TEST_AUCTION = "Test Auction";
+    public static final String AUCTION_PHOTO_URL = "Photo Url";
+
+    public static final String AUCTION_ITEM_MAKER = "Item Maker";
+    public static final String AUCTION_ITEM_DESCRIPTION = "Item DESCRIPTION";
+    public static final String AUCTION_PRICE_PAID = "200";
+    public static final String AUCTION_USD_CURRENCY = "USD";
+
+    public static final String AUCTION_CITY_NAME = "HALIFAX";
+
+
+
 
 
 }

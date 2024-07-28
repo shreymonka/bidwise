@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TradebookService {
-  getAllTradesEndpoint: string = 'http://172.17.3.242:8080/api/v1/user/getTradebook';
-  getInvoiceEndpoint: String = 'http://172.17.3.242:8080/api/v1/user/getInvoice';
+  getAllTradesEndpoint: string = environment.apiUrl+ '/user/getTradebook';
+  getInvoiceEndpoint: String = environment.apiUrl+ '/user/getInvoice';
 
   constructor(private http: HttpClient,public router:Router) { }
 

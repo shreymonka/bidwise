@@ -2,6 +2,7 @@ package com.online.auction.controller;
 
 import com.online.auction.dto.*;
 import com.online.auction.exception.ServiceException;
+import com.online.auction.model.User;
 import com.online.auction.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,4 +80,19 @@ public class UserController {
         SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, passwordUpdateResponse);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/checkPremium")
+    public ResponseEntity<SuccessResponse<Boolean>> getPremiumStatus(@AuthenticationPrincipal User user) throws ServiceException {
+        Boolean isPremium = userService.isPremium(user);
+        SuccessResponse<Boolean> successResponse = new SuccessResponse<>(200, HttpStatus.OK, isPremium);
+        return ResponseEntity.ok(successResponse);
+    }
+
+    @PostMapping("/cancelPremium")
+    public ResponseEntity<SuccessResponse<String>> cancelPremium(@AuthenticationPrincipal User user) throws ServiceException {
+        userService.cancelPremium(user.getEmail());
+        SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, "Subscription canceled successfully");
+        return ResponseEntity.ok(response);
+    }
+
 }

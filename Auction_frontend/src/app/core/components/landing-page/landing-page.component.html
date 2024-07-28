@@ -3,125 +3,136 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="landing-page.component.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="landing-page.component.css">
 </head>
+
 <body>
   <div class="container">
-  <div class="upcoming-auctions">
-    <h2>Upcoming Auctions</h2>
-    <div class="container d-inline-flex">
-        <div *ngFor="let auction of auctions" class="container">
-            <div class="card" style="width: 18rem;">
-              <img src="assets\images\avacado.jpeg" class="card-img-top" alt="...">
-              <p style="margin-bottom: 0px; font-weight:500; font-size: larger">{{ auction.title }}</p>
-              <p style="margin-bottom: 0px; font-size: 0.85rem;">{{ auction.date | date: 'dd MMM yyyy' }} | {{ auction.date | date: 'h:mm a' }}</p>
-              <button class="btn btn-outline-dark" style="margin-top: 8px; padding-top: 3px; padding-bottom: 3px;" (click)="bidNow(auction)">BID NOW</button>
-            </div>
+    <div class="upcoming-auctions">
+      <div class="heading-container">
+        <h2>Upcoming Auctions</h2>
+        <div class="more-link">
+          <a (click)="navigateToAllAuctions()">+ more</a>
+        </div>
+      </div>
+      <div class="auction-cards">
+        <div *ngFor="let auction of firstThreeUpcomingAuctions" class="card-container">
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" [src]="auction.itemPhoto" alt="{{ auction.itemName }}">
+            <p style="margin-bottom: 0px; font-weight:500; font-size: larger">{{ auction.itemName }}</p>
+            <p style="margin-bottom: 0px; font-size: 0.85rem;">
+              {{ auction.auctionStartTime | date: 'dd MMM yyyy' }} | {{
+              auction.auctionStartTime | date: 'h:mm a' }} UTC | {{ auction.cityName }}
+            </p>
+            <button class="btn btn-outline-dark" style="margin-top: 8px; padding-top: 3px; padding-bottom: 3px;"
+              (click)="bidNow(auction)">BID NOW</button>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+
 
     <div class="how-it-works">
-        <h2>How It Works</h2>
-        <div class="steps">
-          <!-- Repeat for each step -->
-          <div class="step">
-            <img src="assets/images/how_it_works_1.png" alt="Step 1">
-            <p class="howitworks">Create Your Auction</p>
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <img src="assets/images/how_it_works_1.png" alt="Step 1">
+          <p class="howitworks">Create Your Auction</p>
+        </div>
+        <div class="step">
+          <img src="assets/images/how_it_works_2.png" alt="Step 2">
+          <p class="howitworks">Add Your Auction Items</p>
+        </div>
+        <div class="step">
+          <img src="assets/images/how_it_works_3.png" alt="Step 3">
+          <p class="howitworks">Sit Back, Let The Bidding Begin</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="features">
+      <h2>Features</h2>
+      <div class="feature-list">
+        <div class="feature">
+          <img src="assets/images/currency.jpeg" alt="Currency">
+          <div class="feature-text">
+            <h3>Currency</h3>
+            <p>Facilitating worldwide transactions with flexible currency options.</p>
           </div>
-          <div class="step">
-            <img src="assets/images/how_it_works_2.png" alt="Step 2">
-            <p class="howitworks">Add Your Auction Items</p>
+        </div>
+
+        <div class="feature">
+          <img src="assets/images/dashboard.png" alt="Dashboard">
+          <div class="feature-text">
+            <h3>Dashboard</h3>
+            <p>Guiding users through their auction insights with an intuitive dashboard experience.</p>
           </div>
-          <div class="step">
-            <img src="assets/images/how_it_works_3.png" alt="Step 3">
-            <p class="howitworks">Sit Back, Let The Bidding Begin</p>
+        </div>
+        <div class="feature">
+          <img src="assets/images/usercontrol.jpeg" alt="UserControl">
+          <div class="feature-text">
+            <h3>User Control</h3>
+            <p>Encouraging users to take charge of their auction journey effortlessly.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="assets/images/adaptivescaling.jpeg" alt="AdaptiveScaling">
+          <div class="feature-text">
+            <h3>Adaptive Scaling</h3>
+            <p>Seamlessly adaptable for everyone, from solo entrepreneurs to large enterprises.</p>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="features">
-        <h2>Features</h2>
-        <div class="feature-list">
-          <!-- Repeat for each feature -->
-          <div class="feature">
-            <img src="assets/images/currency.jpeg" alt="Currency">
-            <div class="feature-text">
-              <h3>Currency</h3>
-              <p>Facilitating worldwide transactions with flexible currency options.</p>
-            </div>
-          </div>
-
-          <div class="feature">
-            <img src="assets/images/dashboard.png" alt="Dashboard">
-            <div class="feature-text">
-              <h3>Dashboard</h3>
-              <p>Guiding users through their auction insights with an intuitive dashboard experience.</p>
-            </div>
-          </div>
-          <div class="feature">
-            <img src="assets/images/usercontrol.jpeg" alt="UserControl">
-            <div class="feature-text">
-              <h3>User Control</h3>
-              <p>Encouraging users to take charge of their auction journey effortlessly.</p>
-            </div>
-          </div>
-          <div class="feature">
-            <img src="assets/images/adaptivescaling.jpeg" alt="AdaptiveScaling">
-            <div class="feature-text">
-              <h3>Adaptive Scaling</h3>
-              <p>Seamlessly adaptable for everyone, from solo entrepreneurs to large enterprises.</p>
-            </div>
-          </div>
+    <div id="pricing-section" class="pricing">
+      <h2>Pricing</h2>
+      <div class="pricing-tiers">
+        <!-- Repeat for each pricing tier -->
+        <div class="tier">
+          <h3>Free</h3>
+          <p class="price">
+            <span class="price-amount">$0</span>
+            <span class="price-duration">/mo</span>
+          </p>
+          <ul>
+            <li>Feature 1</li>
+            <li>Feature 2</li>
+            <li>Feature 3</li>
+            <li>Feature 4</li>
+          </ul>
+          <button class="btn" (click)="choosePlan()">Choose Plan</button>
+        </div>
+        <div class="tier">
+          <h3>Pro</h3>
+          <p class="price">
+            <span class="price-amount">$10</span>
+            <span class="price-duration">/mo</span>
+          </p>
+          <ul>
+            <li>Feature 1</li>
+            <li>Feature 2</li>
+            <li>Feature 3</li>
+            <li>Feature 4</li>
+          </ul>
+          <button class="btn" (click)="choosePlan()">Choose Plan</button>
         </div>
       </div>
-
-      <div  id="pricing-section" class="pricing">
-        <h2>Pricing</h2>
-        <div class="pricing-tiers">
-          <!-- Repeat for each pricing tier -->
-          <div class="tier">
-            <h3>Free</h3>
-            <p class="price">
-              <span class="price-amount">$0</span>
-              <span class="price-duration">/mo</span>
-            </p>
-            <ul>
-              <li>Feature 1</li>
-              <li>Feature 2</li>
-              <li>Feature 3</li>
-              <li>Feature 4</li>
-            </ul>
-            <button class="btn" (click)="choosePlan()">Choose Plan</button>
-          </div>
-          <div class="tier">
-            <h3>Pro</h3>
-            <p class="price">
-              <span class="price-amount">$10</span>
-              <span class="price-duration">/mo</span>
-            </p>
-            <ul>
-              <li>Feature 1</li>
-              <li>Feature 2</li>
-              <li>Feature 3</li>
-              <li>Feature 4</li>
-            </ul>
-            <button class="btn" (click)="choosePlan()">Choose Plan</button>
-          </div>
-        </div>
-      </div>
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    </div>
   </div>
 </body>
+
 </html>
-<app-footer ></app-footer>
+<app-footer></app-footer>

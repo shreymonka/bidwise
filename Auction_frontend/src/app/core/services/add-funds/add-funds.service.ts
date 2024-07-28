@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
+
 import {
   HttpClient,
   HttpHeaders,
@@ -11,8 +13,7 @@ import {
   providedIn: 'root'
 })
 export class AddFundsService {
-  // endpoint: string = 'http://localhost:8080/api/v1/account/addFunds';
-  endpoint: string = 'http://172.17.3.242:8080/api/v1/account/addFunds';
+  endpoint: string = environment.apiUrl + '/account/addFunds';
 
   constructor(private http: HttpClient) {}
 

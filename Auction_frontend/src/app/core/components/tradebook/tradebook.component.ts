@@ -34,6 +34,7 @@ export class TradebookComponent {
         console.log(this.trades);
       },
       (error) => {
+        this.trades.data = '';
         console.error('Error fetching items:', error);
       }
     );
@@ -60,20 +61,28 @@ export class TradebookComponent {
     const pageHeight = doc.internal.pageSize.getHeight();
     const effectivePageWidth = pageWidth - margin * 2;
   
-    // Add title
+    // Add logo to the PDF (assuming you have the logo as a base64 string)
+    const logoBase64 = 'https://res.cloudinary.com/dfctfgi4g/image/upload/v1722177292/q5jvnuuybxapaw63jzrr.png'; // Replace '...' with your actual base64 string
+  
+    // Add the logo image to the PDF
+    const logoWidth = 30; // width of the logo
+    const logoHeight = 30; // height of the logo
+    doc.addImage(logoBase64, 'PNG', margin, margin, logoWidth, logoHeight);
+  
+    // Add title below the logo
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text('Invoice Details', pageWidth / 2, margin, { align: 'center' });
+    doc.text('Invoice Details', pageWidth / 2, margin + logoHeight + 5, { align: 'center' });
   
     // Add a horizontal line below the title
     doc.setLineWidth(0.5);
-    doc.line(margin, margin + 5, pageWidth - margin, margin + 5);
+    doc.line(margin, margin + logoHeight + 10, pageWidth - margin, margin + logoHeight + 10);
   
     // Add invoice details with better layout and styling
     doc.setFontSize(12);
     doc.setFont('helvetica', 'normal');
   
-    const startY = margin + 15;
+    const startY = margin + logoHeight + 15;
     const lineSpacing = 10;
     const itemSpacing = 8;
   
@@ -81,8 +90,8 @@ export class TradebookComponent {
     doc.setFont('helvetica', 'bold');
     doc.text('Auction and Invoice Dates', margin, startY);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Date of Auction: ${formatDate(this.invoice.data.dateOfAuction,'yyyy-MM-dd', 'en-US')}`, margin, startY + lineSpacing);
-    doc.text(`Date of Invoice: ${formatDate(this.invoice.data.dateOfInvoice,'yyyy-MM-dd', 'en-US')}`, margin, startY + lineSpacing * 2);
+    doc.text(`Date of Auction: ${formatDate(this.invoice.data.dateOfAuction, 'yyyy-MM-dd', 'en-US')}`, margin, startY + lineSpacing);
+    doc.text(`Date of Invoice: ${formatDate(this.invoice.data.dateOfInvoice, 'yyyy-MM-dd', 'en-US')}`, margin, startY + lineSpacing * 2);
   
     // Section: Item Details
     const itemDetailsStartY = startY + lineSpacing * 4;

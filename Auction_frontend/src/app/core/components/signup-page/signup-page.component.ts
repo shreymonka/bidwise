@@ -14,8 +14,8 @@ import { LoginServiceService } from '../../services/login-service/login-service.
 export class SignupPageComponent implements OnInit {
 
   signupForm: FormGroup;
-  countries: string[] = ['Canada', 'United States', 'United Kingdom', 'Australia'];
-  cities: string[] = ['Halifax', 'Toronto', 'Vancouver', 'New York'];
+  cities: any = [];
+  countries:any = [];
   allTimeZones: string[] = [
     'ACDT', 'ACST', 'ACT', 'ACWST', 'ADT', 'AEDT', 'AEST', 'AET', 'AFT', 'AKDT', 'AKST', 'ALMT', 'AMST', 'AMT',
     'ANAT', 'AQTT', 'ART', 'AST', 'AWST', 'AZOST', 'AZOT', 'AZT', 'BNT', 'BIOT', 'BIT', 'BOT', 'BRST', 'BRT',
@@ -113,8 +113,33 @@ export class SignupPageComponent implements OnInit {
     this.signupForm.get('confirmPassword')?.valueChanges.subscribe(() => {
       this.checkPasswordMatch();
     });
+
+    this.signupForm.get('country')?.valueChanges.subscribe(()=>{
+      this.fetchCities(this.signupForm.get('country')?.value);
+    })
+
+    this.signUpService.fetchAllCountries().subscribe(
+      (response) => {
+        this.countries = response;
+        console.log(this.countries);
+      },
+      (error) => {
+        console.error('Error fetching Countries:', error);
+      }
+    );
   }
 
+  fetchCities(country:String):void{
+    this.signUpService.fetchAllCities(country).subscribe(
+      (response) => {
+        this.cities = response;
+        console.log(this.cities);
+      },
+      (error) => {
+        console.error('Error fetching cities:', error);
+      }
+    );
+  }
   checkPasswordMatch(): void {
     const password = this.signupForm.get('password')?.value;
     const confirmPassword = this.signupForm.get('confirmPassword')?.value;
@@ -123,19 +148,10 @@ export class SignupPageComponent implements OnInit {
 
   onSubmit(): void {
     // Check form validity before submission
-    console.log(this.signupForm)
     if (this.signupForm.invalid || this.passwordMismatch) {
       return;
     }
-
-    // Collect form data
     const formData = this.signupForm.value;
-    console.log('Form Data:', formData);
-
-    // Handle form submission logic (e.g., send data to server)
-    // You can use HTTP client to send the data to the server
-
-    // Navigate to another route on successful submission
     this.router.navigate(['/login']);
   }
 

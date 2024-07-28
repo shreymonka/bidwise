@@ -17,6 +17,9 @@ import { AuctionComponent } from './core/components/auction/auction.component';
 import { AddFundsComponent } from './core/components/add-funds/add-funds.component';
 import { TradebookComponent } from './core/components/tradebook/tradebook.component';
 import { UserProfileComponent } from './core/components/user-profile/user-profile.component';
+import { UpcomingAllAuctionsComponent } from './core/components/upcoming-all-auctions/upcoming-all-auctions.component';
+import { PreLoginUpcomingAllAuctionsComponent } from './core/components/pre-login-upcoming-all-auctions/pre-login-upcoming-all-auctions.component';
+import { authGuard } from './core/services/auth.guard';
 
 const routes: Routes = [
   // {
@@ -29,18 +32,19 @@ const routes: Routes = [
   {path:'login',component:LoginPageComponent},
   {path:'signup',component:SignupPageComponent},
   {path: 'about-us', component: AboutUsComponent},
-  {path: 'postLogin', component: PostLoginLandingPageComponent},
+  {path: 'postLogin', component: PostLoginLandingPageComponent, canActivate:[authGuard]},
   {path: 'forget-password', component: ForgetPasswordComponent},
   {path: 'reset-password', component: ResetPasswordComponent},
   { path: 'pricing', component: PricingComponent },
-  {path: 'itemCategory', component: ItemCategoryListingComponent},
-  {path: 'sellerPortal', component: SellerPortalComponent},
-  {path: 'itemListing', component: ItemListingComponent},
-  {path: 'auction', component:AuctionComponent},
-  {path: 'addFunds', component:AddFundsComponent},
-  {path: 'auction', component:AuctionComponent},
-  {path: 'tradebook',component:TradebookComponent},
-  {path: 'profile', component:UserProfileComponent}
+  { path: 'itemCategory', component: ItemCategoryListingComponent, canActivate: [authGuard] },
+  { path: 'sellerPortal', component: SellerPortalComponent, canActivate: [authGuard] },
+  { path: 'itemListing', component: ItemListingComponent, canActivate: [authGuard] },
+  { path: 'auction/:id', component: AuctionComponent, canActivate: [authGuard] },
+  { path: 'upcoming-all-auctions', component: UpcomingAllAuctionsComponent, canActivate: [authGuard] },
+  { path: 'pre-login-upcoming-all-auctions', component: PreLoginUpcomingAllAuctionsComponent },
+  { path: 'addFunds', component: AddFundsComponent, canActivate: [authGuard] },
+  { path: 'tradebook', component: TradebookComponent, canActivate: [authGuard] },
+  { path: 'profile', component: UserProfileComponent, canActivate: [authGuard] }
 ];
 
 @NgModule({

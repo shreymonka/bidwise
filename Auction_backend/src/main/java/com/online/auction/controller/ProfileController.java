@@ -26,8 +26,7 @@ import static com.online.auction.constant.AuctionConstants.PROFILE;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    @Autowired
-    private ProfileService profileService;
+    private final ProfileService profileService;
 
     @GetMapping("/details")
     public ResponseEntity<SuccessResponse<UserProfileDTO>> getUserProfile(

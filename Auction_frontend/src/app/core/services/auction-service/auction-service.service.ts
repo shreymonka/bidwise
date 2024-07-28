@@ -3,13 +3,15 @@ import { FormGroup } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Client, Frame, Stomp, StompSubscription } from '@stomp/stompjs';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuctionServiceService {
   private websockerUrl = 'ws://172.17.3.242:8080/gs-guide-websocket';
-  private baseUrl = "http://172.17.3.242:8080/api/v1";
+  private baseUrl = environment.apiUrl;
   constructor(private http: HttpClient, private toastr: ToastrService) {}
   private client: any;
 
@@ -64,7 +66,11 @@ export class AuctionServiceService {
     return this.http.get(this.baseUrl+"/auction/"+itemId);
   }
 
-  closeAuction(itemId: any){
+  closeAuction(itemId: any){``
     return this.http.get(this.baseUrl+"/auction/postAuction/"+itemId);
+  }
+
+  getUserPremiumStatus(){
+    return this.http.get(this.baseUrl+"/user/checkPremium")
   }
 }
