@@ -37,5 +37,6 @@ public class CategoryAuctionDTO {
         private LocalDateTime startTime;
         private LocalDateTime endTime;
         private String cityName;
+        private boolean isOpen;
     }
 }

@@ -370,7 +370,9 @@ class AuctionServiceImplTest {
 
         List<CategoryAuctionDTO> result = auctionService.getAuctionsByCategory();
 
-        assertEquals(0, result.size());  // No categories with valid auctions
+        assertEquals(1, result.size());  // One category returned
+        assertEquals(PAINTING_ITEM_CATEGORY, result.get(0).getCategoryName());
+        assertTrue(result.get(0).getItems().isEmpty());  // No items since the auction has ended
     }
 
     @Test
@@ -384,6 +386,8 @@ class AuctionServiceImplTest {
 
         List<CategoryAuctionDTO> result = auctionService.getAuctionsByCategory();
 
-        assertEquals(0, result.size());
+        assertEquals(1, result.size());  // One category returned
+        assertEquals(PAINTING_ITEM_CATEGORY, result.get(0).getCategoryName());
+        assertTrue(result.get(0).getItems().isEmpty());  // Empty list for items
     }
 }

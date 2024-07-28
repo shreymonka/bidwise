@@ -261,13 +261,14 @@ public class AuctionServiceImpl implements AuctionService {
                 Auction auction = auctionListingRepository.findByItems(item).orElse(null);
                 if (auction != null && auction.getEndTime().isAfter(now)) { // Check if auction is upcoming
                     CategoryAuctionDTO.AuctionItemDetailsDTO auctionItemDTO = CategoryAuctionDTO.AuctionItemDetailsDTO.builder()
-                            .auctionId(String.valueOf(auction.getAuctionId())) // Include auctionId in response
+                            .auctionId(String.valueOf(auction.getAuctionId()))  // Added this line
                             .itemId(String.valueOf(item.getItemId()))
                             .itemName(item.getItem_name())
                             .itemPhoto(item.getItem_photo())
                             .startTime(auction.getStartTime())
                             .endTime(auction.getEndTime())
                             .cityName(auction.getSellerId().getCity().getCityName())
+                            .isOpen(auction.isOpen())  // Added this line
                             .build();
                     auctionItems.add(auctionItemDTO);
                 }
@@ -275,7 +276,7 @@ public class AuctionServiceImpl implements AuctionService {
 
             CategoryAuctionDTO categoryDTO = CategoryAuctionDTO.builder()
                     .categoryName(category.getItemCategoryName())
-                    .items(auctionItems) // This will be an empty list if no auctions are found
+                    .items(auctionItems)
                     .build();
             categorizedAuctions.add(categoryDTO);
         }
