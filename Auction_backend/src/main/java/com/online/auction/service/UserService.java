@@ -23,4 +23,6 @@ public interface UserService {
 
     Boolean isPremium(User user) throws ServiceException;
 
+    void cancelPremium(String email) throws ServiceException;
+
 }

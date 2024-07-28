@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AccountServiceService } from '../../services/account-service/account-service.service';
+import { AuctionServiceService } from '../../services/auction-service/auction-service.service';
 
 @Component({
   selector: 'app-pricing',
@@ -12,11 +14,13 @@ import Swal from 'sweetalert2';
 })
 export class PricingComponent {
   pricingForm: FormGroup;
+  isPremiumUser: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private userService: AuctionServiceService
   ) {
     this.pricingForm = this.fb.group({
       cardNumber: ['', Validators.required],
@@ -28,12 +32,29 @@ export class PricingComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.checkPremiumStatus();
+  }
+
+  checkPremiumStatus(): void {
+    this.userService.getUserPremiumStatus().subscribe(
+      (response: any) => {
+        this.isPremiumUser = response.data;
+        console.log('Is Premium User:', this.isPremiumUser);
+      },
+      (error) => {
+        console.error('Error checking premium status:', error);
+      }
+    );
+  }
+
+
   submitPayment(): void {
     const paymentDetails = this.pricingForm.value;
     const token = localStorage.getItem('token');  // Assuming you store JWT in localStorage after login
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.post('http://172.17.3.242/api/v1/user/upgrade-to-premium', paymentDetails, { headers }).subscribe(
+    this.http.post('http://172.17.3.242:8080/api/v1/user/upgrade-to-premium', paymentDetails, { headers }).subscribe(
       (response: any) => {
         Swal.fire({
           title: 'Success!',
@@ -49,6 +70,31 @@ export class PricingComponent {
         Swal.fire({
           title: 'Error!',
           text: 'There was an error processing your payment. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  cancelSubscription(): void {
+    // Call the backend API to cancel the subscription
+    this.http.post('http://172.17.3.242:8080/api/v1/user/cancelPremium', {}).subscribe(
+      (response: any) => {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Your subscription has been canceled.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          // Optionally refresh the page or navigate to another page
+          this.router.navigate(['/postLogin']);
+        });
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: 'There was an error canceling your subscription. Please try again.',
           icon: 'error',
           confirmButtonText: 'OK'
         });
