@@ -25,7 +25,7 @@ build_frontend:
     paths:
       - Auction_frontend/dist/auction-frontend/
   tags:
-    - dalfcs_docker_kvm
+    - auctionrunner
     
 build_backend:
   stage: build
@@ -39,7 +39,7 @@ build_backend:
     paths:
       - Auction_backend/target/
   tags:
-    - dalfcs_docker_kvm
+    - auctionrunner
 
 test_backend:
   stage: test
@@ -52,7 +52,7 @@ test_backend:
     - echo "Running Tests"
     - mvn test
   tags:
-    - dalfcs_docker_kvm
+    - auctionrunner
 
 publish_backend:
   stage: publish
