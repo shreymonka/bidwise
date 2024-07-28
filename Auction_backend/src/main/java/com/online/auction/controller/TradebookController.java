@@ -7,7 +7,6 @@ import com.online.auction.exception.ServiceException;
 import com.online.auction.model.User;
 import com.online.auction.service.TradebookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,8 +21,6 @@ import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 import static com.online.auction.constant.AuctionConstants.USER;
 
 @RestController
-//@CrossOrigin(origins = "http://172.17.3.242:4200")
-//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(API_VERSION_V1 + USER)
 @RequiredArgsConstructor
 public class TradebookController {
@@ -32,6 +29,7 @@ public class TradebookController {
 
     /**
      * Get auction participated or won for user.
+     *
      * @param user The authenticated user getting the tradebook.
      * @return A ResponseEntity containing a success response with the result of the get operation.
      * @throws ServiceException If there is an error during the addition of the item.

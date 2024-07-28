@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +23,6 @@ import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 import static com.online.auction.constant.AuctionConstants.USER;
 
 @RestController
-@CrossOrigin(origins = "http://172.17.3.242:4200")
 @RequestMapping(API_VERSION_V1 + USER)
 @RequiredArgsConstructor
 public class UserController {

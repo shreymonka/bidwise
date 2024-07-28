@@ -5,7 +5,6 @@ import com.online.auction.exception.ServiceException;
 import com.online.auction.model.User;
 import com.online.auction.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,7 +36,7 @@ public class AccountController {
     @PostMapping("/addFunds")
     public ResponseEntity<SuccessResponse<String>> addFunds(
             @AuthenticationPrincipal User user,
-            @RequestParam("amount") float amount) throws ServiceException{
+            @RequestParam("amount") float amount) throws ServiceException {
         accountService.addFunds(user.getUserId(), amount);
         SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, "Funds added successfully");
         return ResponseEntity.ok(response);

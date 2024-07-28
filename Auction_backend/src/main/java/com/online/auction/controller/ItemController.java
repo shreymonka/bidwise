@@ -6,11 +6,9 @@ import com.online.auction.exception.ServiceException;
 import com.online.auction.model.User;
 import com.online.auction.service.ItemService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +45,7 @@ public class ItemController {
             @RequestPart("file") MultipartFile files,
             @AuthenticationPrincipal User user
     ) throws ServiceException {
-        String addResponseItem = itemService.addItem(itemDTO,files, user);
+        String addResponseItem = itemService.addItem(itemDTO, files, user);
         SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, addResponseItem);
         return ResponseEntity.ok(response);
     }
