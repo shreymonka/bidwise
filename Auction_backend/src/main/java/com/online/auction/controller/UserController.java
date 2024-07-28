@@ -87,4 +87,12 @@ public class UserController {
         SuccessResponse<Boolean> successResponse = new SuccessResponse<>(200, HttpStatus.OK, isPremium);
         return ResponseEntity.ok(successResponse);
     }
+
+    @PostMapping("/cancelPremium")
+    public ResponseEntity<SuccessResponse<String>> cancelPremium(@AuthenticationPrincipal User user) throws ServiceException {
+        userService.cancelPremium(user.getEmail());
+        SuccessResponse<String> response = new SuccessResponse<>(200, HttpStatus.OK, "Subscription canceled successfully");
+        return ResponseEntity.ok(response);
+    }
+
 }

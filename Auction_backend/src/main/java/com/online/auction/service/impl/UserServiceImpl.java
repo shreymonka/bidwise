@@ -245,7 +245,7 @@ public class UserServiceImpl implements UserService {
     /**
      * This method updates the user password
      *
-     * @param token       resetToken which is used to validate that user has received reset password link
+     * @param token resetToken which is used to validate that user has received reset password link
      * @param newPassword new user password string
      * @return a string
      */
@@ -274,5 +274,13 @@ public class UserServiceImpl implements UserService {
         }
         log.info("The user premium status is:{}", userDbOptional.get().isPremium());
         return userDbOptional.get().isPremium();
+    }
+
+    public void cancelPremium(String email) throws ServiceException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, "User not found"));
+
+        user.setPremium(false);
+        userRepository.save(user);
     }
 }

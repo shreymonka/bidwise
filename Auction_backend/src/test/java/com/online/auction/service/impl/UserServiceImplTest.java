@@ -248,6 +248,40 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).findByEmail(anyString());
     }
 
+    @Test
+    void cancelPremiumSuccessTest() throws ServiceException {
+        // Arrange
+        String email = "user@example.com";
+        User user = new User();
+        user.setEmail(email);
+        user.setPremium(true);
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+
+        // Act
+        userService.cancelPremium(email);
+
+        // Assert
+        assertFalse(user.isPremium());
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    void cancelPremiumUserNotFoundTest() {
+        // Arrange
+        String email = "nonexistent@example.com";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            userService.cancelPremium(email);
+        });
+
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
     private City getCity() {
         City city = new City();
         city.setCityId(INTEGER_ONE);

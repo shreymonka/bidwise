@@ -1,4 +1,4 @@
-<app-logo-header></app-logo-header>
+<app-post-login-header></app-post-login-header>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,9 +10,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container d-flex justify-content-center align-items-center">
+  <div *ngIf="isPremiumUser">
+    <div class="container mt-5">
+      <div class="text-start mb-4">
+          <h1 class="d-flex justify-content-between align-items-center p-3" style="border: 2px solid #000; font-weight: 700; font-size: 1.5rem;">Premium Membership</h1>
+      </div>
+    </div>
+    <div class="container" style="margin-bottom: 16px;">
+      <div class="main-content text-center">
+        <h1>Thank you for being a premium member!</h1>
+        <h3>You already have access to all premium features.</h3>
+        <h6>Click here to <a (click)="cancelSubscription()">CANCEL YOUR SUBSCRIPTION</a>.</h6>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isPremiumUser">
+    <div class="container mt-5">
+      <div class="text-start mb-4">
+          <h1 class="d-flex justify-content-between align-items-center p-3" style="border: 2px solid #000; font-weight: 700; font-size: 1.5rem;">Premium Membership</h1>
+      </div>
+    </div>
+    <div class="container d-flex justify-content-center align-items-center">
+
+    
     <form [formGroup]="pricingForm" (ngSubmit)="submitPayment()" class="signup-form">
-      <h2 class="text-center mb-4">Upgrade to Premium</h2>
       <div class="form-group">
         <label for="cardNumber">Card Number</label>
         <input id="cardNumber" class="form-control" formControlName="cardNumber" placeholder="Card Number" required />
@@ -60,6 +82,8 @@
       </div>
       <button type="submit" class="btn btn-outline-dark btn-block mr-2" style="margin-bottom: 16px;" [disabled]="pricingForm.invalid">Submit</button>
     </form>
+
+  </div>
   </div>
   
 </body>
