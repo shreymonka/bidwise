@@ -23,6 +23,10 @@ import java.util.List;
 import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 import static com.online.auction.constant.AuctionConstants.ITEM;
 
+/**
+ * Controller for managing items in the auction system.
+ * Provides endpoints to add, retrieve, and delete items.
+ */
 @RestController
 @RequestMapping(API_VERSION_V1 + ITEM)
 @RequiredArgsConstructor
