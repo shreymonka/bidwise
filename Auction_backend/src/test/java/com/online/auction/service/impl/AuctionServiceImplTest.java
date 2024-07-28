@@ -3,6 +3,7 @@ package com.online.auction.service.impl;
 
 import com.online.auction.dto.AuctionDTO;
 import com.online.auction.dto.AuctionItemsDTO;
+import com.online.auction.dto.SuggestedItemDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Account;
 import com.online.auction.model.Auction;
@@ -50,6 +51,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.ArgumentMatchers.any;
@@ -308,6 +311,120 @@ class AuctionServiceImplTest {
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
         assertEquals(AUCTION_NOT_FOUND_MSG, exception.getErrorMessage());
+    }
+
+
+
+    @Test
+    void getSuggestedItemsSuccessTest() {
+        User user = new User();
+        user.setUserId(INTEGER_ONE);
+
+        Item item = new Item();
+        item.setItemId(INTEGER_ONE);
+        item.setItem_name(TEST_AUCTION);
+        item.setItem_photo(AUCTION_PHOTO_URL);
+        item.setSellerId(new User());
+
+        Auction auction = new Auction();
+        auction.setAuctionId(INTEGER_ONE);
+        auction.setItems(item);
+        auction.setEndTime(LocalDateTime.now().plusDays(1));
+        auction.setSellerId(user);
+
+        City city = new City();
+        city.setCityName(AUCTION_CITY_NAME);
+        user.setCity(city);
+
+        List<Integer> categoryIds = List.of(INTEGER_ONE, INTEGER_TWO);
+        List<Item> items = List.of(item);
+
+        when(auctionListingRepository.findDistinctCategoryIdsByUserId(INTEGER_ONE)).thenReturn(categoryIds);
+        when(itemRepository.findItemsNotBidByUserInCategories(INTEGER_ONE, categoryIds)).thenReturn(items);
+        when(auctionListingRepository.findByItems(item)).thenReturn(Optional.of(auction));
+
+        List<SuggestedItemDTO> result = auctionService.getSuggestedItems(user);
+
+        assertEquals(1, result.size());
+        SuggestedItemDTO suggestedItem = result.get(0);
+        assertEquals(String.valueOf(INTEGER_ONE), suggestedItem.getAuctionId());
+        assertEquals(TEST_AUCTION, suggestedItem.getItemName());
+        assertEquals(AUCTION_PHOTO_URL, suggestedItem.getItemPhoto());
+        assertEquals(AUCTION_CITY_NAME, suggestedItem.getCityName());
+    }
+
+    @Test
+    void getSuggestedItemsNoCategoriesFoundTest() {
+        User user = new User();
+        user.setUserId(INTEGER_ONE);
+
+        when(auctionListingRepository.findDistinctCategoryIdsByUserId(INTEGER_ONE)).thenReturn(new ArrayList<>());
+
+        List<SuggestedItemDTO> result = auctionService.getSuggestedItems(user);
+
+        assertTrue(result.isEmpty());
+        verify(auctionListingRepository, times(1)).findDistinctCategoryIdsByUserId(INTEGER_ONE);
+        verify(itemRepository, never()).findItemsNotBidByUserInCategories(anyInt(), anyList());
+    }
+
+    @Test
+    void getSuggestedItemsAuctionNotFoundTest() {
+        User user = new User();
+        user.setUserId(INTEGER_ONE);
+
+        User differentSeller = new User();
+        differentSeller.setUserId(INTEGER_TWO);
+
+        Item item = new Item();
+        item.setItemId(INTEGER_ONE);
+        item.setSellerId(differentSeller); // Ensure seller is different
+
+        List<Integer> categoryIds = List.of(INTEGER_ONE);
+        List<Item> items = List.of(item);
+
+        when(auctionListingRepository.findDistinctCategoryIdsByUserId(INTEGER_ONE)).thenReturn(categoryIds);
+        when(itemRepository.findItemsNotBidByUserInCategories(INTEGER_ONE, categoryIds)).thenReturn(items);
+        when(auctionListingRepository.findByItems(item)).thenReturn(Optional.empty());
+
+        List<SuggestedItemDTO> result = auctionService.getSuggestedItems(user);
+
+        assertTrue(result.isEmpty());
+        verify(auctionListingRepository, times(1)).findDistinctCategoryIdsByUserId(INTEGER_ONE);
+        verify(itemRepository, times(1)).findItemsNotBidByUserInCategories(INTEGER_ONE, categoryIds);
+        verify(auctionListingRepository, times(1)).findByItems(item);
+    }
+
+    @Test
+    void getSuggestedItemsExcludeEndedAuctionsTest() {
+        User user = new User();
+        user.setUserId(INTEGER_ONE);
+
+        User differentSeller = new User();
+        differentSeller.setUserId(INTEGER_TWO);
+
+        Item item = new Item();
+        item.setItemId(INTEGER_ONE);
+        item.setSellerId(differentSeller);
+
+        List<Integer> categoryIds = List.of(INTEGER_ONE);
+        List<Item> items = List.of(item);
+
+        Auction auction = new Auction();
+        auction.setAuctionId(INTEGER_ONE);
+        auction.setItems(item);
+        auction.setSellerId(differentSeller);
+        auction.setEndTime(LocalDateTime.now().minusDays(1)); // Auction ended yesterday
+
+        when(auctionListingRepository.findDistinctCategoryIdsByUserId(INTEGER_ONE)).thenReturn(categoryIds);
+        when(itemRepository.findItemsNotBidByUserInCategories(INTEGER_ONE, categoryIds)).thenReturn(items);
+        when(auctionListingRepository.findByItems(item)).thenReturn(Optional.of(auction));
+
+        List<SuggestedItemDTO> result = auctionService.getSuggestedItems(user);
+
+        assertTrue(result.isEmpty());
+        verify(auctionListingRepository, times(1)).findDistinctCategoryIdsByUserId(INTEGER_ONE);
+        verify(itemRepository, times(1)).findItemsNotBidByUserInCategories(INTEGER_ONE, categoryIds);
+        verify(auctionListingRepository, times(1)).findByItems(item);
     }
 
 
