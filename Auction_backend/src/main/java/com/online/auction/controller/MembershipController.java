@@ -7,7 +7,6 @@ import com.online.auction.service.UpgradeToPremiumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +19,9 @@ import static com.online.auction.constant.AuctionConstants.USER;
 @RestController
 @RequestMapping(API_VERSION_V1 + USER)
 @RequiredArgsConstructor
-public class UpgradeToPremiumController {
+public class MembershipController {
     private final UpgradeToPremiumService upgradeToPremiumService;
+
     @PostMapping("/upgrade-to-premium")
     public ResponseEntity<SuccessResponse<String>> upgradeToPremium(@RequestBody PaymentDetailsDTO paymentDetails) throws ServiceException {
         upgradeToPremiumService.upgradeToPremium(paymentDetails.getEmail());
