@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.online.auction.constant.AuctionConstants.ACCOUNT;
 import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 
+/**
+ * REST controller for managing account-related operations.
+ */
 @RestController
 @RequestMapping(API_VERSION_V1 + ACCOUNT)
 @RequiredArgsConstructor
@@ -24,6 +27,13 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    /**
+     * Retrieves the account balance for the authenticated user.
+     *
+     * @param user The authenticated user.
+     * @return A ResponseEntity containing the account balance wrapped in a SuccessResponse.
+     * @throws ServiceException If there is an error retrieving the account balance.
+     */
     @GetMapping("/balance")
     public ResponseEntity<SuccessResponse<Double>> getAccountBalance(
             @AuthenticationPrincipal User user) throws ServiceException {
@@ -33,6 +43,14 @@ public class AccountController {
 
     }
 
+    /**
+     * Adds funds to the account of the authenticated user.
+     *
+     * @param user   The authenticated user.
+     * @param amount The amount to add to the account.
+     * @return A ResponseEntity containing a success message wrapped in a SuccessResponse.
+     * @throws ServiceException If there is an error adding funds to the account.
+     */
     @PostMapping("/addFunds")
     public ResponseEntity<SuccessResponse<String>> addFunds(
             @AuthenticationPrincipal User user,
