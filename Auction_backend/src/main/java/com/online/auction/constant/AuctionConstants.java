@@ -34,6 +34,7 @@ public class AuctionConstants {
     public static final String NATIVE_HEADERS = "nativeHeaders";
     public static final int INTEGER_ZERO = 0;
     public static final String AUCTION_NOT_FOUND_MSG = "Auction not found";
+    public static final String AUCTION_BID_LESS_THAN_HIGHEST_BID_ERROR_MSG = "Please enter a Bid higher than highest bid";
     public static final String ITEM_NOT_FOUND_MSG = "Item not found";
     public static final String ACCOUNT = "/account";
     public static final String NO_TRADES_FOUND = "No trades found for user";

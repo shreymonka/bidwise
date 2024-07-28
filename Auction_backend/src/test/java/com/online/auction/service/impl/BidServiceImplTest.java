@@ -22,8 +22,10 @@ import java.util.Optional;
 import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG;
 import static com.online.auction.constant.AuctionConstants.ITEM_NOT_FOUND_MSG;
 import static com.online.auction.constant.AuctionConstants.USER_NOT_PRESENT_MSG;
+import static com.online.auction.constant.TestConstants.AUCTION_BID_LESS_THAN_HIGHEST_BID_ERROR_MSG;
 import static com.online.auction.constant.TestConstants.BID_AMOUNT_ONE_HUNDRED;
 import static com.online.auction.constant.TestConstants.INTEGER_ONE;
+import static com.online.auction.constant.TestConstants.INTEGER_TWO_HUNDRED;
 import static com.online.auction.constant.TestConstants.TEST_EMAIL;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -72,6 +74,27 @@ class BidServiceImplTest {
         bidService.processBid(BID_AMOUNT_ONE_HUNDRED, String.valueOf(INTEGER_ONE), TEST_EMAIL);
 
         verify(auctionBidDetailRepository, times(1))
+                .save(any(AuctionBidDetails.class));
+    }
+
+    @Test
+    void processBid_whenBidAmountLowerThanHighestBid() {
+        AuctionBidDetails auctionBidDetails = new AuctionBidDetails();
+        auctionBidDetails.setBid_amount(INTEGER_TWO_HUNDRED);
+
+        when(auctionBidDetailRepository.findTopByItemIdOrderByBidAmountDesc(INTEGER_ONE)).thenReturn(auctionBidDetails);
+
+        when(auctionListingRepository.findByItems_ItemId(INTEGER_ONE))
+                .thenReturn(Optional.empty());
+
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            bidService.processBid(BID_AMOUNT_ONE_HUNDRED, String.valueOf(INTEGER_ONE), TEST_EMAIL);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST.value(), exception.getStatusCode());
+        assertEquals(AUCTION_BID_LESS_THAN_HIGHEST_BID_ERROR_MSG, exception.getErrorMessage());
+
+        verify(auctionBidDetailRepository, never())
                 .save(any(AuctionBidDetails.class));
     }
 
