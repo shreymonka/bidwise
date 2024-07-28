@@ -263,7 +263,7 @@ public class AuctionServiceImpl implements AuctionService {
         // Find items in the same categories that the user hasn't bid on
         List<Item> suggestedItems = itemRepository.findItemsNotBidByUserInCategories(user.getUserId(), categoryIds);
 
-        LocalDateTime now = LocalDateTime.now(); // Get the current date and time
+        LocalDateTime now = LocalDateTime.now().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of(AMERICAN_TIME_ZONE)).toLocalDateTime(); // Get the current date and time
 
         // Fetch related auction details for the items and exclude items listed by the user
         return suggestedItems.stream()
