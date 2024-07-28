@@ -1,7 +1,6 @@
 package com.online.auction.service.impl;
 
 import com.online.auction.dto.InvoiceDTO;
-import com.online.auction.dto.ItemDTO;
 import com.online.auction.dto.TradebookDTO;
 import com.online.auction.exception.ServiceException;
 import com.online.auction.model.Auction;
@@ -20,8 +19,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.online.auction.constant.AuctionConstants.NO_TRADES_FOUND;
-import static com.online.auction.constant.AuctionConstants.TRADEBOOK_ERROR;
 
+/**
+ * Service implementation for handling tradebook-related operations.
+ * This service provides methods for retrieving user trades and generating invoices.
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -44,7 +46,7 @@ public class TradebookServiceImpl implements TradebookService {
 
         if (bids == null || bids.isEmpty()) {
             log.error("No trades found for user: {}", user.getEmail());
-            throw new ServiceException(HttpStatus.NOT_FOUND,NO_TRADES_FOUND);
+            throw new ServiceException(HttpStatus.NOT_FOUND, NO_TRADES_FOUND);
         }
         return bids.stream()
                 .map(bid -> TradebookDTO.builder()
@@ -58,6 +60,13 @@ public class TradebookServiceImpl implements TradebookService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves the invoice details for a given auction ID.
+     *
+     * @param auctionId The ID of the auction.
+     * @return An InvoiceDTO containing the invoice details.
+     * @throws ServiceException If there is no winning bid for the given auction ID.
+     */
     @Override
     public InvoiceDTO getInvoiceByAuctionId(int auctionId) throws ServiceException {
         log.debug("Fetching invoice for Auction id: {}", auctionId);

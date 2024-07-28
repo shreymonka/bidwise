@@ -22,6 +22,10 @@ import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG
 import static com.online.auction.constant.AuctionConstants.ITEM_NOT_FOUND_MSG;
 import static com.online.auction.constant.AuctionConstants.USER_NOT_PRESENT_MSG;
 
+/**
+ * Service implementation for handling bid-related operations.
+ * This service provides methods to process bids for items in auctions.
+ */
 @AllArgsConstructor
 @Service
 @Slf4j
@@ -32,6 +36,14 @@ public class BidServiceImpl implements BidService {
     private ItemRepository itemRepository;
     private UserRepository userRepository;
 
+    /**
+     * Processes a bid for an item in an auction.
+     *
+     * @param bidAmount the amount of the bid
+     * @param itemId    the ID of the item being bid on
+     * @param userEmail the email of the user placing the bid
+     * @throws ServiceException if the auction, item, or user is not found
+     */
     @Override
     public void processBid(String bidAmount, String itemId, String userEmail) throws ServiceException {
         log.info("Started the processBid method");

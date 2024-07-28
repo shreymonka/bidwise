@@ -20,12 +20,24 @@ import java.util.List;
 import static com.online.auction.constant.AuctionConstants.API_VERSION_V1;
 import static com.online.auction.constant.AuctionConstants.AUCTION_MAPPING;
 
+/**
+ * Controller for handling auction-related operations.
+ * Provides endpoints for retrieving auction details, processing post-auction updates,
+ * fetching upcoming auctions, and retrieving items for existing users.
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping(API_VERSION_V1 + AUCTION_MAPPING)
 public class AuctionController {
     private final AuctionService auctionService;
 
+    /**
+     * Retrieves the details of an auction for a given item ID.
+     *
+     * @param itemId The ID of the item for which auction details are to be retrieved.
+     * @return A ResponseEntity containing a SuccessResponse with the auction details.
+     * @throws ServiceException If there is an error retrieving the auction details.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<SuccessResponse<AuctionDTO>> auctionDetails(@PathVariable(value = "id") Integer itemId) throws ServiceException {
         AuctionDTO auction = auctionService.getAuctionDetails(itemId);
@@ -33,6 +45,13 @@ public class AuctionController {
         return ResponseEntity.ok(successResponse);
     }
 
+    /**
+     * Processes post-auction updates for a given item ID.
+     *
+     * @param itemId The ID of the item for which post-auction updates are to be processed.
+     * @return A ResponseEntity containing a SuccessResponse indicating whether the update was successful.
+     * @throws ServiceException If there is an error processing the post-auction updates.
+     */
     @GetMapping("/postAuction/{itemId}")
     public ResponseEntity<SuccessResponse<Boolean>> postAuctionUpdate(@PathVariable(value = "itemId") Integer itemId) throws ServiceException {
         boolean isSuccess = auctionService.processPostAuctionState(itemId);
@@ -40,13 +59,24 @@ public class AuctionController {
         return ResponseEntity.ok(successResponse);
     }
 
-    //For user who hasn't logged in show all the upcoming auctions
+    /**
+     * Retrieves a list of upcoming auctions.
+     *
+     * @return A list of AuctionItemsDTO representing the upcoming auctions.
+     * @throws ServiceException If there is an error retrieving the upcoming auctions.
+     */
     @GetMapping("/upcoming")
     public List<AuctionItemsDTO> getUpcomingAuctions() throws ServiceException {
         return auctionService.getUpcomingAuctions();
     }
 
-    //for user who is logged-in and has listed  item
+    /**
+     * Retrieves a list of auction items for the currently authenticated user.
+     *
+     * @param user The authenticated user for whom auction items are to be retrieved.
+     * @return A ResponseEntity containing a list of AuctionItemsDTO representing the user's auction items.
+     * @throws ServiceException If there is an error retrieving the auction items.
+     */
     @GetMapping("/getAuction")
     public ResponseEntity<List<AuctionItemsDTO>> getItemsForExistingUser(@AuthenticationPrincipal User user
     ) throws ServiceException {

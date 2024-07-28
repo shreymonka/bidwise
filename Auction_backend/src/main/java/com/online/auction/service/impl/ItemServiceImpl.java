@@ -14,13 +14,13 @@ import com.online.auction.repository.ItemRepository;
 import com.online.auction.service.ItemService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
      * @throws ServiceException If there is an error during the addition of the item.
      */
     @Override
-    public String addItem(ItemDTO itemDto,MultipartFile file, User user) throws ServiceException {
+    public String addItem(ItemDTO itemDto, MultipartFile file, User user) throws ServiceException {
         log.debug("Attempting to add a new item: {}", itemDto);
 
         Optional<ItemCategory> itemCategory = itemCategoryRepository.findByItemCategoryName(itemDto.getCategoryName());
@@ -122,7 +122,7 @@ public class ItemServiceImpl implements ItemService {
             return uploadResult.get("url").toString();
         } catch (IOException e) {
             log.error("Failed to upload image to Cloudinary", e);
-            throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR,IMAGE_UPLOAD_FAILED);
+            throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR, IMAGE_UPLOAD_FAILED);
         }
     }
 
@@ -152,7 +152,7 @@ public class ItemServiceImpl implements ItemService {
     private ItemDTO convertToItemDTO(Item item) {
         Auction auction = auctionListingRepository.findByItems(item).orElse(null);
         LocalDateTime endTime = auction != null ? auction.getEndTime() : null;
-        boolean isAuctionEnded = endTime != null && endTime.isBefore(LocalDateTime.now()); // Check if auction has ended
+        boolean isAuctionEnded = endTime != null && endTime.isBefore(LocalDateTime.now().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of(AMERICAN_TIME_ZONE)).toLocalDateTime()); // Check if auction has ended
         return ItemDTO.builder()
                 .itemId(item.getItemId())
                 .itemName(item.getItem_name())
