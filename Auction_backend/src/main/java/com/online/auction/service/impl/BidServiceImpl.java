@@ -17,9 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.online.auction.constant.AuctionConstants.AMERICAN_TIME_ZONE;
 import static com.online.auction.constant.AuctionConstants.AUCTION_BID_LESS_THAN_HIGHEST_BID_ERROR_MSG;
 import static com.online.auction.constant.AuctionConstants.AUCTION_NOT_FOUND_MSG;
 import static com.online.auction.constant.AuctionConstants.ITEM_NOT_FOUND_MSG;
@@ -82,7 +84,7 @@ public class BidServiceImpl implements BidService {
         }
         AuctionBidDetails auctionBidDetails = AuctionBidDetails.builder()
                 .auctionId(auction.get())
-                .bidTime(LocalDateTime.now())
+                .bidTime(LocalDateTime.now().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of(AMERICAN_TIME_ZONE)).toLocalDateTime())
                 .bid_amount(Double.parseDouble(bidAmount))
                 .itemId(item.get())
                 .bidderId(user.get())
