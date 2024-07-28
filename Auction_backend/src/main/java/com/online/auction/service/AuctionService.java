@@ -2,7 +2,9 @@ package com.online.auction.service;
 
 import com.online.auction.dto.AuctionDTO;
 import com.online.auction.dto.AuctionItemsDTO;
+import com.online.auction.dto.SuggestedItemDTO;
 import com.online.auction.exception.ServiceException;
+import com.online.auction.model.User;
 
 import java.util.List;
 
@@ -60,5 +62,7 @@ public interface AuctionService {
      * @throws ServiceException If an error occurs while retrieving the auctions for the seller.
      */
     List<AuctionItemsDTO> getAuctionsForExistingUser(int sellerId) throws ServiceException;
+
+    List<SuggestedItemDTO> getSuggestedItems(User user) throws ServiceException;
 
 }

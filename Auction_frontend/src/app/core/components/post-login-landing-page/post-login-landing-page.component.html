@@ -15,15 +15,22 @@
 
 <body>
   <div class="container">
-    <div class="suggested-for-you">
-      <h2>Suggested For You</h2>
+    <div class="suggest-for-you">
+      <div class="heading-container">
+        <h2>Suggested for you</h2>
+        <div class="more-link">
+          <a (click)="navigateToAllSuggestedAuctions()">+ more</a>
+        </div>
+      </div>
       <div class="auction-cards">
-        <div *ngFor="let auction of auctions" class="card-container">
+        <div *ngFor="let auction of firstThreeSuggestedAuctions" class="card-container">
           <div class="card" style="width: 18rem;">
-            <img src="assets\images\avacado.jpeg" class="card-img-top" alt="...">
-            <p style="margin-bottom: 0px; font-weight:500; font-size: larger">{{ auction.title }}</p>
-            <p style="margin-bottom: 0px; font-size: 0.85rem;">{{ auction.date | date: 'dd MMM yyyy' }} | {{
-              auction.date | date: 'h:mm a' }}</p>
+            <img class="card-img-top" [src]="auction.itemPhoto" alt="{{ auction.itemName }}">
+            <p style="margin-bottom: 0px; font-weight:500; font-size: larger">{{ auction.itemName }}</p>
+            <p style="margin-bottom: 0px; font-size: 0.85rem;">
+              {{ auction.startTime | date: 'dd MMM yyyy' }} | {{
+                auction.startTime | date: 'h:mm a' }} | {{ auction.cityName }}
+            </p>
             <button class="btn btn-outline-dark" style="margin-top: 8px; padding-top: 3px; padding-bottom: 3px;"
               (click)="bidNow(auction)">BID NOW</button>
           </div>
@@ -45,7 +52,7 @@
             <p style="margin-bottom: 0px; font-weight:500; font-size: larger">{{ auction.itemName }}</p>
             <p style="margin-bottom: 0px; font-size: 0.85rem;">
               {{ auction.auctionStartTime | date: 'dd MMM yyyy' }} | {{
-              auction.auctionStartTime | date: 'h:mm a' }} UTC | {{ auction.cityName }}
+              auction.auctionStartTime | date: 'h:mm a' }}  | {{ auction.cityName }}
             </p>
             <button class="btn btn-outline-dark" style="margin-top: 8px; padding-top: 3px; padding-bottom: 3px;"
               (click)="bidNow(auction)">BID NOW</button>
