@@ -22,6 +22,7 @@ import { AddFundsComponent } from './components/add-funds/add-funds.component';
 import { TradebookComponent } from './components/tradebook/tradebook.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { NgChartsModule } from 'ng2-charts';
+import { SuggestedAllAuctionsComponent } from './components/suggested-all-auctions/suggested-all-auctions.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { NgChartsModule } from 'ng2-charts';
     PreLoginUpcomingAllAuctionsComponent,
     TradebookComponent,
     UserProfileComponent,
-    AddFundsComponent],
+    AddFundsComponent,
+    SuggestedAllAuctionsComponent],
   exports : [
     LandingPageComponent,
     AboutUsComponent
