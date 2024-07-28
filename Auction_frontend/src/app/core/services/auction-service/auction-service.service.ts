@@ -71,6 +71,6 @@ export class AuctionServiceService {
   }
 
   getUserPremiumStatus(){
-    return this.http.get(this.baseUrl+"/user/checkPremium")
+    return this.http.get(this.baseUrl+"/membership/checkPremium")
   }
 }
