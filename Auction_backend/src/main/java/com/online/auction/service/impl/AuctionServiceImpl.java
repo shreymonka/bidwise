@@ -233,16 +233,17 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     /**
-     * Retrieves a list of auctions grouped by item categories.
+     * Retrieves a list of auctions categorized by item category.
      * <p>
-     * This method fetches all item categories from the repository and iterates through each category to find items
-     * associated with that category. For each item, it fetches the related auction details. Only auctions that have
-     * not yet ended are included in the response. The auctions are then grouped into categories, and the resulting
-     * list is returned.
+     * This method fetches all item categories, and for each category, it finds all associated items.
+     * It then looks up the auction details for each item and includes only the upcoming auctions (i.e., auctions that have not ended).
+     * If a category has items with upcoming auctions, these auctions are grouped under the category in the response.
+     * If a category has no upcoming auctions, an empty list is returned for that category's items.
      * </p>
      *
-     * @return A list of {@link CategoryAuctionDTO} objects representing categorized auctions. Each {@link CategoryAuctionDTO}
-     * contains the category name and a list of auctions related to that category.
+     * @return A list of {@link CategoryAuctionDTO} objects, where each object represents an item category
+     * and includes the list of upcoming auctions for that category. The list of items for a category
+     * will be empty if no upcoming auctions are found.
      */
     @Override
     public List<CategoryAuctionDTO> getAuctionsByCategory() {
@@ -260,6 +261,7 @@ public class AuctionServiceImpl implements AuctionService {
                 Auction auction = auctionListingRepository.findByItems(item).orElse(null);
                 if (auction != null && auction.getEndTime().isAfter(now)) { // Check if auction is upcoming
                     CategoryAuctionDTO.AuctionItemDetailsDTO auctionItemDTO = CategoryAuctionDTO.AuctionItemDetailsDTO.builder()
+                            .auctionId(String.valueOf(auction.getAuctionId())) // Include auctionId in response
                             .itemId(String.valueOf(item.getItemId()))
                             .itemName(item.getItem_name())
                             .itemPhoto(item.getItem_photo())
@@ -271,13 +273,11 @@ public class AuctionServiceImpl implements AuctionService {
                 }
             }
 
-            if (!auctionItems.isEmpty()) {
-                CategoryAuctionDTO categoryDTO = CategoryAuctionDTO.builder()
-                        .categoryName(category.getItemCategoryName())
-                        .items(auctionItems)
-                        .build();
-                categorizedAuctions.add(categoryDTO);
-            }
+            CategoryAuctionDTO categoryDTO = CategoryAuctionDTO.builder()
+                    .categoryName(category.getItemCategoryName())
+                    .items(auctionItems) // This will be an empty list if no auctions are found
+                    .build();
+            categorizedAuctions.add(categoryDTO);
         }
 
         log.info("Successfully fetched and categorized auctions");
