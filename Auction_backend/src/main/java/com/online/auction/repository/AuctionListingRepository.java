@@ -6,6 +6,7 @@ import com.online.auction.model.ItemCategory;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -64,5 +65,9 @@ public interface AuctionListingRepository extends JpaRepository<Auction, Integer
      */
     @Query("SELECT a FROM Auction a WHERE (a.startTime > :currentTime OR (a.isOpen = true AND a.endTime > :currentTime))")
     List<Auction> findUpcomingAndCurrentAuctions(LocalDateTime currentTime);
+
+    @Query("SELECT DISTINCT i.itemcategory.itemCategoryId FROM AuctionBidDetails abd " +
+            "JOIN abd.itemId i WHERE abd.bidderId.userId = :userId")
+    List<Integer> findDistinctCategoryIdsByUserId(@Param("userId") int userId);
 
 }
