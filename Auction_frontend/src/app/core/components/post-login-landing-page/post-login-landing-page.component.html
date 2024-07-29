@@ -14,8 +14,8 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="suggest-for-you">
+  <div class="container" >
+    <div class="suggest-for-you" *ngIf="isSuggestedPresent">
       <div class="heading-container">
         <h2>Suggested for you</h2>
         <div class="more-link">
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div class="upcoming-auctions">
+    <div class="upcoming-auctions" *ngIf="isUpcomingPresent">
       <div class="heading-container">
         <h2>Upcoming Auctions</h2>
         <div class="more-link">

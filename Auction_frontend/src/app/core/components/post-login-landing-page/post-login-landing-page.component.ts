@@ -19,6 +19,8 @@ export class PostLoginLandingPageComponent {
   suggestedAuctions: any[] =[];
   firstThreeUpcomingAuctions: any[] = [];
   firstThreeSuggestedAuctions: any[] = [];
+  isSuggestedPresent= false;
+  isUpcomingPresent= false;
 
 
   constructor(private auctionService: PostLoginLandingPageServiceService,private router: Router,    private auctionSharedService: AuctionSharedServiceService  ) { }
@@ -34,6 +36,9 @@ export class PostLoginLandingPageComponent {
 
         // Get the first three items
         this.firstThreeUpcomingAuctions = data.slice(0, 3);
+        if(this.firstThreeUpcomingAuctions.length>0){
+          this.isUpcomingPresent=true;
+        }
 
       },
       error: (error) => {
@@ -50,6 +55,9 @@ export class PostLoginLandingPageComponent {
         if (Array.isArray(data)) {
           this.suggestedAuctions = data;
           this.firstThreeSuggestedAuctions = data.slice(0, 3);
+          if(this.firstThreeSuggestedAuctions.length>0){
+            this.isSuggestedPresent=true;
+          }
         } else {
           console.error('Expected data to be an array but got:', data);
         }
