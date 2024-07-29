@@ -271,7 +271,7 @@ public class AuctionServiceImpl implements AuctionService {
                 .map(item -> {
                     try {
                         Auction auction = auctionListingRepository.findByItems(item)
-                                .orElseThrow(() -> new RuntimeException("Auction not found for item: " + item.getItemId()));
+                                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST, AUCTION_NOT_FOUND_MSG));
 
                         // Exclude auctions that have already ended
                         if (auction.getEndTime().isBefore(now)) {
@@ -287,8 +287,8 @@ public class AuctionServiceImpl implements AuctionService {
                                 .endTime(auction.getEndTime())
                                 .cityName(auction.getSellerId().getCity().getCityName()) // Add this line
                                 .build();
-                    } catch (RuntimeException e) {
-                        log.error("Error fetching auction for item: {}", item.getItemId(), e);
+                    } catch (ServiceException e) {
+                        log.error("Error fetching auction for item: {}", item.getItemId(), e.getErrorMessage());
                         return null;
                     }
                 })
