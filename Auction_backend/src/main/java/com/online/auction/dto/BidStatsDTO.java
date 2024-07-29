@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BidStatsDTO {
     private int month;
-    private long wonBids;
-    private long lostBids;
+    private long wonAuctions;
+    private long totalParticipatedAuctions;
 }

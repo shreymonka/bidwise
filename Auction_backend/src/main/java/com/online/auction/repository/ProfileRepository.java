@@ -62,8 +62,8 @@ public interface ProfileRepository extends JpaRepository<User, Integer> {
      * @return A list of {@link BidStatsDTO} containing the bid statistics for each month of the current year.
      */
     @Query("SELECT new com.online.auction.dto.BidStatsDTO(FUNCTION('MONTH', abd.bidTime), " +
-            "SUM(CASE WHEN abd.isWon = true THEN 1 ELSE 0 END), " +
-            "SUM(CASE WHEN abd.isWon = false THEN 1 ELSE 0 END)) " +
+            "SUM(CASE WHEN abd.isWon = true THEN 1 ELSE 0 END), " +  // wonAuctions
+            "COUNT(DISTINCT abd.auctionId)) " +  // totalParticipatedAuctions
             "FROM AuctionBidDetails abd " +
             "WHERE abd.bidderId.userId = :userId " +
             "AND FUNCTION('YEAR', abd.bidTime) = FUNCTION('YEAR', CURRENT_DATE) " +
