@@ -56,21 +56,21 @@ export class UserProfileComponent implements OnInit {
 
     this.userProfileService.getBidStats(userId).subscribe(data => {
       const bidStats = data.data;
-      const wonBids: number[] = [];
-      const lostBids: number[] = [];
+      const wonAuctions: number[] = [];
+      const lostAuctions: number[] = [];
       const labels: string[] = [];
-
+    
       for (let i = 1; i <= 12; i++) {
-        const stat = bidStats.find((s: any) => s.month === i) || { wonBids: 0, lostBids: 0 };
-        wonBids.push(stat.wonBids);
-        lostBids.push(stat.lostBids);
+        const stat = bidStats.find((s: any) => s.month === i) || { wonAuctions: 0, totalParticipatedAuctions: 0 };
+        wonAuctions.push(stat.wonAuctions);
+        lostAuctions.push(stat.totalParticipatedAuctions - stat.wonAuctions);
         labels.push(new Date(0, i - 1).toLocaleString('default', { month: 'long' }));
       }
-
+    
       this.barChartLabels = labels;
-      this.barChartData[0].data = wonBids;
-      this.barChartData[1].data = lostBids;
-    });
+      this.barChartData[0].data = wonAuctions;
+      this.barChartData[1].data = lostAuctions;
+    });    
 
     this.userProfileService.getCategoryBidStats(userId).subscribe(data => {
       const categoryStats = data.data;
