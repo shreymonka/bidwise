@@ -83,7 +83,7 @@ public class ProfileServiceImpl implements ProfileService {
     private List<BidStatsDTO> initializeMonthlyStats() {
         List<BidStatsDTO> stats = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
-            stats.add(new BidStatsDTO(i, 0, 0));
+            stats.add(new BidStatsDTO(i, 0, 0)); // Initialize both wonAuctions and totalParticipatedAuctions with 0
         }
         return stats;
     }
