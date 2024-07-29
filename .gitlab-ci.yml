@@ -68,7 +68,6 @@ publish_backend:
     - echo $DOCKER_HOST
     - docker --version
     - echo "Logging Docker"
-    #- echo $DOCKER_PASSWORD |docker login -u $DOCKER_USERNAME --password-stdin
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - echo "Building the Docker image for the Backend"
     - docker build -t docker.io/$DOCKER_USERNAME/auctionbackend:$CI_COMMIT_SHORT_SHA .
@@ -95,7 +94,6 @@ publish_frontend:
     - echo $DOCKER_HOST
     - docker --version
     - echo "Logging Docker"
-    #- echo $DOCKER_PASSWORD |docker login -u $DOCKER_USERNAME --password-stdin
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - echo "Building the Docker image"
     - docker build -t docker.io/$DOCKER_USERNAME/auctionfrontend:$CI_COMMIT_SHORT_SHA .
