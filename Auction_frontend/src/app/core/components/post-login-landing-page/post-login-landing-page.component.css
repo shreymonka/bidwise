@@ -1,12 +1,12 @@
-/*Suggested for you*/
-
-.suggested-for-you{
+/* Suggested for you */
+.suggested-for-you {
   margin-bottom: 50px;
 }
 
-.auctions-categories{
+.auctions-categories {
   margin-bottom: 50px;
 }
+
 .auctions-list {
   display: flex;
   justify-content: space-around;
@@ -22,10 +22,8 @@
 
 /* Upcoming Section */
 .upcoming-auctions {
-    margin-bottom: 50px;
-
+  margin-bottom: 50px;
 }
-
 
 .heading-container {
   display: flex;
@@ -79,55 +77,53 @@
   text-decoration: underline;
 }
 
-
 /* How it works Section */
 .how-it-works {
-
-    margin-bottom: 50px;
+  margin-bottom: 50px;
 }
 
-.howitworks{
-    font-size: 1.75rem;
+.howitworks {
+  font-size: 1.75rem;
 }
 
 .steps {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .step {
-    text-align: center;
+  text-align: center;
 }
 
 /* Feature Section */
 .features {
-    margin-bottom: 50px;
-    /* text-align: center; */
+  margin-bottom: 50px;
+  /* text-align: center; */
 }
 
 .feature-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .feature {
-    flex: 0 1 calc(50.333% - 10px);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    text-align: left; /* Ensures text is aligned to the left */
+  flex: 0 1 calc(50.333% - 10px);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  text-align: left;
 }
 
 .feature img {
-    max-width: 50px;
-    margin-right: 10px;
-    margin-top: -46px;
+  max-width: 50px;
+  margin-right: 10px;
+  margin-top: -46px;
 }
 
 .feature-text {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Pricing Section */
@@ -197,13 +193,12 @@
   transition: background-color 0.3s;
 }
 
-.tier .btn:hover{
+.tier .btn:hover {
   background-color: #000000;
   color: #fcf8f8;
-
 }
 
-/* style the headings with a golden underline */
+/* Style the headings with a golden underline */
 h2 {
   position: relative;
   display: inline-block;
@@ -221,59 +216,69 @@ h2::after {
   left: 49%;
   transform: translateX(-50%);
 }
+
 @media (min-width: 1200px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl {
-      max-width: 1432px;
+    max-width: 1432px;
   }
 }
+
 .auction-cards {
   display: flex;
-  /* justify-content: center; */
   gap: 15px;
   flex-wrap: wrap;
 }
 
 .card-container {
   flex: 1 0 30%;
-  display: flex;
-  /* justify-content: center; */
   max-width: 30%;
-  margin-left: 29px;
 }
 
-.card{
-    border: 1px solid rgb(255 255 255 / 13%);
+.card {
+  border: 1px solid rgb(255 255 255 / 13%);
 }
 
 .card-img-top {
-    border-top-left-radius: calc(.25rem - 1px);
-    border-top-right-radius: calc(.25rem - 1px);
-    border-bottom-left-radius: calc(.25rem - 1px);
-    border-bottom-right-radius: calc(.25rem - 1px);
+  border-radius: calc(.25rem - 1px);
+  object-fit: cover;
+  width: 100%;
+  height: 200px; /* Adjust this value as needed */
+  border: 1px solid black; /* Add a thin black border */
 }
 
-.btn{
-    border: 2px solid;
+.item-title {
+  font-weight: 500;
+  font-size: larger;
+  margin-bottom: 0px;
+}
+
+.item-details {
+  font-size: 0.85rem;
+  margin-bottom: 0px;
+}
+
+.btn {
+  border: 2px solid;
 }
 
 .btn-outline-dark {
-    border-color: #000;
-    color: #000;
+  border-color: #000;
+  color: #000;
 }
 
 .btn-outline-dark:hover {
-    background-color: #000;
-    color: #fff;
+  background-color: #000;
+  color: #fff;
 }
 
 .btn-dark {
-    background-color: #000;
-    border-color: #000;
+  background-color: #000;
+  border-color: #000;
 }
 
 .btn-dark:hover {
-    background-color: #000000;
-    border-color: #000000;
+  background-color: #000000;
+  border-color: #000000;
 }
 
 /*Suggested for you*/
