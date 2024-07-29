@@ -24,7 +24,7 @@
   </div>
 
   <!-- Main Body -->
-  <div class="auction-cards">
+  <div class="container auction-cards" style="padding-bottom: 15px;">
     <div *ngFor="let auction of allAuctions" class="card-container">
       <div class="card" style="width: 18rem;">
         <img class="card-img-top" [src]="auction.itemPhoto" alt="{{ auction.itemName }}">
