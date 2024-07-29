@@ -16,12 +16,18 @@ export class PostLoginLandingPageComponent {
   ];
 
   upcomingAuctions: any[] = [];
+  suggestedAuctions: any[] =[];
   firstThreeUpcomingAuctions: any[] = [];
+  firstThreeSuggestedAuctions: any[] = [];
+  isSuggestedPresent= false;
+  isUpcomingPresent= false;
+
 
   constructor(private auctionService: PostLoginLandingPageServiceService,private router: Router,    private auctionSharedService: AuctionSharedServiceService  ) { }
 
   ngOnInit(): void {
     this.fetchUpcomingAuctions();
+    this.fetchSuggestedAuctions();
   }
   fetchUpcomingAuctions(): void {
     this.auctionService.getUpcomingAuctions().subscribe({
@@ -30,10 +36,34 @@ export class PostLoginLandingPageComponent {
 
         // Get the first three items
         this.firstThreeUpcomingAuctions = data.slice(0, 3);
+        if(this.firstThreeUpcomingAuctions.length>0){
+          this.isUpcomingPresent=true;
+        }
 
       },
       error: (error) => {
         console.error('Error fetching upcoming auctions', error);
+      }
+    });
+  }
+
+  fetchSuggestedAuctions(): void {
+    this.auctionService.getSuggestedAuctions().subscribe({
+      next: (response: any) => {
+        console.log('Suggested Auctions Response:', response);
+        const data = response.data;
+        if (Array.isArray(data)) {
+          this.suggestedAuctions = data;
+          this.firstThreeSuggestedAuctions = data.slice(0, 3);
+          if(this.firstThreeSuggestedAuctions.length>0){
+            this.isSuggestedPresent=true;
+          }
+        } else {
+          console.error('Expected data to be an array but got:', data);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching Suggested for you auctions', error);
       }
     });
   }
@@ -51,5 +81,10 @@ export class PostLoginLandingPageComponent {
 // Navigate to the all auctions page
   navigateToAllAuctions(): void {
     this.router.navigate(['/upcoming-all-auctions']);
+  }
+
+  // Navigate to the all auctions page
+  navigateToAllSuggestedAuctions(): void {
+    this.router.navigate(['/suggested-all-auctions']);
   }
 }

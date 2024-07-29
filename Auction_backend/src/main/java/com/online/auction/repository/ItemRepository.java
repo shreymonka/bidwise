@@ -4,6 +4,7 @@ import com.online.auction.model.Item;
 import com.online.auction.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,4 +64,8 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
      * @return A list of {@link Item} entities with the specified item ID.
      */
     List<Item> findByItemId(Integer itemId);
+
+    @Query("SELECT i FROM Item i WHERE i.itemcategory.itemCategoryId IN :categoryIds " +
+            "AND i.itemId NOT IN (SELECT abd.itemId.itemId FROM AuctionBidDetails abd WHERE abd.bidderId.userId = :userId)")
+    List<Item> findItemsNotBidByUserInCategories(@Param("userId") int userId, @Param("categoryIds") List<Integer> categoryIds);
 }

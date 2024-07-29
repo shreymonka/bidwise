@@ -20,6 +20,7 @@ import { UserProfileComponent } from './core/components/user-profile/user-profil
 import { UpcomingAllAuctionsComponent } from './core/components/upcoming-all-auctions/upcoming-all-auctions.component';
 import { PreLoginUpcomingAllAuctionsComponent } from './core/components/pre-login-upcoming-all-auctions/pre-login-upcoming-all-auctions.component';
 import { authGuard } from './core/services/auth.guard';
+import { SuggestedAllAuctionsComponent } from './core/components/suggested-all-auctions/suggested-all-auctions.component';
 
 const routes: Routes = [
   // {
@@ -44,7 +45,8 @@ const routes: Routes = [
   { path: 'pre-login-upcoming-all-auctions', component: PreLoginUpcomingAllAuctionsComponent },
   { path: 'addFunds', component: AddFundsComponent, canActivate: [authGuard] },
   { path: 'tradebook', component: TradebookComponent, canActivate: [authGuard] },
-  { path: 'profile', component: UserProfileComponent, canActivate: [authGuard] }
+  { path: 'profile', component: UserProfileComponent, canActivate: [authGuard] },
+  {path:'suggested-all-auctions', component: SuggestedAllAuctionsComponent, canActivate: [authGuard]}
 ];
 
 @NgModule({
