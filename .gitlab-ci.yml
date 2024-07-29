@@ -25,8 +25,8 @@ build_frontend:
     paths:
       - Auction_frontend/dist/auction-frontend/
   tags:
-    - dalfcs_docker_autoscale 
-    
+    - dalfcs_docker_kvm
+
 build_backend:
   stage: build
   image: maven:3.9.7-sapmachine-17
@@ -39,7 +39,7 @@ build_backend:
     paths:
       - Auction_backend/target/
   tags:
-    - dalfcs_docker_autoscale 
+    - dalfcs_docker_kvm
 
 test_backend:
   stage: test
@@ -52,7 +52,7 @@ test_backend:
     - echo "Running Tests"
     - mvn test
   tags:
-    - dalfcs_docker_autoscale 
+    - dalfcs_docker_kvm
 
 publish_backend:
   stage: publish
@@ -78,7 +78,7 @@ publish_backend:
     - docker logout
   when: manual
   tags:
-    - dalfcs_docker_autoscale 
+    - dalfcs_docker_kvm
 
 publish_frontend:
   stage: publish
@@ -104,7 +104,7 @@ publish_frontend:
     - docker logout
   when: manual
   tags:
-    - dalfcs_docker_autoscale
+    - dalfcs_docker_kvm
 
 deploy_build:
   image: alpine:latest
@@ -128,4 +128,4 @@ deploy_build:
     - ssh $SSH_USER@$VM_IPADDRESS "docker run -d -p8080:8080 --name auctionbackend $DOCKER_USERNAME/auctionbackend:$CI_COMMIT_SHORT_SHA"
   when: manual
   tags:
-    - dalfcs_docker_autoscale 
+    - dalfcs_docker_kvm
